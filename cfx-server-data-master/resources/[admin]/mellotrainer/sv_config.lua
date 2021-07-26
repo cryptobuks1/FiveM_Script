@@ -65,9 +65,7 @@ https://forum.fivem.net/t/how-to-steam-hex-value-pictures/41071
 local admins = {
 -- เช่น "steam:110000100000000", สามารถเอาได้ที่ sql ไปที่ ช่อง user เลือกตัวละครเรา แล้วก็อป identifier 
 -- ถ้าลงไม่เป็นอีก FB : Achirawit Kaewkhong ค่าเสียเวลา 30วอ
-"steam:11000010653bf1d",-- PipePle
-"steam:11000013d5e7a5f", -- ไปป์
-"steam:11000013bbdd4d3",
+"steam:11000010a665804",-- Demub
 
 
 
