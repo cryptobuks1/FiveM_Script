@@ -1,0 +1,1047 @@
+<html>
+    <head>
+        <link href="trainer.css" rel="stylesheet" type="text/css" />
+        <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+        <script src="trainer.js" type="text/javascript"></script>
+    </head>
+    <body>
+
+        <!-- Voice Overlay Container, Top-Center of screen. -->
+        <div id="voicecontainer" style="display: none;" data-container="true">
+            <p class="voiceHeader">คนที่กำลังพูดอยู่:</p>
+            <span id="voiceActive">
+            </span>
+        </div>
+
+
+
+        <!-- Speed Container, bottom right Corner of the screen -->
+        <div id="speedcontainer" class="circle" style="display: none;" data-container="true">
+            <p class="speedtext">0</p>
+            <p class="speedsuffix">MPH</p>
+        </div>
+
+
+
+
+        <!-- Trainer menu container -->
+        <div id="trainercontainer" style="display: none;" data-container="true">
+            <div id="trainertitlecontainer" data-container="true">
+                <!-- Title -->
+                <p class="trainertitle">เมนู</p>
+                <!-- Page Indicator updated by JS -->
+                <p id="pageindicator"></p>
+            </div>
+
+
+            <!-- Main menu -->
+            <div id="mainmenu">
+                <p class="traineroption" data-sub="onlineplayersmenu">ผู้เล่นที่ ออนไลน์</p>
+                <p class="traineroption" data-sub="playermenu">ผู้เล่น</p>
+                <!-- <p class="traineroption" data-sub="actionsmenu">Actions</p>  -->
+                <p class="traineroption" data-sub="weaponsmenu">อาวุธ</p>
+                <p class="traineroption" data-sub="vehiclesmenu">พาหนะ</p>
+                <p class="traineroption" data-sub="worldmenu">โลก</p>
+                <p class="traineroption" data-sub="settingsmenu">ตั้งค่า</p>
+                <p class="traineroption" data-sub="adminmenu" data-require="admin">แอดมินเมนู</p>
+                <p class="traineroption" data-sub="savemenu">เซฟ/โหลด การตั้งค่า</p>
+                <p class="traineroption" data-sub="aboutmenu">อื่นๆ</p>
+
+
+
+
+            </div>
+
+
+
+
+            <!-- Toggle Save Menu -->
+            <div id="savemenu" data-parent="mainmenu">
+                <p class="traineroption" data-action="savefeaturevariables">เซฟการตั้งค่า</p>
+                <p class="traineroption" data-action="loadfeaturevariables">โหลดการตั้งค่า</p>
+                <p class="traineroption" data-action="resetfeaturevariables">ล้างการเซฟของการตั้งค่า</p>
+            </div>
+
+
+
+            <!--
+                                _     _                           __  __                        
+                 /\            | |   (_)                         |  \/  |                       
+                /  \      ___  | |_   _    ___    _ __    ___    | \  / |   ___   _ __    _   _ 
+               / /\ \    / __| | __| | |  / _ \  | '_ \  / __|   | |\/| |  / _ \ | '_ \  | | | |
+              / ____ \  | (__  | |_  | | | (_) | | | | | \__ \   | |  | | |  __/ | | | | | |_| |
+             /_/    \_\  \___|  \__| |_|  \___/  |_| |_| |___/   |_|  |_|  \___| |_| |_|  \__,_|
+                                                                                    
+            -->
+
+            <!-- Animations Menus -->
+            <div id="actionsmenu" data-parent="mainmenu">
+            </div>
+
+
+            <!--
+               ____            _   _                    _____    _                                         __  __                        
+              / __ \          | | (_)                  |  __ \  | |                                       |  \/  |                       
+             | |  | |  _ __   | |  _   _ __     ___    | |__) | | |   __ _   _   _    ___   _ __   ___    | \  / |   ___   _ __    _   _ 
+             | |  | | | '_ \  | | | | | '_ \   / _ \   |  ___/  | |  / _` | | | | |  / _ \ | '__| / __|   | |\/| |  / _ \ | '_ \  | | | |
+             | |__| | | | | | | | | | | | | | |  __/   | |      | | | (_| | | |_| | |  __/ | |    \__ \   | |  | | |  __/ | | | | | |_| |
+              \____/  |_| |_| |_| |_| |_| |_|  \___|   |_|      |_|  \__,_|  \__, |  \___| |_|    |___/   |_|  |_|  \___| |_| |_|  \__,_|
+                                                                              __/ |                                                      
+                                                                             |___/                                                       
+            -->
+
+            <!-- Online Players menu -->
+            <div id="onlineplayersmenu" data-parent="mainmenu" data-dynamicmenu="getonlineplayers">
+            </div>
+
+
+                <!-- Player Options Menu (Online) -->
+                <div id="onlineplayersmenu_playeroptions" data-parent="onlineplayersmenu">
+                    <p class="traineroption" data-action="otherplayer teleportto">วาปไปหาผู้เล่น</p>
+                    <p class="traineroption" data-action="otherplayer teleportinside">วาปไปบนรถผู้เล่น</p>
+                    <p class="traineroption" data-action="otherplayer drawroute">มาคไปหาผู้เล่น</p>
+                    <p class="traineroption" data-action="otherplayer spectate" data-state="OFF" data-toggle="featureSpectate">ดูกล้องของผู้เล่น</p>
+                    <p class="traineroption" data-action="otherplayer relationship friendly">ทำเครื่องหมายว่าเป็นมิตร</p>
+                    <p class="traineroption" data-action="otherplayer relationship normal">ทำเครื่องหมายเป็นกลาง</p>
+                    <p class="traineroption" data-action="otherplayer relationship hostile">ทำเครื่องหมายว่าไม่เป็นมิตร</p>
+                </div>
+            
+            
+            <!-- 
+              _____    _                                   __  __                        
+             |  __ \  | |                                 |  \/  |                       
+             | |__) | | |   __ _   _   _    ___   _ __    | \  / |   ___   _ __    _   _ 
+             |  ___/  | |  / _` | | | | |  / _ \ | '__|   | |\/| |  / _ \ | '_ \  | | | |
+             | |      | | | (_| | | |_| | |  __/ | |      | |  | | |  __/ | | | | | |_| |
+             |_|      |_|  \__,_|  \__, |  \___| |_|      |_|  |_|  \___| |_| |_|  \__,_|
+                                    __/ |                                                
+                                   |___/                                                 
+            -->
+
+            <!-- Player menu -->
+            <div id="playermenu" data-parent="mainmenu">
+                <p class="traineroption" data-sub="playerskinmenu">สกินผู้เล่น</p>
+                <p class="traineroption" data-action="player heal">ล้างตัวละคร และ เพิ่มเลือด</p>
+                <p class="traineroption" data-action="player armor">ให้เกราะแก่ตัวละคร</p>
+                <p class="traineroption" data-action="player keepclean" data-state="OFF" data-toggle="featureKeepClean">รักษาความสะอาด</p>
+                <p class="traineroption" data-action="player god" data-state="OFF" data-toggle="featurePlayerInvincible">โหมด อมตะ</p>
+                <p class="traineroption" data-action="player noragdoll" data-state="OFF" data-toggle="featureNoRagDoll">ไม่มีวันล้ม</p>
+                <p class="traineroption" data-action="player drunk" data-state="OFF" data-toggle="featurePlayerDrunk">เมา</p>
+                <p class="traineroption" data-action="player stamina" data-state="OFF" data-toggle="featurePlayerInfiniteStamina">สเตมิน่า ไม่จำกัด</p>
+                <p class="traineroption" data-action="player superjump" data-state="OFF" data-toggle="featurePlayerSuperJump">กระโดดสูง</p>
+                <p class="traineroption" data-action="player fastrun" data-state="OFF" data-toggle="featurePlayerFastRun">วิ่งเร็ว</p>
+
+                <p class="traineroption" data-action="player fastswim" data-state="OFF" data-toggle="featurePlayerFastSwim">ว้ายน้ำเร็ว</p>
+                <p class="traineroption" data-action="player nightvision" data-state="OFF" data-toggle="featureNightVision">มองเห็นตอนกลางคืน</p>
+                <p class="traineroption" data-action="player thermalvision" data-state="OFF" data-toggle="featureThermalVision">มองเห็นเฉพาะ ผู้เล่นหรือNPC</p>
+                <p class="traineroption" data-action="player invisible" data-state="OFF" data-toggle="featurePlayerInvisible">หายตัว</p>
+                <p class="traineroption" data-action="player silent" data-state="OFF" data-toggle="featurePlayerNoNoise">โหมดเงียบ</p>
+                <p class="traineroption" data-action="player everyone" data-state="OFF" data-toggle="featurePlayerIgnoredByAll">ทุกคนไม่สนใจคุณ</p>
+                <p class="traineroption" data-action="player police" data-state="OFF" data-toggle="featurePlayerIgnoredByPolice">ตำรวจไม่สนใจคุณ</p>
+                <p class="traineroption" data-action="player wanted" data-state="OFF" data-toggle="featurePlayerNeverWanted">ไม่มีวันติดดาว</p>
+                <p class="traineroption" data-action="player keepwet" data-state="OFF" data-toggle="featureKeepWet">ทำให้เปียก</p>
+                <p class="traineroption" data-action="player restoreappearance" data-state="OFF" data-toggle="featureRestoreAppearance">คืนค่าลักษณะที่ปรากฏของผู้เล่น</p>
+                <p class="traineroption" data-action="player suicide">ฆ่าตัวตาย</p>
+            </div>
+            
+
+            <!-- Player Skin Menu -->
+            <div id="playerskinmenu" data-parent="playermenu">
+                <p class="traineroption" data-sub="playerskinsavedconfigs">การเซ็ท ที่บันทึกไว้</p>
+                <p class="traineroption" data-sub="playerskinmenucharacters">ผู้เล่น</p>
+                <p class="traineroption" data-sub="playerskinmenuanimals">สัตว์</p>
+                <p class="traineroption" data-sub="playerskinmenunpcs">NPC</p>
+                <p class="traineroption" data-action="randomskin skin">สุ่ม สกิน</p>
+                <p class="traineroption" data-sub="playerskinmenuskins">แก้ไข สกิน</p>
+                <p class="traineroption" data-action="defaultskin skin">รีเซ็ท สกิน</p>
+                <p class="traineroption" data-action="randomskin props">สุ่ม อุปกรณ์ประกอบ</p>
+                <p class="traineroption" data-sub="playerskinmenuprops">แก้ไข อุปกรณ์ประกอบ</p>
+                <p class="traineroption" data-action="defaultskin props">ล้าง อุปกรณ์ประกอบ</p>
+
+                <p class="traineroption" data-action="playerskin input">เปรี่ยน สกินด้วยการพิมพ์</p>
+            </div>
+
+            <!-- Player Skins: Saved Configs -->
+            <div id="playerskinsavedconfigs" data-parent="playerskinmenu" data-dynamicmenu="loadsavedskins">
+            </div>
+
+            <!-- Player Skins: Characters --> 
+            <div id="playerskinmenucharacters" data-parent="playerskinmenu" data-staticmenu="player_skins_characters">
+            </div>
+
+            <!-- Player Skins: Animals -->
+            <div id="playerskinmenuanimals" data-parent="playerskinmenu" data-staticmenu="player_skins_animals">
+            </div>
+
+            <!-- Player Skin Menu: NPCs -->
+            <div id="playerskinmenunpcs" data-parent="playerskinmenu" data-staticmenu="player_skins_npcs">
+            </div>
+
+            <!-- Player Skin Menu: Skins -->
+            <div id="playerskinmenuskins" data-parent="playerskinmenu" data-dynamicmenu="playerskinmodify">
+            </div>
+
+            <!-- Player Skin Menu: Props -->
+            <div id="playerskinmenuprops" data-parent="playerskinmenu" data-dynamicmenu="playerpropmodify">
+            </div>
+
+
+            <!--
+             __      __         _       _          _                  __  __                        
+             \ \    / /        | |     (_)        | |                |  \/  |                       
+              \ \  / /    ___  | |__    _    ___  | |   ___   ___    | \  / |   ___   _ __    _   _ 
+               \ \/ /    / _ \ | '_ \  | |  / __| | |  / _ \ / __|   | |\/| |  / _ \ | '_ \  | | | |
+                \  /    |  __/ | | | | | | | (__  | | |  __/ \__ \   | |  | | |  __/ | | | | | |_| |
+                 \/      \___| |_| |_| |_|  \___| |_|  \___| |___/   |_|  |_|  \___| |_| |_|  \__,_|
+                                                                                                    
+            -->
+            
+            <!-- Vehicles menu -->
+            <div id="vehiclesmenu" data-parent="mainmenu">
+                <p class="traineroption" data-sub="vehiclesspawnmenu">เสก พาหนะ</p>
+                <p class="traineroption" data-sub="vehiclesspawnoptionsmenu">ตั้งค่าการเสก พาหนะ</p>
+                <p class="traineroption" data-sub="vehiclessavedmenu">เซฟ พาหนะ</p>
+                <!-- <p class="traineroption" data-sub="vehiclesownedmenu">Owned Vehicles </p> -->
+                <p class="traineroption" data-sub="vehiclesmodmenu" data-require="vehicle">แก้ไข พาหนะ</p>
+                <p class="traineroption" data-sub="vehiclespaintoptions">แก้ไขสี พาหนะ</p>
+                <p class="traineroption" data-sub="vehiclesdamagesettings">ตั้งค่าความเสียหาย</p>
+                <p class="traineroption" data-sub="vehiclespowersettings">ตัวเลือกการเพิ่มพลัง</p>
+                <p class="traineroption" data-sub="vehiclestorquesettings">ตัวเลือกเพิ่มแรงบิด</p>
+                <p class="traineroption" data-sub="vehiclessuspensionoptions">ตัวเลือกการระงับ</p>
+
+
+                <p class="traineroption" data-action="veh fixset">ซ่อมแซมและพลิกพาหนะ</p>
+                <p class="traineroption" data-action="vehopts nodrag" data-state="OFF" data-toggle="featureNoDragOut">ไม่มีการลากออก</p>
+                <p class="traineroption" data-action="vehopts nofall" data-state="OFF" data-toggle="featureNoFallOff">ไม่ล้ม</p>
+                <p class="traineroption" data-action="vehopts nohelmet" data-state="OFF" data-toggle="featureNoHelmet">ไม่มีหมวกกันน็อค</p>
+                <p class="traineroption" data-action="vehopts driftmode" data-state="OFF" data-toggle="featureDriftMode">โหมดดริฟท์</p>
+                <p class="traineroption" data-sub="vehiclesdoormenu">การควบคุมประตู</p>
+                <p class="traineroption" data-sub="vehicleswindowmenu"> การควบคุมหน้าต่าง</p>
+                <p class="traineroption" data-action="veh speedometer" data-state="OFF" data-toggle="featureSpeedometer">เครื่องวัดความเร็ว (MPH)</p>
+                <p class="traineroption" data-action="veh fix">แก้ไขยานพาหนะ</p>
+                <p class="traineroption" data-action="veh clean">ทำความสะอาดยานพาหนะ</p>
+                <p class="traineroption" data-action="veh dirty">ยานพาหนะสกปรก</p>
+                <p class="traineroption" data-action="veh set">พลิกพาหนะ</p>
+            </div>
+
+
+            <!-- Saved Vehicles Menu -->
+             <div id="vehiclessavedmenu" data-parent="vehiclesmenu" data-dynamicmenu="loadsavedvehs">
+                 <!-- <p class="traineroption" data-action="vehiclesave">Create New Vehicle Save</p> -->
+             </div>
+
+            
+            <!-- Owned Vehicle Menu -->
+            <div id="vehiclesownedmenu" data-parent="vehiclesmenu">
+                <p class="traineroption" data-action="">ทำให้เราเป็นเข้าของพาหนะ</p>    <!-- TODO -->
+                <p class="traineroption" data-action="">ล้างเจ้าของพาหนะ</p>    <!-- TODO -->
+                <p class="traineroption" data-sub="ownedremotecontrolmenu">ตั้งค่าการควบคุม</p>    <!-- TODO -->
+                <p class="traineroption" data-action="">เข้าไปในยานพาหนะที่เป็นเจ้าของ</p>    <!-- TODO -->
+                <p class="traineroption" data-action="">เรียกเจ้าของรถมาหาเรา</p>    <!-- TODO -->
+                <p class="traineroption" data-action="">ลบเจ้าของรถ</p>    <!-- TODO -->
+            </div>
+
+
+            <!-- Damage Settings -->
+            <div id="vehiclesdamagesettings" data-parent="vehiclesmenu">
+                <p class="traineroption" data-action="vehopts cosdamage" data-state="OFF" data-toggle="featureVehCosDamage">เครี่ยง ยนต์ ไม่เสียหาย</p>
+                <p class="traineroption" data-action="vehopts mechdamage" data-state="OFF" data-toggle="featureVehMechDamage">ไม่มีความเสียหาย</p>
+                <p class="traineroption" data-action="vehopts invincible" data-state="OFF" data-toggle="featureVehInvincible">ทำลายไม่ได้</p>
+            </div>
+
+
+            <!-- Power Boost Options -->
+            <div id="vehiclespowersettings" data-parent="vehiclesmenu">
+                <p class="traineroption" data-action="vehopts powerboost 1">ค่าดั่งเดิม</p>
+                <p class="traineroption" data-action="vehopts powerboost 75">คูณ = 75</p>
+                <p class="traineroption" data-action="vehopts powerboost 100">คูณ = 100</p>
+                <p class="traineroption" data-action="vehopts powerboost 150">คูณ = 150</p>
+                <p class="traineroption" data-action="vehopts powerboost 200">คูณ = 200</p>
+                <p class="traineroption" data-action="vehopts powerboost 250">คูณ = 250</p>
+                <p class="traineroption" data-action="vehopts powerboost 300">คูณ = 300</p>
+                <p class="traineroption" data-action="vehopts powerboost 350">คูณ = 350</p>
+                <p class="traineroption" data-action="vehopts powerboost 400">คูณ = 400</p>
+                <p class="traineroption" data-action="vehopts powerboost 450">คูณ = 450</p>
+                <p class="traineroption" data-action="vehopts powerboost 500">คูณ = 500</p>
+            </div>
+
+
+            <!-- Torque Boost Options -->
+            <div id="vehiclestorquesettings" data-parent="vehiclesmenu">
+                <p class="traineroption" data-action="vehopts torqueboost 1">ค่าดั่งเดิม </p>
+                <p class="traineroption" data-action="vehopts torqueboost 2">คูณ = 2</p>
+                <p class="traineroption" data-action="vehopts torqueboost 5">คูณ = 5</p>
+                <p class="traineroption" data-action="vehopts torqueboost 10">คูณ = 10</p>
+                <p class="traineroption" data-action="vehopts torqueboost 15">คูณ = 15</p>
+                <p class="traineroption" data-action="vehopts torqueboost 25">คูณ = 25</p>
+                <p class="traineroption" data-action="vehopts torqueboost 50">คูณ = 50</p>
+                <p class="traineroption" data-action="vehopts torqueboost 75">คูณ = 75</p>
+                <p class="traineroption" data-action="vehopts torqueboost 100">คูณ = 100</p>
+                <p class="traineroption" data-action="vehopts torqueboost 150">คูณ = 150</p>
+                <p class="traineroption" data-action="vehopts torqueboost 200">คูณ = 200</p>
+            </div>
+
+
+            <!-- Suspension Options -->
+            <div id="vehiclessuspensionoptions" data-parent="vehiclesmenu">
+                <p class="traineroption" data-action="vehopts lowering 0">ค่าดั่งเดิม</p>
+                <p class="traineroption" data-action="vehopts lowering 1">ลด ระดับ  1</p>
+                <p class="traineroption" data-action="vehopts lowering 2">ลด ระดับ 2</p>
+                <p class="traineroption" data-action="vehopts lowering 3">ลด ระดับ 3</p>
+                <p class="traineroption" data-action="vehopts lowering 4">ลด ระดับ 4</p>
+                <p class="traineroption" data-action="vehopts lowering 5">ลด ระดับ 5</p> 
+                <p class="traineroption" data-action="vehopts lowering 6">ลด ระดับ 6</p>
+            </div>
+
+
+
+            <!-- Vehicle Spawn Options -->
+            <div id="vehiclesspawnoptionsmenu" data-parent="vehiclesmenu">
+                <p class="traineroption" data-action="vehspawnoptions insidecar" data-state="OFF" data-toggle="featureSpawnInsideCar">เสกมาแล้วอยู่บนพาหนะ</p>
+                <p class="traineroption" data-action="vehspawnoptions despawn" data-state="OFF" data-toggle="featureDeleteLastVehicle">ลบยานพาหนะก่อนหน้า</p>
+                <p class="traineroption" data-action="vehspawnoptions infront" data-state="OFF" data-toggle="featureSpawnCarInFront">เสกพาหนะมาอยู่ด้านหน้า</p>
+            </div>
+        
+
+            <!-- Vehicle Spawner. Chooose type of vehicle to spawn. -->
+            <div id="vehiclesspawnmenu" data-parent="vehiclesmenu">
+                <p class="traineroption" data-sub="vehiclestypemenucars">รถ</p>
+                <p class="traineroption" data-sub="vehiclestypemenuindustrial">ด้านอุตสาหกรรม</p>
+                <p class="traineroption" data-sub="vehiclestypemenuemergency">ฉุกเฉินและการทหาร</p>
+                <p class="traineroption" data-sub="vehiclestypemenumotorcycles">มอเตอร์ไซด์</p>
+                <p class="traineroption" data-sub="vehiclestypemenuplanes">เครื่องบิน</p>
+                <p class="traineroption" data-sub="vehiclestypemenuhelicopters">เฮลิคอปเตอร์</p>
+                <p class="traineroption" data-sub="vehiclestypemenuboats">เรือ</p>
+                <p class="traineroption" data-sub="vehiclestypemenubicycles">จักรยาน</p>
+                <p class="traineroption" data-action="vehspawn input">เสกพาหนะด้วยชื่อ</p>
+            </div>
+
+
+
+            <!-- Vehicle Spawner: Cars -->
+            <div id="vehiclestypemenucars" data-parent="vehiclesspawnmenu">
+                <p class="traineroption" data-sub="vehiclestypemenucarssupercars">รถซูเปอร์คาร์</p>
+                <p class="traineroption" data-sub="vehiclestypemenucarssports">รถสปอร์ต</p>
+                <p class="traineroption" data-sub="vehiclestypemenucarssportsclassics">รถสปอร์ต คลาสสิค</p>
+                <p class="traineroption" data-sub="vehiclestypemenucarsmuscle">รถมัสเซิล</p>
+                <p class="traineroption" data-sub="vehiclestypemenucarslowriders">รถโบราณ</p>
+                <p class="traineroption" data-sub="vehiclestypemenucarscoupes">รถคูเป้</p>
+                <p class="traineroption" data-sub="vehiclestypemenucarssedans">รถซีดาน</p>
+                <p class="traineroption" data-sub="vehiclestypemenucarscompacts">รถคอมแพค</p>
+                <p class="traineroption" data-sub="vehiclestypemenucarssuvs">รถเอสยูวี </p>
+                <p class="traineroption" data-sub="vehiclestypemenucarsoffroad">รถออฟโรด</p>
+                <p class="traineroption" data-sub="vehiclestypemenucarsvip">รถวีไอพี</p>
+            </div>
+
+
+                <!-- Vehicle Spawner Cars: supercars -->
+                <div id="vehiclestypemenucarssupercars" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_supercars">
+                </div>
+
+
+                <!-- Vehicle Spawner Cars: sports -->
+                <div id="vehiclestypemenucarssports" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_sports">
+                </div>
+
+
+                <!-- Vehicle Spawner Cars: sports classics -->
+                <div id="vehiclestypemenucarssportsclassics" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_sportsclassics">
+                </div>
+
+
+                <!-- Vehicle Spawner Cars: muscle -->
+                <div id="vehiclestypemenucarsmuscle" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_muscle">
+                </div>
+
+
+                <!-- Vehicle Spawner Cars: lowriders -->
+                <div id="vehiclestypemenucarslowriders" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_lowriders">
+                </div>
+
+
+                <!-- Vehicle Spawner Cars: coupes -->
+                <div id="vehiclestypemenucarscoupes" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_coupes">
+                </div>
+
+
+                <!-- Vehicle Spawner Cars: sedans -->
+                <div id="vehiclestypemenucarssedans" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_sedans">
+                </div>
+
+
+                <!-- Vehicle Spawner Cars: compacts -->
+                <div id="vehiclestypemenucarscompacts" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_compacts">
+                </div>
+
+
+
+                <!-- Vehicle Spawner Cars: suvs -->
+                <div id="vehiclestypemenucarssuvs" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_suvs">
+                </div>
+
+
+
+                <!-- Vehicle Spawner Cars: offroad -->
+                <div id="vehiclestypemenucarsoffroad" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_offroad">
+                </div>
+
+
+
+                <!-- Vehicle Spawner Cars: vip -->
+                <div id="vehiclestypemenucarsvip" data-parent="vehiclestypemenucars" data-staticmenu="vehicle_cars_vip">
+                </div>                
+
+
+
+
+            <!-- Vehicle Spawner: Industrial-->
+            <div id="vehiclestypemenuindustrial" data-parent="vehiclesspawnmenu">
+                <p class="traineroption" data-sub="vehiclestypemenuindustrialpickups">รถปิคอัพ</p>
+                <p class="traineroption" data-sub="vehiclestypemenuindustrialvans">รถตู้</p>
+                <p class="traineroption" data-sub="vehiclestypemenuindustrialtrucks">รถบรรทุก</p>
+                <p class="traineroption" data-sub="vehiclestypemenuindustrialservice">บริการ / ยูทิลิตี้</p>
+                <p class="traineroption" data-sub="vehiclestypemenuindustrialtrailers">รถพ่วง</p>
+                <p class="traineroption" data-sub="vehiclestypemenuindustrialtrains">รถไฟ (ไม่สามารถเข้าถึงได้)</p>
+            </div>
+
+
+                <!-- Vehicle Spawner Industrial: pickups -->
+                <div id="vehiclestypemenuindustrialpickups" data-parent="vehiclestypemenuindustrial" data-staticmenu="vehicle_industrial_pickups">
+                </div>
+
+
+                <!-- Vehicle Spawner Industrial: vans -->
+                <div id="vehiclestypemenuindustrialvans" data-parent="vehiclestypemenuindustrial" data-staticmenu="vehicle_industrial_vans">
+                </div>
+
+
+                <!-- Vehicle Spawner Industrial: trucks -->
+                <div id="vehiclestypemenuindustrialtrucks" data-parent="vehiclestypemenuindustrial" data-staticmenu="vehicle_industrial_trucks">
+                </div>
+
+
+                <!-- Vehicle Spawner Industrial: service -->
+                <div id="vehiclestypemenuindustrialservice" data-parent="vehiclestypemenuindustrial" data-staticmenu="vehicle_industrial_service">
+                </div>
+
+
+                <!-- Vehicle Spawner Industrial: trailers -->
+                <div id="vehiclestypemenuindustrialtrailers" data-parent="vehiclestypemenuindustrial" data-staticmenu="vehicle_industrial_trailers">
+                </div>
+
+
+                <!-- Vehicle Spawner Industrial: trains -->
+                <div id="vehiclestypemenuindustrialtrains" data-parent="vehiclestypemenuindustrial" data-staticmenu="vehicle_industrial_trains">
+                </div>
+
+
+            <!-- Vehicle Spawner: Emergency -->
+            <div id="vehiclestypemenuemergency" data-parent="vehiclesspawnmenu" data-staticmenu="vehicle_emergency">
+            </div>
+
+
+            <!-- Vehicle Spawner: Motorcycles -->
+            <div id="vehiclestypemenumotorcycles" data-parent="vehiclesspawnmenu" data-staticmenu="vehicle_motorcycles">
+            </div>
+
+
+            <!-- Vehicle Spawner: Planes -->
+            <div id="vehiclestypemenuplanes" data-parent="vehiclesspawnmenu" data-staticmenu="vehicle_planes">
+            </div>
+
+
+            <!-- Vehicle Spawner: Helicopters -->
+            <div id="vehiclestypemenuhelicopters" data-parent="vehiclesspawnmenu" data-staticmenu="vehicle_helicopters">
+            </div>
+
+
+            <!-- Vehicle Spawner: Boats -->
+            <div id="vehiclestypemenuboats" data-parent="vehiclesspawnmenu" data-staticmenu="vehicle_boats">
+            </div>
+
+
+            <!-- Vehicle Spawner: Bicycles -->
+            <div id="vehiclestypemenubicycles" data-parent="vehiclesspawnmenu" data-staticmenu="vehicle_bicycles">
+            </div>
+
+
+            <!--
+             __      __         _       _          _             _____                 _                         _                 _     _                     __  __                        
+             \ \    / /        | |     (_)        | |           / ____|               | |                       (_)               | |   (_)                   |  \/  |                       
+              \ \  / /    ___  | |__    _    ___  | |   ___    | |       _   _   ___  | |_    ___    _ __ ___    _   ____   __ _  | |_   _    ___    _ __     | \  / |   ___   _ __    _   _ 
+               \ \/ /    / _ \ | '_ \  | |  / __| | |  / _ \   | |      | | | | / __| | __|  / _ \  | '_ ` _ \  | | |_  /  / _` | | __| | |  / _ \  | '_ \    | |\/| |  / _ \ | '_ \  | | | |
+                \  /    |  __/ | | | | | | | (__  | | |  __/   | |____  | |_| | \__ \ | |_  | (_) | | | | | | | | |  / /  | (_| | | |_  | | | (_) | | | | |   | |  | | |  __/ | | | | | |_| |
+                 \/      \___| |_| |_| |_|  \___| |_|  \___|    \_____|  \__,_| |___/  \__|  \___/  |_| |_| |_| |_| /___|  \__,_|  \__| |_|  \___/  |_| |_|   |_|  |_|  \___| |_| |_|  \__,_|
+                                                                                                                                                                                             
+            -->
+            
+            <!-- Vehicle Customization Menu -->
+            <div id="vehiclesmodmenu" data-parent="vehiclesmenu" data-dynamicmenu="vehmods">
+                <p class="traineroption" data-sub="vehiclesenginemenu">เครื่องยนต์</p>
+                <p class="traineroption" data-sub="vehiclesbrakemenu">เบรค</p>
+                <p class="traineroption" data-sub="vehiclestransmissionmenu">การส่งผ่าน</p>
+                <p class="traineroption" data-sub="vehicleshornmenu">แตร</p>
+                <p class="traineroption" data-sub="vehiclessuspensionmenu">การระงับ</p>
+                <p class="traineroption" data-sub="vehiclesarmormenu">เกราะ</p>
+                <p class="traineroption" data-sub="vehicleswindowtintmenu">สีหน้าต่าง</p>
+                <p class="traineroption" data-sub="vehicleslicensesmenu">ป้ายทะเบียนรถ</p>
+                <p class="traineroption" data-action="vehmod platetext">เปลี่ยนข้อความ ป้ายทะเบียนรถ</p>
+                <p class="traineroption" data-sub="vehicleswheelcategorymenu">หมวดหมู่ล้อ</p>
+                <p class="traineroption" data-sub="vehicleswheelchoicemenu" data-dynamicsub="wheeltype">ตัวเลือกล้อ</p>
+                <p class="traineroption" data-sub="vehiclestiresmokemenu">ยางควัน</p>
+                <p class="traineroption" data-sub="vehiclesneonlightsmenu">แสงนีออน</p>
+                <p class="traineroption" data-action="vehmod turbomode" data-state="OFF" data-toggle="featureTurboMode">สลับการปรับแต่งเทอร์โบ</p>
+                <p class="traineroption" data-action="vehmod xenonlights" data-state="OFF" data-toggle="featureXeonLights">สลับไฟซีนอน</p>
+                <p class="traineroption" data-action="vehmod customtires" data-state="OFF" data-toggle="featureCustomTires">สลับยางที่กำหนดเอง</p>
+                <p class="traineroption" data-action="vehmod bulletwheels" data-state="OFF" data-toggle="featureBulletproofWheels">สลับยางกันกระสุน</p>
+            </div>
+
+
+                <!-- Vehicle Window Tints -->
+                <div id="vehicleswindowtintmenu" data-parent="vehiclesmodmenu">
+                    <p class="traineroption" data-action="vehmod windowtint 0">สต็อก</p>
+                    <p class="traineroption" data-action="vehmod windowtint 1">มืด</p>
+                    <p class="traineroption" data-action="vehmod windowtint 2">กลาง</p>
+                    <p class="traineroption" data-action="vehmod windowtint 3">สว่าง</p>
+                    <p class="traineroption" data-action="vehmod windowtint 4">ไม่มี</p>
+                    <p class="traineroption" data-action="vehmod windowtint 5">เขียว</p>
+                </div>
+
+                <!-- Vehicle License Plates -->
+                <div id="vehicleslicensesmenu" data-parent="vehiclesmodmenu">
+                    <p class="traineroption" data-action="vehmod plate 0">น้ำเงินขาว</p>
+                    <p class="traineroption" data-action="vehmod plate 1">เหลืองดำ</p>
+                    <p class="traineroption" data-action="vehmod plate 2">เหลืองน้ำเงิน</p>
+                    <p class="traineroption" data-action="vehmod plate 3">แซนแอดเดรด</p>
+                    <p class="traineroption" data-action="vehmod plate 4">ซอลเอ็กแซ้ม</p>
+                    <p class="traineroption" data-action="vehmod plate 5">แยงต้น</p>
+                </div>
+
+
+                <!-- Vehicle Wheel Category -->
+                <div id="vehicleswheelcategorymenu" data-parent="vehiclesmodmenu">
+                    <p class="traineroption" data-action="vehmod changewheeltype 0">ล้อสปอร์ต</p>
+                    <p class="traineroption" data-action="vehmod changewheeltype 1">ล้อมัสเซิล</p>
+                    <p class="traineroption" data-action="vehmod changewheeltype 2">ล้อโบราณ</p>
+                    <p class="traineroption" data-action="vehmod changewheeltype 3">ล้อเอสยูวี </p>
+                    <p class="traineroption" data-action="vehmod changewheeltype 4">ล้อออฟโรด</p>
+                    <p class="traineroption" data-action="vehmod changewheeltype 5">ล้อจูนเนอร์</p>
+                    <p class="traineroption" data-action="vehmod changewheeltype 7">ล้อระดับสุดยอด</p>
+                    <p class="traineroption" data-action="vehmod changewheeltype 8">ดั่งเดิมของร้าน เบนนี้</p>
+                </div>
+
+
+                <!-- Vehicle Wheel Choice menus -->
+
+
+                <!-- Sport -->
+                <div id="vehicleswheelchoicemenu0" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_wheel_0">
+                </div>
+
+                <!-- Muscle -->
+                <div id="vehicleswheelchoicemenu1" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_wheel_1">
+                </div>
+
+                <!-- Lowrider -->
+                <div id="vehicleswheelchoicemenu2" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_wheel_2">
+                </div>
+
+                <!-- SUV -->
+                <div id="vehicleswheelchoicemenu3" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_wheel_3">
+                </div>
+
+                <!-- Offroad -->
+                <div id="vehicleswheelchoicemenu4" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_wheel_4">
+                </div>
+
+                <!-- Tuner -->
+                <div id="vehicleswheelchoicemenu5" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_wheel_5">
+                </div>
+
+                <!-- Highend -->
+                <div id="vehicleswheelchoicemenu7" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_wheel_7">
+                </div>
+
+                <!-- Benny's Original --> 
+                <div id="vehicleswheelchoicemenu8" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_wheel_8">
+                </div>
+
+
+                <!-- BikerWheels? -->
+                <div id="vehicleswheelchoicemenu6" data-parent="vehiclesmodmenu">
+                    <p class="traineroption" data-sub="vehicleswheelchoicemenufrontwheel">หน้า ล้อ</p>
+                    <p class="traineroption" data-sub="vehicleswheelchoicemenubackwheel">หลังล้อ</p>
+                </div>
+
+                    <!-- Front Wheels -->
+                    <div id="vehicleswheelchoicemenufrontwheel" data-parent="vehicleswheelchoicemenu6" data-staticmenu="vehicle_wheel_front">
+                    </div>
+
+                    <!-- Back Wheels -->
+                    <div id="vehicleswheelchoicemenubackwheel" data-parent="vehicleswheelchoicemenu6" data-staticmenu="vehicle_wheel_back">
+                    </div>
+
+
+
+                <!-- Vehicle Wheel Smoke -->
+                <div id="vehiclestiresmokemenu" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_mod_smoke_colors">
+                </div>
+
+
+                <!-- Vehicle Neon Lights -->
+                <div id="vehiclesneonlightsmenu" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_mod_neon_colors">
+                    <p class="traineroption" data-action="vehmod neonlights left" data-state="OFF" data-toggle="featureNeonLeft">สลับนีออนซ้าย</p>
+                    <p class="traineroption" data-action="vehmod neonlights right" data-state="OFF" data-toggle="featureNeonRight">สลับนีออนขวา</p>
+                    <p class="traineroption" data-action="vehmod neonlights front" data-state="OFF" data-toggle="featureNeonFront">สลับไฟนีออนด้านหน้า</p>
+                    <p class="traineroption" data-action="vehmod neonlights rear" data-state="OFF" data-toggle="featureNeonRear">สลับไฟนีออนด้านหลัง</p>
+                </div>
+
+
+            <!-- Vehicle Paint Options -->
+            <div id="vehiclespaintoptions" data-parent="vehiclesmenu">
+                <p class="traineroption" data-sub="vehiclespaintoptionsprimary">สีหลัก</p>
+                <p class="traineroption" data-sub="vehiclespaintoptionssecondary">สีรอง</p>
+                <p class="traineroption" data-sub="vehiclespaintoptionsboth">สีความแวว วาว</p>
+                <p class="traineroption" data-sub="vehiclespaintpearltopcoat">สีทึบ</p>
+                <p class="traineroption" data-sub="vehiclespaintoptionswheels">สีล้อ</p>
+            </div>
+
+
+                <div id="vehiclespaintpearltopcoat" data-parent="vehiclespaintoptions" data-staticmenu="vehicle_mod_paint_pearl_topcoat">
+                </div>
+
+
+                <div id="vehiclespaintoptionswheels" data-parent="vehiclespaintoptions" data-staticmenu="vehicle_mod_paint_wheels">
+                </div>
+
+
+                <div id="vehiclespaintoptionsprimary" data-parent="vehiclespaintoptions">
+                    <p class="traineroption" data-sub="vehiclespaintprimarynormal">ปกติ</p>
+                    <p class="traineroption" data-sub="vehiclespaintprimarymetallic">เมทัลลิ</p>
+                    <p class="traineroption" data-sub="vehiclespaintprimarymatte">แมทติ้</p>
+                    <p class="traineroption" data-sub="vehiclespaintprimarymetal">เมเทล</p>
+                    <p class="traineroption" data-sub="vehiclespaintprimarychrome">โคม</p>
+                </div>
+
+
+                    <div id="vehiclespaintprimarynormal" data-parent="vehiclespaintoptionsprimary" data-staticmenu="vehicle_mod_paint_primary_normal">
+                    </div>
+
+
+                    <div id="vehiclespaintprimarymetallic" data-parent="vehiclespaintoptionsprimary" data-staticmenu="vehicle_mod_paint_primary_metallic">
+                    </div>
+
+
+                    <div id="vehiclespaintprimarymatte" data-parent="vehiclespaintoptionsprimary" data-staticmenu="vehicle_mod_paint_primary_matte">
+                    </div>
+
+
+                    <div id="vehiclespaintprimarymetal" data-parent="vehiclespaintoptionsprimary" data-staticmenu="vehicle_mod_paint_primary_metal">
+                    </div>
+
+
+                    <div id="vehiclespaintprimarychrome" data-parent="vehiclespaintoptionsprimary" data-staticmenu="vehicle_mod_paint_primary_chrome">
+                    </div>
+
+
+                <div id="vehiclespaintoptionssecondary" data-parent="vehiclespaintoptions">
+                    <p class="traineroption" data-sub="vehiclespaintsecondarynormal">ปกติ</p>
+                    <p class="traineroption" data-sub="vehiclespaintsecondarymetallic">เมทัลลิ</p>
+                    <p class="traineroption" data-sub="vehiclespaintsecondarymatte">แมทติ้</p>
+                    <p class="traineroption" data-sub="vehiclespaintsecondarymetal">เมเทล</p>
+                    <p class="traineroption" data-sub="vehiclespaintsecondarychrome">โคม</p>
+                </div>
+
+
+                    <div id="vehiclespaintsecondarynormal" data-parent="vehiclespaintoptionssecondary" data-staticmenu="vehicle_mod_paint_secondary_normal">
+                    </div>
+
+
+                    <div id="vehiclespaintsecondarymetallic" data-parent="vehiclespaintoptionssecondary" data-staticmenu="vehicle_mod_paint_secondary_metallic">
+                    </div>
+
+
+                    <div id="vehiclespaintsecondarymatte" data-parent="vehiclespaintoptionssecondary" data-staticmenu="vehicle_mod_paint_secondary_matte">
+                    </div>
+
+
+                    <div id="vehiclespaintsecondarymetal" data-parent="vehiclespaintoptionssecondary" data-staticmenu="vehicle_mod_paint_secondary_metal">
+                    </div>
+
+
+                    <div id="vehiclespaintsecondarychrome" data-parent="vehiclespaintoptionssecondary" data-staticmenu="vehicle_mod_paint_secondary_chrome">
+                    </div>
+
+
+                <div id="vehiclespaintoptionsboth" data-parent="vehiclespaintoptions">
+                    <p class="traineroption" data-sub="vehiclespaintbothnormal">ปกติ</p>
+                    <p class="traineroption" data-sub="vehiclespaintbothmetallic">เมทัลลิ</p>
+                    <p class="traineroption" data-sub="vehiclespaintbothmatte">แมทติ้</p>
+                    <p class="traineroption" data-sub="vehiclespaintbothmetal">เมเทล</p>
+                    <p class="traineroption" data-sub="vehiclespaintbothchrome">โคม</p>
+                </div>
+
+
+                    <div id="vehiclespaintbothnormal" data-parent="vehiclespaintoptionsboth" data-staticmenu="vehicle_mod_paint_both_normal">
+                    </div>
+
+
+                    <div id="vehiclespaintbothmetallic" data-parent="vehiclespaintoptionsboth" data-staticmenu="vehicle_mod_paint_both_metallic">
+                    </div>
+
+
+                    <div id="vehiclespaintbothmatte" data-parent="vehiclespaintoptionsboth" data-staticmenu="vehicle_mod_paint_both_matte">
+                    </div>
+
+
+                    <div id="vehiclespaintbothmetal" data-parent="vehiclespaintoptionsboth" data-staticmenu="vehicle_mod_paint_both_metal">
+                    </div>
+
+
+                    <div id="vehiclespaintbothchrome" data-parent="vehiclespaintoptionsboth" data-staticmenu="vehicle_mod_paint_both_chrome">
+                    </div>
+
+
+            <!-- Vehicle Door Options -->
+            <div id="vehiclesdoormenu" data-parent="vehiclesmenu">
+                <p class="traineroption" data-action="veh toggleinstantly" data-state="OFF" data-toggle="featureCloseInstantly">Open Doors Instantly</p>
+                <p class="traineroption" data-action="veh toggledoor 0">ด้านหน้าซ้าย</p>
+                <p class="traineroption" data-action="veh toggledoor 1">ด้านหน้าขวา</p>
+                <p class="traineroption" data-action="veh toggledoor 2">ด้านหลังซ้าย</p>
+                <p class="traineroption" data-action="veh toggledoor 3">ด้านหลังขวา</p>
+                <p class="traineroption" data-action="veh toggledoor 4">กระโปรงหน้ารถ</p>
+                <p class="traineroption" data-action="veh toggledoor 5">กระโปรงหลังรถ 1</p>
+                <p class="traineroption" data-action="veh toggledoor 6">กระโปรงหลังรถ 2</p>
+                <p class="traineroption" data-action="veh openall">เปิดทั้งหมด</p>
+                <p class="traineroption" data-action="veh closeall">ปิดทั้งหมด</p>
+            </div>
+
+            
+            <!-- Vehicle Window Options -->
+            <div id="vehicleswindowmenu" data-parent="vehiclesmenu">
+                <p class="traineroption" data-action="veh rollwindow 0">หน้าต่างหน้าซ้าย</p>
+                <p class="traineroption" data-action="veh rollwindow 1">หน้าต่างหน้าขวา</p>
+                <p class="traineroption" data-action="veh rollwindow 2">หน้าต่างหลังซ้าย</p>
+                <p class="traineroption" data-action="veh rollwindow 3">หน้าต่างหลังขวา</p>
+                <p class="traineroption" data-action="veh rollwindows">หน้าต่างทุกหน้าต่าง</p>
+
+                <p class="traineroption" data-action="veh fixwindow 0">ซ่อมแซม หน้าต่าง หน้าซ้าย</p>
+                <p class="traineroption" data-action="veh fixwindow 1">ซ่อมแซม หน้าต่าง หน้าขวา</p>
+                <p class="traineroption" data-action="veh fixwindow 2">ซ่อมแซม หน้าต่าง หลังซ้าย</p>
+                <p class="traineroption" data-action="veh fixwindow 3">ซ่อมแซม หน้าต่าง หลังขวา</p>
+                <p class="traineroption" data-action="veh fixwindows">ซ่อมแซม หน้าต่าง ทุก หน้าต่าง</p>
+            </div>
+
+
+            <!-- Vehicle Armor Options -->
+            <div id="vehiclesarmormenu" data-parent="vehiclesmodmenu">
+                <p class="traineroption" data-action="vehmodify 16 -1">ไม่มี</p>
+                <p class="traineroption" data-action="vehmodify 16 0">20 เปอร์เซ็น</p>
+                <p class="traineroption" data-action="vehmodify 16 1">40 เปอร์เซ็น</p>
+                <p class="traineroption" data-action="vehmodify 16 2">60 เปอร์เซ็น</p>
+                <p class="traineroption" data-action="vehmodify 16 3">80 เปอร์เซ็น</p>
+                <p class="traineroption" data-action="vehmodify 16 4">100 เปอร์เซ็น</p>
+            </div>
+
+
+            <!-- Vehicle Brakes Options -->
+            <div id="vehiclesbrakemenu" data-parent="vehiclesmodmenu">
+                <p class="traineroption" data-action="vehmodify 12 -1">เบรคดั่งเดิม</p>
+                <p class="traineroption" data-action="vehmodify 12 0">สตรีด เบรค</p>
+                <p class="traineroption" data-action="vehmodify 12 1">สปอร์ต เบรค</p>
+                <p class="traineroption" data-action="vehmodify 12 2">รถแข่ง เบรค</p>
+            </div>
+
+
+            <!-- Vehicle Engine Options -->
+            <div id="vehiclesenginemenu" data-parent="vehiclesmodmenu">
+                <p class="traineroption" data-action="vehmodify 11 -1">เครื่องดั่งเดิม</p>
+                <p class="traineroption" data-action="vehmodify 11 0">เลเวล 1</p>
+                <p class="traineroption" data-action="vehmodify 11 1">เลเวล 2</p>
+                <p class="traineroption" data-action="vehmodify 11 2">เลเวล 3</p>
+                <p class="traineroption" data-action="vehmodify 11 3">เลเวล 4</p>
+            </div>
+
+
+            <!-- Vehicle Horn Options -->
+            <div id="vehicleshornmenu" data-parent="vehiclesmodmenu" data-staticmenu="vehicle_mod_horn">
+            </div>
+
+
+            <!-- Vehicle Suspension Options -->
+            <div id="vehiclessuspensionmenu" data-parent="vehiclesmodmenu">
+                <p class="traineroption" data-action="vehmodify 15 -1">ระงับ ดั่งเดิม</p>
+                <p class="traineroption" data-action="vehmodify 15 0">ระงับ ลง</p>
+                <p class="traineroption" data-action="vehmodify 15 1">สตรีด ระงับ</p>
+                <p class="traineroption" data-action="vehmodify 15 2">สปอร์ต ระงีบ</p>
+                <p class="traineroption" data-action="vehmodify 15 3">คอมเพรดชั่น ระงับ</p>
+            </div>
+
+
+            <!-- Vehicle Transmission Options -->
+            <div id="vehiclestransmissionmenu" data-parent="vehiclesmodmenu">
+                <p class="traineroption" data-action="vehmodify 13 -1">การส่งผ่านดั่งเดิม</p>
+                <p class="traineroption" data-action="vehmodify 13 0">สตรีด การส่งผ่าน</p>
+                <p class="traineroption" data-action="vehmodify 13 1">สปอร์ต การส่งผ่าน</p>
+                <p class="traineroption" data-action="vehmodify 13 2">รถแข่ง การส่งผ่าน</p>
+            </div>
+
+
+            <!--
+             __          __                                                 __  __                        
+             \ \        / /                                                |  \/  |                       
+              \ \  /\  / /    ___    __ _   _ __     ___    _ __    ___    | \  / |   ___   _ __    _   _ 
+               \ \/  \/ /    / _ \  / _` | | '_ \   / _ \  | '_ \  / __|   | |\/| |  / _ \ | '_ \  | | | |
+                \  /\  /    |  __/ | (_| | | |_) | | (_) | | | | | \__ \   | |  | | |  __/ | | | | | |_| |
+                 \/  \/      \___|  \__,_| | .__/   \___/  |_| |_| |___/   |_|  |_|  \___| |_| |_|  \__,_|
+                                           | |                                                            
+                                           |_|                                                            
+            -->
+            
+            <!-- Weapons menu -->
+            <div id="weaponsmenu" data-parent="mainmenu">
+                <!-- <p class="traineroption" data-sub="weaponloadouts">Saved Loadouts</p> -->
+                <p class="traineroption" data-sub="weaponspawnmenu">ตัวเลือกอาวุธ</p>
+                <p class="traineroption" data-action="weaponoptions addall">เสกอาวุธทั้งหมด</p>
+                <p class="traineroption" data-action="weaponoptions removeall">ลบอาวุธทั้งหมด</p>
+                <p class="traineroption" data-action="weaponoptions infiniteammo" data-state="OFF" data-toggle="featurePlayerInfiniteAmmo">กระสุนไม่จำกัด</p>
+                <p class="traineroption" data-action="weaponoptions infinitechutes" data-state="OFF" data-toggle="featurePlayerInfiniteParachutes">ร่มชูชีพไม่จำกัด</p>
+                <p class="traineroption" data-action="weaponoptions noreload" data-state="OFF" data-toggle="featurePlayerNoReload">ไม่รีโหลดกระสุน</p>
+            </div>
+
+
+            <!-- Saved Loadouts Menu -->
+            <div id="weaponloadouts" data-parent="weaponsmenu" data-dynamicmenu="loadsavedloadouts">
+            </div>
+
+
+            <!-- Weapons menu -->
+            <div id="weaponspawnmenu" data-parent="weaponsmenu">
+                <p class="traineroption" data-sub="weaponitemmenumelee">มวยหมู่</p>
+                <p class="traineroption" data-sub="weaponitemmenuhandguns">ปืนสั่น</p>
+                <p class="traineroption" data-sub="weaponitemmenusubmachine">ปืนกลเบา</p>
+                <p class="traineroption" data-sub="weaponitemmenuassault">ปืนไรเฟิลจู่โจม</p>
+                <p class="traineroption" data-sub="weaponitemmenushotgun">ลูกซอง</p>
+                <p class="traineroption" data-sub="weaponitemmenusniper">สไนเปอร์ </p>
+                <p class="traineroption" data-sub="weaponitemmenuheavy">อาวุธหนัก</p>
+                <p class="traineroption" data-sub="weaponitemmenuthrown">อาวุธโยน</p>
+                <p class="traineroption" data-action="weapon input">เสกอาวุธด้วย ชื่อ</p>
+            </div>
+
+
+            <!-- Weapon Menu : Melee -->
+            <div id="weaponitemmenumelee" data-parent="weaponspawnmenu" data-staticmenu="weapon_melee">
+            </div>
+
+
+            <!-- Weapon Menu : handguns -->
+            <div id="weaponitemmenuhandguns" data-parent="weaponspawnmenu" data-staticmenu="weapon_handguns">
+            </div>
+
+
+            <!-- Weapon Menu : Submachine Guns -->
+            <div id="weaponitemmenusubmachine" data-parent="weaponspawnmenu" data-staticmenu="weapon_submachine">
+            </div>
+
+
+            <!-- Weapon Menu : assault rifles -->
+            <div id="weaponitemmenuassault" data-parent="weaponspawnmenu" data-staticmenu="weapon_assault">
+            </div>
+
+
+            <!-- Weapon Menu : shotguns -->
+            <div id="weaponitemmenushotgun" data-parent="weaponspawnmenu" data-staticmenu="weapon_shotgun">
+            </div>
+
+
+            <!-- Weapon Menu : sniper rifles -->
+            <div id="weaponitemmenusniper" data-parent="weaponspawnmenu" data-staticmenu="weapon_snipers">
+            </div>
+
+
+            <!-- Weapon Menu : heavy weapons -->
+            <div id="weaponitemmenuheavy" data-parent="weaponspawnmenu" data-staticmenu="weapon_heavy">
+            </div>
+
+
+            <!-- Weapon Menu : thrown weapons -->
+            <div id="weaponitemmenuthrown" data-parent="weaponspawnmenu" data-staticmenu="weapon_thrown">
+            </div>
+
+            <div id="weapontintsmenu">
+                <p class="traineroption" data-action="weapon tint 0">ปกติ</p>
+                <p class="traineroption" data-action="weapon tint 1">เขียว</p>
+                <p class="traineroption" data-action="weapon tint 2">ทอง</p>
+                <p class="traineroption" data-action="weapon tint 3">ชมพู</p>
+                <p class="traineroption" data-action="weapon tint 4">กองทัพบก</p>
+                <p class="traineroption" data-action="weapon tint 5">ตำรวจ</p>
+                <p class="traineroption" data-action="weapon tint 6">ส้ม</p>
+                <p class="traineroption" data-action="weapon tint 7">แพลทินัม</p>
+            </div>
+
+
+            <!--
+
+                World Menu 
+
+            -->
+
+            <div id="worldmenu" data-parent="mainmenu">
+                <p class="traineroption" data-sub="locationsmenu">สถานที่</p>
+            </div>
+
+                <div id="locationsmenu" data-parent="worldmenu" data-dynamicmenu="createlocationsmenu">
+                    
+                </div>
+
+
+            <!--
+               _____          _     _     _                           __  __                        
+              / ____|        | |   | |   (_)                         |  \/  |                       
+             | (___     ___  | |_  | |_   _   _ __     __ _   ___    | \  / |   ___   _ __    _   _ 
+              \___ \   / _ \ | __| | __| | | | '_ \   / _` | / __|   | |\/| |  / _ \ | '_ \  | | | |
+              ____) | |  __/ | |_  | |_  | | | | | | | (_| | \__ \   | |  | | |  __/ | | | | | |_| |
+             |_____/   \___|  \__|  \__| |_| |_| |_|  \__, | |___/   |_|  |_|  \___| |_| |_|  \__,_|
+                                                       __/ |                                        
+                                                      |___/                                         
+            -->
+
+        
+            <!-- Settings Menu -->
+           <div id="settingsmenu" data-parent="mainmenu">
+                <p class="traineroption" data-action="settingtoggle mapblips" data-state="OFF" data-toggle="featureMapBlips">แผนที่ที่ตั้ง</p>
+                <p class="traineroption" data-action="settingtoggle blips" data-state="OFF" data-toggle="featurePlayerBlips">ที่ตั้งผู้เล่น</p>
+                <p class="traineroption" data-action="settingtoggle blipnames" data-state="OFF" data-toggle="featurePlayerBlipNames">ชื่อที่ตั้งผู้เล่น</p>
+                <p class="traineroption" data-action="settingtoggle text" data-state="OFF" data-toggle="featurePlayerHeadDisplay">ชื่อผู้เล่นเหนือศีรษะ</p>
+
+                <p class="traineroption" data-action="notifications players" data-state="OFF" data-toggle="featurePlayerNotifications">การแจ้งเตือนผู้เล่น</p>
+                <p class="traineroption" data-action="notifications death" data-state="OFF" data-toggle="featureDeathNotifications">การแจ้งเตือนความตาย</p>
+                <p class="traineroption" data-sub="voicesettingsmenu">ตัวเลือกเสียง</p>
+
+                <p class="traineroption" data-action="settingtoggle radiooff" data-state="OFF" data-toggle="featureRadioAlwaysOff">วิทยุปิดเสมอ</p>
+                <p class="traineroption" data-action="settingtoggle mobileradio" data-state="OFF" data-toggle="featurePlayerRadio">วิทยุพกพา</p>
+                <p class="traineroption" data-action="settingtoggle skipradio">ติดตามวิทยุถัดไป</p>
+
+                <p class="traineroption" data-action="settingtoggle radar" data-state="OFF" data-toggle="featureHideMap">ซ่อนแผนที่</p>
+                <p class="traineroption" data-action="settingtoggle enlarge" data-state="OFF" data-toggle="featureBigHud">แผนที่ขนาดใหญ่</p>
+                <p class="traineroption" data-action="settingtoggle hud" data-state="OFF" data-toggle="featureHideHud">ซ่อนฮัด</p>
+                <p class="traineroption" data-action="settingtoggle streets" data-state="OFF" data-toggle="featureAreaStreetNames">ซ่อนชื่อพื้นที่และถนน</p>
+            </div>
+
+
+                <!-- Voice Menu -->
+                <div id="voicesettingsmenu" data-parent="settingsmenu">
+                    <p class="traineroption" data-action="voiceopts voicetoggle" data-state="OFF" data-toggle="featureVoiceChat">แชทด้วยเสียง</p>
+                    <p class="traineroption" data-action="voiceopts showtoggle" data-state="OFF" data-toggle="featureShowVoiceChatSpeaker">แสดงลำโพงแชทด้วยเสียง</p>
+                    <p class="traineroption" data-sub="voicesettingsmenuchannel">ช่องเสียง</p>
+                    <p class="traineroption" data-sub="voicesettingsmenuproximity">เสียงใกล้เคียง</p>
+                </div>
+
+
+                <!-- Voice Channel Menu -->
+                <div id="voicesettingsmenuchannel" data-parent="voicesettingsmenu">
+                    <p class="traineroption" data-action="voiceopts channel 0" data-state="OFF" data-toggle="featureChannelDefault">ช่องเริ่มต้น</p>
+                    <p class="traineroption" data-action="voiceopts channel 1" data-state="OFF" data-toggle="featureChannel1">ช่อง 1</p>
+                    <p class="traineroption" data-action="voiceopts channel 2" data-state="OFF" data-toggle="featureChannel2">ช่อง 2</p>
+                    <p class="traineroption" data-action="voiceopts channel 3" data-state="OFF" data-toggle="featureChannel3">ช่อง 3</p>
+                    <p class="traineroption" data-action="voiceopts channel 4" data-state="OFF" data-toggle="featureChannel4">ช่อง 4</p>
+                    <p class="traineroption" data-action="voiceopts channel 5" data-state="OFF" data-toggle="featureChannel5">ช่อง 5</p>
+                </div>
+
+
+                <!-- Voice Proximity Menu -->
+                <div id="voicesettingsmenuproximity" data-parent="voicesettingsmenu">
+                    <p class="traineroption" data-action="voiceopts distance 5" data-state="OFF" data-toggle="featureVPTooClose">ใกล้สุด ๆ</p>
+                    <p class="traineroption" data-action="voiceopts distance 25" data-state="OFF" data-toggle="featureVPVeryClose">ใกล้มาก</p>
+                    <p class="traineroption" data-action="voiceopts distance 75" data-state="OFF" data-toggle="featureVPClose">ปิด</p>
+                    <p class="traineroption" data-action="voiceopts distance 200" data-state="OFF" data-toggle="featureVPNearby">ใกล้เคียง</p>
+                    <p class="traineroption" data-action="voiceopts distance 500" data-state="OFF" data-toggle="featureVPDistant">ไกล</p>
+                    <p class="traineroption" data-action="voiceopts distance 2500" data-state="OFF" data-toggle="featureVPFar">ห่างไกล</p>
+                    <p class="traineroption" data-action="voiceopts distance 8000" data-state="OFF" data-toggle="featureVPVeryFar">ไกลมาก</p>
+                    <p class="traineroption" data-action="voiceopts distance 0" data-state="OFF" data-toggle="featureVPAllPlayers">ผู้เล่นทุกคน</p>
+                </div>
+
+
+
+            <!--
+                             _               _             __  __                        
+                 /\         | |             (_)           |  \/  |                       
+                /  \      __| |  _ __ ___    _   _ __     | \  / |   ___   _ __    _   _ 
+               / /\ \    / _` | | '_ ` _ \  | | | '_ \    | |\/| |  / _ \ | '_ \  | | | |
+              / ____ \  | (_| | | | | | | | | | | | | |   | |  | | |  __/ | | | | | |_| |
+             /_/    \_\  \__,_| |_| |_| |_| |_| |_| |_|   |_|  |_|  \___| |_| |_|  \__,_|
+                                                                                         
+            -->
+            
+            <!-- Admin menu -->
+            <div id="adminmenu" data-parent="mainmenu">
+                <p class="traineroption" data-sub="playermanagemenu">การจัดการผู้เล่น</p>
+                <p class="traineroption" data-sub="settingsweathermenu">อากาศเปลี่ยนแปลง</p>
+                <p class="traineroption" data-sub="settingstimemenu">เปลี่ยนเวลา</p>
+            </div>
+
+
+            <div id="playermanagemenu" data-parent="adminmenu" data-dynamicmenu="playermanagement">
+            </div>
+
+
+            <!-- Weather Menu -->
+            <div id="settingsweathermenu" data-parent="adminmenu">
+                <p class="traineroption" data-action="weatheroptions blackout" data-state="OFF" data-toggle="featureBlackout">ความมืดมน</p>
+                <p class="traineroption" data-action="weatheroptions wind" data-state="OFF" data-toggle="featureWeatherWind">ลม</p>
+                <p class="traineroption" data-action="weatheroptions freeze" data-state="OFF" data-toggle="featureWeatherFreeze">ตรึงสภาพอากาศ</p>
+                <p class="traineroption" data-action="weather EXTRASUNNY">ซันนี่พิเศษ</p>
+                <p class="traineroption" data-action="weather CLEAR">ไม่มีอะไรเลย</p>
+                <p class="traineroption" data-action="weather CLOUDS">เมฆ</p>
+                <p class="traineroption" data-action="weather SMOG">ควันหมอก</p>
+                <p class="traineroption" data-action="weather FOGGY">เต็มไปด้วยหมอก</p>
+                <p class="traineroption" data-action="weather OVERCAST">มืดครึ้ม</p>
+                <p class="traineroption" data-action="weather RAIN">ฝน</p>
+
+                <p class="traineroption" data-action="weather THUNDER">ฟ้าร้อง (พายุ)</p>
+                <p class="traineroption" data-action="weather CLEARING">ล้างสภาพอากาศ</p> 
+                <p class="traineroption" data-action="weather NEUTRAL">เป็นกลาง</p>
+                <p class="traineroption" data-action="weather SNOW">หิมะ</p>
+                <p class="traineroption" data-action="weather BLIZZARD">พายุหิมะ</p>
+                <p class="traineroption" data-action="weather LIGHTSNOW">หิมะเบาบาง</p>
+                <p class="traineroption" data-action="weather XMAS">คริสต์มาส</p>
+                <p class="traineroption" data-action="weather SNOWLIGHT">แสงหิมะ?</p>
+            </div>
+                
+
+            <!-- Time Menu -->
+            <div id="settingstimemenu" data-parent="adminmenu">
+                <p class="traineroption" data-action="time 6">ตอนเช้า</p>
+                <p class="traineroption" data-action="time 12">เที่ยงวัน</p>
+                <p class="traineroption" data-action="time 18">ตอนเย็น</p>
+                <p class="traineroption" data-action="time 0">กลางคืน</p>
+                <p class="traineroption" data-action="time forwards">1 ชั่วโมงข้างหน้า</p>
+                <p class="traineroption" data-action="time backwards">1 ชั่วโมลข้างหลัง</p>
+                <p class="traineroption" data-action="time input">ปรับจามใจชอบ 1 - 24 ชั่วโมง</p>
+            </div>
+
+
+            <!-- Noclip Menu -->
+            <div id="noclipmenu" data-dynamicmenu="noclipmenu">
+            </div>
+            
+
+            <!-- 
+                         _                       _       __  __                        
+                 /\     | |                     | |     |  \/  |                       
+                /  \    | |__     ___    _   _  | |_    | \  / |   ___   _ __    _   _ 
+               / /\ \   | '_ \   / _ \  | | | | | __|   | |\/| |  / _ \ | '_ \  | | | |
+              / ____ \  | |_) | | (_) | | |_| | | |_    | |  | | |  __/ | | | | | |_| |
+             /_/    \_\ |_.__/   \___/   \__,_|  \__|   |_|  |_|  \___| |_| |_|  \__,_|
+                                                                                       
+            -->
+
+            <!-- About menu -->
+            <div id="aboutmenu" data-parent="mainmenu">
+                <p class="traineroption">เมนูแอดมิน (เซิร์ฟเวอร์ )</p>
+                <p class="traineroption">แก้ไขโดย ★Nҽɯƚσɳʂσϝƚぐ10❤</p>
+                <p class="traineroption">เพจ WUXII PERMISSIONS</p>
+            </div>
+        </div>
+    </body>
+</html>
