@@ -76,6 +76,8 @@ local Keys = {
     ["N9"] = 118
 }
 
+isOpenInventory = true;
+
 isInInventory = false
 ESX = nil
 inventory = true
@@ -98,17 +100,18 @@ Citizen.CreateThread(
     function()
         while true do
             Citizen.Wait(0)
-            if IsControlJustReleased(0, Keys["F1"]) and IsInputDisabled(0) then
-                openInventory()
-            end
-            if IsControlJustReleased(0, Keys["F2"]) and IsInputDisabled(0) then
-                closeInventory()
+            if IsControlJustReleased(0, Keys["F1"]) or IsDisabledControlJustReleased( 0, Keys["F1"] ) and IsInputDisabled(0) then
+                if isOpenInventory  then
+                    isOpenInventory = not isOpenInventory
+                    openInventory()
+                else
+                    isOpenInventory = not isOpenInventory
+                    closeInventory()
+                end
             end
         end
     end
 )
-
-
 
 function openInventory()
     loadPlayerInventory()
@@ -120,6 +123,7 @@ function openInventory()
         }
     )
     SetNuiFocus(true, true)
+    SetNuiFocusKeepInput(true)
 end
 
 function closeInventory()
@@ -130,6 +134,7 @@ function closeInventory()
         }
     )
     SetNuiFocus(false, false)
+    SetNuiFocusKeepInput(false)
 end
 
 RegisterNUICallback(
