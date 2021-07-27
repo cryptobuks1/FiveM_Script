@@ -1,0 +1,15 @@
+Locales['en'] = {
+  ['used_bread'] = 'you have used ~y~1x~s~ ~b~ขนมปัง~s~',
+  ['used_water'] = 'you have used ~y~1x~s~ ~b~น้ำ~s~',
+  ['used_cocacola'] = 'you have used ~y~1x~s~ ~b~โค้ก~s~',
+  ['used_burger'] = 'you have used ~y~1x~s~ ~b~เบอร์เกอร์~s~',
+  ['used_cheesebows'] = 'you have used ~y~1x~s~ ~b~ชีส~s~',
+  ['used_chips'] = 'you have used ~y~1x~s~ ~b~แคร๊กเกอร์~s~',
+  ['used_fanta'] = 'you have used ~y~1x~s~ ~b~แฟนต้า~s~',
+  ['used_macka'] = 'you have used ~y~1x~s~ ~b~แซนวิส~s~',
+  ['used_marabou'] = 'you have used ~y~1x~s~ ~b~ช็อตโกแลต~s~',
+  ['used_pastacarbonara'] = 'you have used ~y~1x~s~ ~b~พาสต้า~s~',
+  ['used_pizza'] = 'you have used ~y~1x~s~ ~b~พิซซ่า~s~',
+  ['used_sprite'] = 'you have used ~y~1x~s~ ~b~สไปรท์~s~',
+  ['used_cocacola'] = 'you have used ~y~1x~s~ ~b~โค้ก~s~',
+}
