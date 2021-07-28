@@ -283,7 +283,7 @@ AddEventHandler('playerSpawned', function()
 		if FirstSpawn then
 			ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
 				if skin == nil then
-					TriggerEvent('skinchanger:loadSkin', {sex = 0}, OpenSaveableMenu)
+					TriggerEvent('nicoo_charcreator:CharCreator')
 				else
 					TriggerEvent('skinchanger:loadSkin', skin)
 				end
