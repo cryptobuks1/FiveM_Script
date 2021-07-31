@@ -68,7 +68,8 @@ function changeModel(skin)
             Character['glasses_1'] = -1
         end
 
-
+		SetPlayerModel( PlayerId(), skin )
+		SetModelAsNoLongerNeeded(skin)
         SetModelAsNoLongerNeeded(model)
     end
 end
