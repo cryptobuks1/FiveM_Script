@@ -60,31 +60,31 @@ Citizen.CreateThread(function()
 	local playerIndex = NetworkGetPlayerIndex(-1) or 0
 	math.randomseed(playerIndex)
 
-	function createSpawnPoint(x1, x2, y1, y2, z, heading)
-		local xValue = math.random(x1,x2) + 0.0001
-		local yValue = math.random(y1,y2) + 0.0001
+	function createSpawnPoint(x, y, z, heading)
+		-- local xValue = math.random(x1,x2) + 0.0001
+		-- local yValue = math.random(y1,y2) + 0.0001
 
 		local newObject = {
-			x = xValue,
-			y = yValue,
+			x = x,
+			y = y,
 			z = z + 0.0001,
 			heading = heading + 0.0001
 		}
 		table.insert(spawnPoints,newObject)
 	end
 
-	createSpawnPoint(-448, -448, -340, -329, 35.5, 0) -- Mount Zonah
-	createSpawnPoint(372, 375, -596, -594, 30.0, 0)   -- Pillbox Hill
-	createSpawnPoint(335, 340, -1400, -1390, 34.0, 0) -- Central Los Santos
-	createSpawnPoint(1850, 1854, 3700, 3704, 35.0, 0) -- Sandy Shores
-	createSpawnPoint(-247, -245, 6328, 6332, 33.5, 0) -- Paleto
-
+	-- createSpawnPoint(-448, -448, -340, -329, 35.5, 0) -- Mount Zonah
+	createSpawnPoint(250, -570, 43.3, 0)   -- Pillbox Hill
+	-- createSpawnPoint(335, 340, -1400, -1390, 34.0, 0) -- Central Los Santos
+	-- createSpawnPoint(1850, 1854, 3700, 3704, 35.0, 0) -- Sandy Shores
+	createSpawnPoint(-247, 6328, 33.5, 0) -- Paleto
 
     while true do
     Citizen.Wait(0)
 		ped = GetPlayerPed(-1)
         if IsEntityDead(ped) then
 			isDead = true
+			print('IsEntityDead')
             SetPlayerInvincible(ped, true)
             SetEntityHealth(ped, 1)
 			ShowInfoRevive('You are dead. Use ~y~E ~w~to revive or ~y~R ~w~to respawn.')
@@ -96,6 +96,7 @@ Citizen.CreateThread(function()
                 end	
             elseif IsControlJustReleased(0, 45) and GetLastInputMethod( 0 ) then
                 local coords = spawnPoints[math.random(1,#spawnPoints)]
+				print('IsEntityDead')
 				respawnPed(ped, coords)
 				isDead = false
 				timerCount = reviveWait
