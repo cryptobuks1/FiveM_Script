@@ -66,7 +66,12 @@ local admins = {
 -- เช่น "steam:110000100000000", สามารถเอาได้ที่ sql ไปที่ ช่อง user เลือกตัวละครเรา แล้วก็อป identifier 
 -- ถ้าลงไม่เป็นอีก FB : Achirawit Kaewkhong ค่าเสียเวลา 30วอ
 "steam:11000010a665804",-- Demub
-
+"steam:1100001088aac30",
+"steam:11000010f4c9cfd",
+"steam:1100001350366e9",
+"steam:110000105ff51ef",
+"steam:11000010b4a8b8e",
+"steam:11000010d9314c9",
 
 
 
