@@ -2,7 +2,7 @@ local display = false
 toggleCard = true
 local playerPed = GetPlayerPed(-1)
 
-RegisterKeyMapping('card', 'Card', 'keyboard', 'F1')
+-- RegisterKeyMapping('card', 'Card', 'keyboard', 'F1')
 
 -- Citizen.CreateThread(function()
 -- 	local inVeh = false
