@@ -12,7 +12,7 @@ cHavePerms = false
 
 AddEventHandler('playerSpawned', function()
     local src = source
-    TriggerServerEvent("RPRevive:CheckPermission", src)
+    -- TriggerServerEvent("RPRevive:CheckPermission", src)
 end)
 
 RegisterNetEvent("RPRevive:CheckPermission:Return")
@@ -59,18 +59,19 @@ Citizen.CreateThread(function()
     math.randomseed(playerIndex)
 
     local positions = { -- spawn position
-    {
-        x = 298.45,
-        y = -585.20,
-        z = 43.26,
-        h = 90.2
-    }, -- your spawn position
-    {
-        x = -247.55,
-        y = 6330.77,
-        z = 32.43,
-        h = 252.67
-    }}
+        ["positions1"] = {
+            x = 298.45,
+            y = -585.20,
+            z = 43.26,
+            h = 90.2
+        }, -- your spawn position
+        ["positions2"] = {
+            x = -247.55,
+            y = 6330.77,
+            z = 32.43,
+            h = 252.67
+        }
+    }
 
     while true do
         Citizen.Wait(0)
@@ -82,18 +83,40 @@ Citizen.CreateThread(function()
             ShowInfoRevive('You are dead. Use ~y~E ~w~to revive or ~y~R ~w~to respawn.')
             if IsControlJustReleased(0, 38) and GetLastInputMethod(0) then
                 if timerCount <= 0 or cHavePerms then
-                    revivePed(ped)
+                    -- revivePed(ped)
+                    local playerX, playerY, playerZ = table.unpack(GetEntityCoords(ped, true))
+                    if playerY < 3000 then
+                        print("positions1")
+                        respawnPed(ped, positions.positions1)
+                    else
+                        print("positions2")
+                        respawnPed(ped, positions.positions2)
+                    end
+                    -- respawnPed(ped, positions[math.random(1, #positions)])
+                    isDead = false
+                    timerCount = reviveWait
+                    respawnCount = respawnCount + 1
+                    math.randomseed(playerIndex * respawnCount)
                 else
                     TriggerEvent('chat:addMessage', {
                         args = {'^*Wait ' .. timerCount .. ' more seconds before reviving.'}
                     })
                 end
             elseif IsControlJustReleased(0, 45) and GetLastInputMethod(0) then
-                respawnPed(ped, positions[math.random(1, #positions)])
-                isDead = false
-                timerCount = reviveWait
-                respawnCount = respawnCount + 1
-                math.randomseed(playerIndex * respawnCount)
+				revivePed(ped)
+                -- local playerX, playerY, playerZ = table.unpack(GetEntityCoords(ped, true))
+                -- if playerY < 3000 then
+                --     print("positions1")
+                --     respawnPed(ped, positions.positions1)
+                -- else
+                --     print("positions2")
+                --     respawnPed(ped, positions.positions2)
+                -- end
+                -- -- respawnPed(ped, positions[math.random(1, #positions)])
+                -- isDead = false
+                -- timerCount = reviveWait
+                -- respawnCount = respawnCount + 1
+                -- math.randomseed(playerIndex * respawnCount)
             end
         end
     end
