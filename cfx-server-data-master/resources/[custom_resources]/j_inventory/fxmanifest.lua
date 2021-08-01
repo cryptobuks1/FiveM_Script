@@ -6,7 +6,14 @@ author 'Jay Jungdung'
 description 'Supermarket in the city'
 
 client_scripts {
+    '@es_extended/locale.lua',
     'client.lua',
+}
+
+server_scripts{
+    '@es_extended/locale.lua',
+    '@mysql-async/lib/MySQL.lua',
+    'server.lua',
 }
 
 ui_page 'html/index.html'
@@ -15,7 +22,10 @@ files {
     'html/index.html',
     'html/style.css',
     'html/reset.css',
-    'html/listener.js'
+    'html/listener.js',
+    'html/img/bread.png',
+    'html/img/money.png',
+    'html/img/water.png',
 }
 
 fx_version 'cerulean'
