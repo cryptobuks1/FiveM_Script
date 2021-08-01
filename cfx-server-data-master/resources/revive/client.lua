@@ -12,7 +12,7 @@ cHavePerms = false
 
 AddEventHandler('playerSpawned', function()
     local src = source
-    TriggerServerEvent("RPRevive:CheckPermission", src)
+    -- TriggerServerEvent("RPRevive:CheckPermission", src)
 end)
 
 RegisterNetEvent("RPRevive:CheckPermission:Return")
