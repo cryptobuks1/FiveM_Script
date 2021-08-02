@@ -11,7 +11,6 @@ $(function () {
 					$.each(item.items, function (k, v) {
 						// console.log(v['weight']);
 						if (v['weight'] !== undefined) {
-							console.log((v['weight'] * v['count']).toFixed(2));
 							sumWeight += (v['weight'] * v['count']);
 						}
 						$("#inventory-body").append(

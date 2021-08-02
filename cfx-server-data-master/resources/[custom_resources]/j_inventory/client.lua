@@ -44,7 +44,6 @@ AddEventHandler('j_inventory:open', function()
 		end
 		if data.inventory ~= nil then
 			for k,v in pairs(data.inventory) do
-				print(json.encode(data.inventory[k]))
 				if data.inventory[k].count <= 0 then
 					data.inventory[k] = nil
 				else
