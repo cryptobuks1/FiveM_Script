@@ -61,6 +61,7 @@ AddEventHandler('es:playerLoaded', function(source, _player)
 							count = inventory[i].count,
 							label = item.label,
 							limit = item.limit,
+							weight = item.weight,
 							usable = ESX.UsableItemsCallbacks[inventory[i].item] ~= nil,
 							rare = item.rare,
 							canRemove = item.canRemove

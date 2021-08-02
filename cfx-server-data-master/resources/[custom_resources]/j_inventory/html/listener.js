@@ -6,27 +6,34 @@ $(function () {
 				if (item.display === true) {
 					$("#container").show();
 					let counter = 0
+					let sumWeight = 0.0
 					$('#inventory-body').empty();
-					$.each(item.items, function(k,v) {
-						console.log(JSON.stringify(v));
+					$.each(item.items, function (k, v) {
+						// console.log(v['weight']);
+						if (v['weight'] !== undefined) {
+							console.log((v['weight'] * v['count']).toFixed(2));
+							sumWeight += (v['weight'] * v['count']);
+						}
 						$("#inventory-body").append(
 							`<div class="invontory-grid-item">
 							<div class="invontory-grid-body">
 								<div class="inventory-grid-item-img">
-									<img src="img/`+v['name']+`.png" alt="">
+									<img src="img/`+ v['name'] + `.png" alt="">
 								</div>
 								<div class="inventory-gird-item-name">
-								`+v['name']+`
+								`+ v['name'] + `
 								</div>
 								<div class="inventory-gird-item-weight">
-								`+v['count']+`
+								`+ v['count'] + `
 								</div>
 							</div>
 						</div>`
 						)
-						counter ++
+						counter++
 					});
 					$("#slot-inventory").html(counter + '/' + '47')
+					$("#sum-weight").html(sumWeight + '/' + '40')
+
 				} else {
 					$("#container").hide();
 				}

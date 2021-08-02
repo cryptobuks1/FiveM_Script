@@ -389,7 +389,7 @@ function useSlotItem(slot)
 	end
 end
 
-RegisterKeyMapping('+inventar', 'Inventar', 'keyboard', 'f1')
+RegisterKeyMapping('+inventar', 'Inventar', 'keyboard', 'f2')
 --Slotovi keymaping
 RegisterCommand('+slot1', function()
 	useSlotItem(0)

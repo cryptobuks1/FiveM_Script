@@ -24,6 +24,7 @@ MySQL.ready(function()
 			ESX.Items[result[i].name] = {
 				label     = result[i].label,
 				limit     = result[i].limit,
+				weight     = result[i].weight,
 				rare      = (result[i].rare       == 1 and true or false),
 				canRemove = (result[i].can_remove == 1 and true or false),
 			}
