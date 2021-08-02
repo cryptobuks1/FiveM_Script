@@ -14,7 +14,7 @@ $(function () {
 							sumWeight += (v['weight'] * v['count']);
 						}
 						$("#inventory-body").append(
-							`<div class="invontory-grid-item">
+							`<div class="invontory-grid-item menu-data-`+k+`" oncontextmenu="itemClick(`+k+`)">
 							<div class="invontory-grid-body">
 								<div class="inventory-grid-item-img">
 									<img src="img/`+ v['name'] + `.png" alt="">
@@ -25,9 +25,34 @@ $(function () {
 								<div class="inventory-gird-item-weight">
 								`+ v['count'] + `
 								</div>
+								<div class="inventory-grid-menu-dropdown">
+									<div class="inventory-gm-dropdown-items" onclick="itemUse(`+k+`)">
+										ใช้
+									</div>
+									<div class="inventory-gm-dropdown-items" onclick="itemGive(`+k+`)">
+										มอบให้
+									</div>
+									<div class="inventory-gm-dropdown-items" onclick="itemDrop(`+k+`)">
+										ทิ้ง
+									</div>
+								</div>
 							</div>
-						</div>`
-						)
+						</div>`)
+						// )$("#inventory-body").append(
+						// 	`<div class="invontory-grid-item">
+						// 	<div class="invontory-grid-body">
+						// 		<div class="inventory-grid-item-img">
+						// 			<img src="img/`+ v['name'] + `.png" alt="">
+						// 		</div>
+						// 		<div class="inventory-gird-item-name">
+						// 		`+ v['name'] + `
+						// 		</div>
+						// 		<div class="inventory-gird-item-weight">
+						// 		`+ v['count'] + `
+						// 		</div>
+						// 	</div>
+						// </div>`
+						// )
 						counter++
 					});
 					$("#slot-inventory").html(counter + '/' + '47')
@@ -40,3 +65,28 @@ $(function () {
 		});
 	};
 });
+
+function itemClick(index){
+	unActiveDropDown();
+	activeDropDown(index);
+}
+
+function activeDropDown(index){
+	$('.menu-data-'+index).addClass('active');
+}
+function unActiveDropDown(){
+	$('.invontory-grid-item').removeClass('active');
+}
+
+function itemUse(index){
+	console.log('itemUse',index)
+	unActiveDropDown();
+}
+function itemGive(index){
+	console.log('itemGive',index)
+	unActiveDropDown();
+}
+function itemDrop(index){
+	console.log('itemDrop',index)
+	unActiveDropDown();
+}

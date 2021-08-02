@@ -78,6 +78,7 @@ img{
     justify-content: flex-end;
     align-items: center;
 	padding: 5px;
+    position: relative;
 }
 .inventory-gird-item-name{
 	font-size : 14px;
@@ -113,4 +114,33 @@ img{
 
 .inventory-character-grid-bottom .inventory-cg-channel{
     margin: 0;
+}
+
+.inventory-grid-menu-dropdown{
+    position: absolute;
+    bottom: -40px;
+    right: -24px;
+    background: #000000b8;
+    padding: 10px;
+    border-radius: 0px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease-in-out;
+    z-index: 9;
+}
+.invontory-grid-item.active .inventory-grid-menu-dropdown{
+    opacity: 1;
+    visibility: visible;
+    transition: all .3s ease-in-out;
+}
+
+.inventory-gm-dropdown-items{
+    font-size: 15px;
+    text-align: center;
+    padding: 0 0 10px;
+}
+
+
+.inventory-gm-dropdown-items:last-child{
+    padding: 0;
 }
