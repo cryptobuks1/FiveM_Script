@@ -15,7 +15,7 @@ Citizen.CreateThread(function()
 	PlayerData = ESX.GetPlayerData()
 end)
 
-RegisterKeyMapping('toggle_inventory', 'Inventory', 'keyboard', 'F1')
+RegisterKeyMapping('toggle_inventory', 'Inventory', 'keyboard', 'TAB')
 
 RegisterCommand("toggle_inventory", function()
     if toggleCard then
