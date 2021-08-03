@@ -125,10 +125,11 @@ $(".home").on("click", ".btnquantity", function() {
 $(".shop-group-items").on("click", ".buy", function() {
 	var $button = $(this);
 	var $name = $button.attr('name')
-	var $count = parseFloat($button.parent().parent().find(".number").text());
+	var $count = 1;
+	// var $count = parseFloat($button.parent().parent().find(".number").text());
 	$.post('http://j_shop/purchase', JSON.stringify({
 		item: $name,
-		count: $count,
+		count: 1,
 		loc: zone
 	}));
 });

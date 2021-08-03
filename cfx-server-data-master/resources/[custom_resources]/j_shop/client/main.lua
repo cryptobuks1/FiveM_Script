@@ -172,7 +172,6 @@ RegisterNUICallback('quit', function(data, cb)
 end)
 
 RegisterNUICallback('purchase', function(data, cb)
-	print('purchase')
 	TriggerServerEvent('esx_shops:buyItem', data.item, data.count, data.loc)
 	cb('ok')
 end)
