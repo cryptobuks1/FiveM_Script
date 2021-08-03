@@ -9,6 +9,7 @@ version '1.0.1'
 files {
 	'html/ui.html',
 	'html/styles.css',
+	'html/reset.css',
 	'html/scripts.js',
 	'html/debounce.min.js',
 	'html/iransans.otf',

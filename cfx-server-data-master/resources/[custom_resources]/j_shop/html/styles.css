@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
+body{
+  font-family: 'Prompt', sans-serif;
+  line-height: 1;
+}
+.shop-container{
+  height: 100vh;
+  width: 100%;
+  display: none;
+}
+.shop-group {
+  max-width: 1100px;
+  width: 100%;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  left: 50%;
+  max-height: 70vh;
+}
+.shop-title-bar {
+  font-size: 30px;
+  background: #330202bf;
+  color: #fff;
+  text-align: center;
+  padding: 15px 0;
+  position: relative;
+  display: flex;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+}
+.shop-close {
+  position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 15px;
+    background: #d4000094;
+    display: flex;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    z-index: 9;
+}
+.shop-g-btn-buy {
+  padding: 8px 15px;
+  text-align: center;
+  font-size: 18px;
+  background: #b9b9b9;
+  font-weight: bold;
+  margin: 5px 0 0;
+}
+.shop-close::before{
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 0;
+  border-left: 60px solid #0000;
+  border-bottom: 0px solid #d4000094;
+  border-right: 35px solid #d4000094;
+  border-top: 60px solid #0000;
+}
+.shop-group-items{
+  background: #0000007d;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  height: 65vh;
+  overflow: auto;
+}
+.shop-g-product {
+  background: #ffffff38;
+  margin : 10px;
+  padding: 15px 25px;
+}
+.shop-g-prd-img{
+  position: relative;
+  padding-top: 70%;
+}
+.shop-g-prd-img img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.shop-g-prd-name {
+  color: #fff;
+  text-align: center;
+  font-size: 26px;
+}
+.shop-g-price {
+  text-align: center;
+  padding: 10px 0;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+}
+.shop-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.shop-control a{
+  color: #c3c3c3;
+  font-size: 36px;
+  text-decoration: none;
+}
+
+.shop-gc-total{ 
+  font-size: 30px;
+  color: #fff;
+}

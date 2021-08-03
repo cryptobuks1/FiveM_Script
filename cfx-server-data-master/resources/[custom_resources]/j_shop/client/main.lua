@@ -35,7 +35,7 @@ function OpenShopMenu(zone)
 	local elements = {}
 	for i=1, #Config.Zones[zone].Items, 1 do
 		local item = Config.Zones[zone].Items[i]
-
+		print(json.encode(item))
 		if item.limit == -1 then
 			item.limit = 100
 		end
@@ -172,6 +172,7 @@ RegisterNUICallback('quit', function(data, cb)
 end)
 
 RegisterNUICallback('purchase', function(data, cb)
+	print('purchase')
 	TriggerServerEvent('esx_shops:buyItem', data.item, data.count, data.loc)
 	cb('ok')
 end)
