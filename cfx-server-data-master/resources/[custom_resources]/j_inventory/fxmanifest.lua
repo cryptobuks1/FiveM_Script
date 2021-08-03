@@ -7,7 +7,7 @@ description 'Supermarket in the city'
 
 client_scripts {
     '@es_extended/locale.lua',
-    'client.lua',
+    'client/client.lua',
 }
 
 server_scripts{
