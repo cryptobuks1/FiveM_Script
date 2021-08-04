@@ -3,6 +3,7 @@ toggleCard = true
 items = {}
 
 Citizen.CreateThread(function()
+
     while ESX == nil do
         TriggerEvent('esx:getSharedObject', function(obj)
             ESX = obj
@@ -101,15 +102,14 @@ RegisterNUICallback("UseItem", function(data, cb)
     print('data', data.item.name)
     TriggerServerEvent("esx:useItem", data.item.name)
     Citizen.Wait(50)
-    TriggerEvent('j_inventory:open', true)
-    SetNuiFocus(true, true)
-    SetNuiFocusKeepInput(true)
     createPedScreen()
+    TriggerEvent('j_inventory:open', true)
+
     cb("ok")
 end)
 
 RegisterNUICallback("DropItem", function(data, cb)
-
+    local ped = PlayerPedId()
     if IsPedSittingInAnyVehicle(playerPed) then
         return
     end
@@ -118,14 +118,25 @@ RegisterNUICallback("DropItem", function(data, cb)
         exports['mythic_notify']:DoCustomHudText('inform', "ไม่สามารถทิ้งได้", 4000)
     elseif type(data.number) == "number" and math.floor(data.number) == data.number then
         Wait(250)
-        RequestAnimDict("mp_weapon_drop")
-        Wait(250)
-        TaskPlayAnim(ped, "mp_weapon_drop", "drop_bh", 8.0, 2.0, 0.5, 0, 2.0, 0, 0, 0)
-        TriggerServerEvent("esx:removeInventoryItem", data.item.type, data.item.name, data.number)
+        ESX.Streaming.RequestAnimDict('pickup_object', function()
+            -- loop => 8.0, -8, -1, 49, 0, 0, 0, 0
+            TaskPlayAnim(ped, 'pickup_object', 'pickup_low', 8.0, -8, 1750, 49, 0, 0, 0, 0)
+            Citizen.Wait(1000)
+            TriggerServerEvent("esx:removeInventoryItem", data.item.type, data.item.name, data.number)
+        end)
+        -- RequestAnimDict("pickup_object")
+        -- Wait(250)
+        -- TaskPlayAnim(ped, "pickup_object", "pickup_low",  8.0, -8, 2250, 49, 0, 0, 0, 0)
+        -- Wait(400)
+        -- TriggerServerEvent("esx:removeInventoryItem", data.item.type, data.item.name, data.number)
+
+        -- การ Clear animation => ClearPedSecondaryTask(ped)
     end
 
     Wait(250)
     TriggerEvent('j_inventory:open', true)
+    createPedScreen()
+
     cb("ok")
 end)
 

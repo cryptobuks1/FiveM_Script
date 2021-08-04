@@ -1,0 +1,4 @@
+ animation ให้ของ
+ 1) ให้ของ           => "mp_safehouselost@"					    "package_dropoff"
+ 2) เก็บของ          => "missheist_agency2aig_13"			    "pickup_briefcase
+ 3) ทิ้งของ           => "pickup_object"						 "pickup_low"
