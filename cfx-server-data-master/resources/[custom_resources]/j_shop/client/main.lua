@@ -5,6 +5,7 @@ local CurrentAction           = nil
 local CurrentActionMsg        = ''
 local CurrentActionData       = {}
 local PlayerData              = {}
+shop_items = nil
 
 Citizen.CreateThread(function()
 	while ESX == nil do
@@ -16,6 +17,7 @@ Citizen.CreateThread(function()
 	PlayerData = ESX.GetPlayerData()
 
 	ESX.TriggerServerCallback('esx_shops:requestDBItems', function(ShopItems)
+		shop_items = ShopItems
 		for k,v in pairs(ShopItems) do
 			if (Config.Zones[k] ~= nil) then
 				Config.Zones[k].Items = v
@@ -35,23 +37,18 @@ function OpenShopMenu(zone)
 	local elements = {}
 	for i=1, #Config.Zones[zone].Items, 1 do
 		local item = Config.Zones[zone].Items[i]
-		print(json.encode(item))
 		if item.limit == -1 then
 			item.limit = 100
 		end
-
-		SendNUIMessage({
-			message		= "add",
-			item		= item.item,
-			label      	= item.label,
-			item       	= item.item,
-			price      	= item.price,
-			max        	= item.limit,
-			loc			= zone
-		})
-
 	end
 	
+	SendNUIMessage({
+		message		= "add",
+		items		= shop_items[zone],
+		loc			= zone
+	})
+
+
 	ESX.SetTimeout(200, function()
 		SetNuiFocus(true, true)
 	end)

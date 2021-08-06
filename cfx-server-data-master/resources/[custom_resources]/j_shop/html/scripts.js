@@ -1,6 +1,7 @@
 var prices = {}
 var maxes = {}
 var zone = null
+var itemData = [];
 
 // Partial Functions
 function closeMain() {
@@ -28,6 +29,8 @@ window.addEventListener('message', function (event) {
 			prices = {}
 			maxes = {}
 			zone = null
+			$('.shop-group-items').empty();
+			itemData = [];
 		}
 		openMain();
 	}
@@ -37,65 +40,72 @@ window.addEventListener('message', function (event) {
 	}
 
 	if (item.message == "add"){
-		$( ".shop-group-items" ).append(
-			`<div class="shop-g-product">
-			<div class="shop-g-prd-img">
-				<img src="img/`+ item['item'] +`.png" alt="">
-			</div>
-			<div class="shop-g-prd-name">
-			`+ item['label'] +`
-			</div>
-			<div class="shop-g-price">
-			`+ item['price'] +` $
-			</div>
-			<div class="shop-control">
-				<div class="shop-gc-minus">
-					<a href="javascript:void(0)">
-						-
-					</a>
+		itemData = item.items;
+		$.each(item.items, function (k, v) {
+			$( ".shop-group-items" ).append(
+				`<div class="shop-g-product">
+				<div class="shop-g-prd-img">
+					<img src="img/`+ v['item'] +`.png" alt="">
 				</div>
-				<div class="shop-gc-total">
-					1
+				<div class="shop-g-prd-name">
+				`+ v['label'] +`
 				</div>
-				<div class="shop-gc-plus">
-					<a href="javascript:void(0)">
-						+
-					</a>
+				<div class="shop-g-price">
+				`+ v['price'] +` $
 				</div>
-			</div>
-			<div  class="shop-g-btn-buy buy" name="`+ item['item'] +`">
-				ซื้อ
-			</div>
-		</div>`
-		);
-		// $( ".home" ).append(
-		// '<div class="card">' +
-		// 	'<div class="image-holder">' +
-		// 		'<img src="img/' + item.item + '.png" onerror="this.src = \'img/default.png\'" alt="' + item.label + '" style="width:100%">' +
-		// 	'</div>' +
-		// 	'<div class="container">' +
-		// 		'<h4><b>' + item.label + '<div class="price">' + item.price + '$' + '</div>' + '</b></h4> ' +
-		// 		'<div class="quantity">' +
-		// 			'<div class="minus-btn btnquantity" name="' + item.item + '" id="minus">' +
-		// 				'<img src="img/minus.png" alt="" />' +
-		// 			'</div>' +
-		// 			'<div class="number" name="name">1</div>' +
-		// 			'<div class="plus-btn btnquantity" name="' + item.item + '" id="plus">' +
-		// 				'<img src="img/plus.png" alt="" />' +
-		// 			'</div>' +
-		// 		'</div>' +
-		// 		'<div class="purchase">' +
-
-		// 			'<div class="buy" name="' + item.item + '">Buy</div>' +
-		// 		'</div>' +
-		// 	'</div>' +
-		// '</div>'
-		// );
-		prices[item.item] = item.price;
-		maxes[item.item] = 99;
+				<div class="shop-control">
+					<div class="shop-gc-minus">
+						<a href="javascript:void(0)" onclick="minusQuatityItems(`+k+`)">
+							-
+						</a>
+					</div>
+					<div class="shop-gc-total total_item_`+k+`">1</div>
+					<div class="shop-gc-plus">
+						<a href="javascript:void(0)" onclick="plusQuatityItems(`+k+`)">
+							+
+						</a>
+					</div>
+				</div>
+				<div  class="shop-g-btn-buy" onclick="buyItems(`+k+`)">
+					ซื้อ
+				</div>
+			</div>`
+			);
+		});
+		// prices[item.item] = item.price;
+		// maxes[item.item] = 99;
 		zone = item.loc;
 	}
 });
+
+function plusQuatityItems(key){
+	let value = $('.total_item_'+key).text();
+	var newVal = parseFloat(value) + 1;
+	$('.total_item_'+key).text("");
+	$('.total_item_'+key).text(newVal);
+}
+function minusQuatityItems(key){
+	let value = $('.total_item_'+key).text();
+	var newVal = 1;
+	if(value > 1){
+		var newVal = parseFloat(value) - 1;
+	}else{
+		newVal = 1;
+	}
+	$('.total_item_'+key).text("");
+	$('.total_item_'+key).text(newVal);
+}
+function buyItems(key){
+	let name_items = itemData[key].item
+	let total_bought = $('.total_item_'+key).text();
+	console.log('buy',name_items);
+	console.log('total buy',total_bought);
+	$.post('http://j_shop/purchase', JSON.stringify({
+		item: name_items,
+		count: total_bought,
+		loc: zone
+	}));
+}
 
 $(".home").on("click", ".btnquantity", function() {
 
