@@ -3,7 +3,10 @@
 <head>
 	<link rel="stylesheet" href="reset.css" type="text/css">
 	<link rel="stylesheet" href="style.css" type="text/css">
+	<link rel="stylesheet" href="./jquery-ui.css">
 	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+	<script src="./jquery-1.12.4.js"></script>
+  	<script src="./jquery-ui.js"></script>
 	<script src="./listener.js" type="text/javascript"></script>
 </head>
 
@@ -24,7 +27,55 @@
 					<div class="inventory-height">
 						<div class="inventory-grid" id="inventory-body">
 							<!-- loop -->
-							<div class="invontory-grid-item menu-data-x" oncontextmenu="itemClick(0)">
+							<div class="invontory-grid-item menu-data-x" oncontextmenu="itemClick(0)" data-name="bread">
+								<div class="invontory-grid-body">
+									<div class="inventory-grid-item-img">
+										<img src="img/bread.png" id="bread" alt="">
+									</div>
+									<div class="inventory-gird-item-name">
+										ชื่อ ITEM
+									</div>
+									<div class="inventory-gird-item-weight">
+										น้ำหนัก
+									</div>
+									<div class="inventory-grid-menu-dropdown">
+										<div class="inventory-gm-dropdown-items" onclick="itemUse(0)">
+											ใช้
+										</div>
+										<div class="inventory-gm-dropdown-items" onclick="itemGive(0)">
+											มอบให้
+										</div>
+										<div class="inventory-gm-dropdown-items" onclick="itemDrop(0)">
+											ทิ้ง
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="invontory-grid-item menu-data-x" oncontextmenu="itemClick(0)" data-name="bread">
+								<div class="invontory-grid-body">
+									<div class="inventory-grid-item-img">
+										<img src="img/bread.png" id="bread" alt="">
+									</div>
+									<div class="inventory-gird-item-name">
+										ชื่อ ITEM
+									</div>
+									<div class="inventory-gird-item-weight">
+										น้ำหนัก
+									</div>
+									<div class="inventory-grid-menu-dropdown">
+										<div class="inventory-gm-dropdown-items" onclick="itemUse(0)">
+											ใช้
+										</div>
+										<div class="inventory-gm-dropdown-items" onclick="itemGive(0)">
+											มอบให้
+										</div>
+										<div class="inventory-gm-dropdown-items" onclick="itemDrop(0)">
+											ทิ้ง
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="invontory-grid-item menu-data-x" oncontextmenu="itemClick(0)" data-name="bread">
 								<div class="invontory-grid-body">
 									<div class="inventory-grid-item-img">
 										<img src="img/bread.png" id="bread" alt="">
@@ -52,32 +103,44 @@
 						</div>
 					</div>
 					<div class="inventory-slot">
-						<div class="inventory-slot-item">
+						<div class="inventory-slot-item-1">
 							<div class="inventory-slot-badge">
 								1
 							</div>
-							<div class="inventory-slot-images">
+							<div class="inventory-slot-images" id="slot-1">
 								<img src="img/bread.png" alt="">
 							</div>
 						</div>
-						<div class="inventory-slot-item">
+						<div class="inventory-slot-item-2">
 							<div class="inventory-slot-badge">
 								2
 							</div>
+							<div class="inventory-slot-images" id="slot-2">
+								<img src="img/bread.png" alt="">
+							</div>
 						</div>
-						<div class="inventory-slot-item">
+						<div class="inventory-slot-item-3">
 							<div class="inventory-slot-badge">
 								3
 							</div>
+							<div class="inventory-slot-images" id="slot-3">
+								<img src="img/bread.png" alt="">
+							</div>
 						</div>
-						<div class="inventory-slot-item">
+						<div class="inventory-slot-item-4">
 							<div class="inventory-slot-badge">
 								4
 							</div>
+							<div class="inventory-slot-images" id="slot-4">
+								<img src="img/bread.png" alt="">
+							</div>
 						</div>
-						<div class="inventory-slot-item">
+						<div class="inventory-slot-item-5">
 							<div class="inventory-slot-badge">
 								5
+							</div>
+							<div class="inventory-slot-images" id="slot-5">
+								<img src="img/bread.png" alt="">
 							</div>
 						</div>
 					</div>

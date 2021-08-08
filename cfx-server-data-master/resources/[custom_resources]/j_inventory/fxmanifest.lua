@@ -20,9 +20,13 @@ ui_page 'html/index.html'
 
 files {
     'html/index.html',
+    'html/test.html',
     'html/style.css',
     'html/reset.css',
     'html/listener.js',
+    'html/jquery-ui.js',
+    'html/jquery-1.12.4.js',
+    'html/jquery-ui.css',
     'html/img/bread.png',
     'html/img/money.png',
     'html/img/water.png',
