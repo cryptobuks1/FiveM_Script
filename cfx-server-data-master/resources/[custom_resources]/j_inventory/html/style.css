@@ -31,7 +31,6 @@ img{
     margin: auto;
     background: #0000006b;
     max-height: 75vh;
-    overflow: hidden;
     left: 0;
     right: 0;
     top: 0;
@@ -55,6 +54,7 @@ img{
 }
 .inventoy-block{
 	flex : 0 0 60%;
+    position: relative;
 }
 .inventory-character{
 	flex : 1;
@@ -62,13 +62,12 @@ img{
 	padding : 20px;
 }
 .inventory-grid {
-    display: grid;
-	grid-template-columns: repeat(5,1fr);
-    height: calc(69vh);
-    overflow: auto;
+    display: flex;
+    flex-flow: row wrap;
 }
 .invontory-grid-item {
     padding: 1px;
+    width: 20%;
 }
 .invontory-grid-body{
 	background: #000000a6;
@@ -81,7 +80,12 @@ img{
     position: relative;
 }
 .inventory-gird-item-name{
-	font-size : 14px;
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
 }
 .inventory-gird-item-weight{
 	font-size : 10px;
@@ -143,4 +147,72 @@ img{
 
 .inventory-gm-dropdown-items:last-child{
     padding: 0;
+}
+
+.inventory-slot {
+    background: #000000d4;
+    position: absolute;
+    z-index: 9;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+}
+
+.inventory-slot-item {
+    margin: 15px;
+    background: #404040;
+    height: 90px;
+    position: relative;
+}
+
+.inventory-grid-item-img{
+    height: 90px;
+}
+
+.inventory-grid-item-img img{
+    height: 90px;
+}
+
+.inventory-height{
+    height: calc(65vh);
+    overflow: auto;
+    overflow-x: hidden;
+}
+.inventory-slot-images{
+    position: relative;
+    z-index: 2;
+}
+.inventory-slot-images img{
+    height: 90px;
+    width: 100%;
+    object-fit: contain;
+}
+.inventory-slot-badge {
+    position: absolute;
+    z-index: 1;
+}
+.image-slot-1,
+.image-slot-2,
+.image-slot-3,
+.image-slot-4,
+.image-slot-5{
+    display: none;
+}
+.image-slot-1 .active,
+.image-slot-2 .active,
+.image-slot-3 .active,
+.image-slot-4 .active,
+.image-slot-5 .active{
+    display: block;
+}
+
+.inventory-slot-wrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
 }
