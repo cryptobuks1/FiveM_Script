@@ -44,21 +44,21 @@ $(function () {
 							</div>
 						</div>`)
 
-						// )$("#inventory-body").append(
-						// 	`<div class="invontory-grid-item">
-						// 	<div class="invontory-grid-body">
-						// 		<div class="inventory-grid-item-img">
-						// 			<img src="img/`+ v['name'] + `.png" alt="">
-						// 		</div>
-						// 		<div class="inventory-gird-item-name">
-						// 		`+ v['name'] + `
-						// 		</div>
-						// 		<div class="inventory-gird-item-weight">
-						// 		`+ v['count'] + `
-						// 		</div>
-						// 	</div>
-						// </div>`
-						// )
+					// 	// )$("#inventory-body").append(
+					// 	// 	`<div class="invontory-grid-item">
+					// 	// 	<div class="invontory-grid-body">
+					// 	// 		<div class="inventory-grid-item-img">
+					// 	// 			<img src="img/`+ v['name'] + `.png" alt="">
+					// 	// 		</div>
+					// 	// 		<div class="inventory-gird-item-name">
+					// 	// 		`+ v['name'] + `
+					// 	// 		</div>
+					// 	// 		<div class="inventory-gird-item-weight">
+					// 	// 		`+ v['count'] + `
+					// 	// 		</div>
+					// 	// 	</div>
+					// 	// </div>`
+					// 	// )
 						counter++
 					});
 					dragDrop();
@@ -97,7 +97,7 @@ function itemUse(index) {
 	unActiveDropDown();
 }
 function itemGive(index) {
-	console.log('itemGive', index)
+	toggleGive();
 	if (itemData[index] == undefined || itemData[index]["canRemove"] == undefined) {
 		return;
 	}
@@ -110,6 +110,14 @@ function itemGive(index) {
 		// }));
 	}
 	unActiveDropDown();
+}
+function toggleGive(){
+	$('.inventory-give').toggleClass('active');
+}
+function submitGive(){
+	toggleGive();
+	let value = $('#giveInput').val();
+	console.log('val',value);
 }
 function itemDrop(index) {
 	console.log('itemDrop', index)

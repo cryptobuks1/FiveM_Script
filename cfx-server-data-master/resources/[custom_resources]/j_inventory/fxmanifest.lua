@@ -27,6 +27,7 @@ files {
     'html/jquery-ui.js',
     'html/jquery-1.12.4.js',
     'html/jquery-ui.css',
+    'html/bootstrap.min.css',
     'html/img/bread.png',
     'html/img/money.png',
     'html/img/water.png',

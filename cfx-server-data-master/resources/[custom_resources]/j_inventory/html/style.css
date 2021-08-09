@@ -1,8 +1,10 @@
 /* This applies to all elements (bad practice) */
 * {
-	color: #fff;
 	font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
+}
+body{
+    background-color: unset;
 }
 html {
     scroll-behavior: smooth;
@@ -48,9 +50,12 @@ img{
     background: #000000a6;
     border-radius: 30px;
     margin-right: 15px;
+    color : #fff;
 }
 .inventory-body{
 	display: flex;
+    position: relative;
+    z-index: 5;
 }
 .inventoy-block{
 	flex : 0 0 60%;
@@ -86,9 +91,12 @@ img{
     -webkit-box-orient: vertical;
     overflow: hidden;
     word-break: break-all;
+    color : #fff;
 }
 .inventory-gird-item-weight{
 	font-size : 10px;
+    
+    color : #fff;
 }
 
 .inventory-character-grid{
@@ -109,6 +117,7 @@ img{
     justify-content: center;
     margin: 0 0 30px;
     max-width: 100px;
+    color : #fff;
 }
 .inventory-character-grid-bottom {
     display: flex;
@@ -142,6 +151,7 @@ img{
     font-size: 15px;
     text-align: center;
     padding: 0 0 10px;
+    color: #fff;
 }
 
 
@@ -167,6 +177,7 @@ img{
     background: #404040;
     height: 90px;
     position: relative;
+    color : #fff;
 }
 
 .inventory-grid-item-img{
@@ -242,4 +253,30 @@ img{
 #slot-4.active,
 #slot-5.active{
     display: block;
+}
+.inventory-give {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    max-width: 500px;
+    transform: translate(-50%, -50%)scale(0.5);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 4;
+    transition: .3s;
+}
+.inventory-give.active {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    max-width: 500px;
+    transform: translate(-50%, -50%)scale(1);
+    opacity: 1;
+    visibility: visible;
+    z-index: 9;
+    transition: .3s;
 }
