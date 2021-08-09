@@ -1,5 +1,6 @@
 const resourceName = 'j_inventory';
 var itemData = [];
+var slot_item = [];
 
 $(function () {
 	window.onload = (e) => {
@@ -196,6 +197,9 @@ function setItem(name,key){
 	t.addClass('active');
 	var img = t.children('img');
 	var name_pic = 'img/'+name+'.png';
-	console.log('name_pic',name_pic);
 	img.attr('src',name_pic);
+	$.post("https://" + resourceName + "/setItemSlot", JSON.stringify({
+		item: name,
+		key: key
+	}));
 }

@@ -1,6 +1,7 @@
 ESX = nil
 toggleCard = true
 items = {}
+slot = {}
 
 Citizen.CreateThread(function()
 
@@ -99,7 +100,6 @@ AddEventHandler('j_inventory:close', function()
 end)
 
 RegisterNUICallback("UseItem", function(data, cb)
-    print('data', data.item.name)
     TriggerServerEvent("esx:useItem", data.item.name)
     Citizen.Wait(50)
     createPedScreen()
@@ -238,4 +238,42 @@ function deletePedScreen()
     DeleteEntity(PlayerPedPreview)
     SetFrontendActive(false)
     PlayerPedPreview = nil
+end
+
+RegisterCommand('+slot1', function()
+	useSlotItem(1)
+end,false)
+RegisterKeyMapping('+slot1', 'Slot1', 'keyboard', '1')
+RegisterCommand('+slot2', function()
+	useSlotItem(2)
+end,false)
+RegisterKeyMapping('+slot2', 'Slot2', 'keyboard', '2')
+RegisterCommand('+slot3', function()
+	useSlotItem(3)
+end,false)
+RegisterKeyMapping('+slot3', 'Slot3', 'keyboard', '3')
+RegisterCommand('+slot4', function()
+	useSlotItem(4)
+end,false)
+RegisterKeyMapping('+slot4', 'Slot1', 'keyboard', '4')
+RegisterCommand('+slot5', function()
+	useSlotItem(5)
+end,false)
+RegisterKeyMapping('+slot5', 'Slot5', 'keyboard', '5')
+
+
+RegisterNUICallback("setItemSlot", function(data, cb)
+    slot[data.key] = data.item
+    print(json.encode(data))
+	-- TriggerServerEvent("esx:useItem", data.item)
+	cb("ok")
+end)
+
+
+function useSlotItem(key)
+    TriggerServerEvent("esx:useItem", slot[key])
+    Citizen.Wait(50)
+    if not toggleCard then
+        TriggerEvent('j_inventory:open', true)
+    end
 end
