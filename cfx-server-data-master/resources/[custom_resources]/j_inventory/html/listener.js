@@ -1,6 +1,8 @@
 const resourceName = 'j_inventory';
 var itemData = [];
 var slot_item = [];
+let value = 0;
+var keyIndex = 0;
 
 $(function () {
 	window.onload = (e) => {
@@ -19,7 +21,7 @@ $(function () {
 							sumWeight += (v['weight'] * v['count']);
 						}
 						$("#inventory-body").append(
-							`<div class="invontory-grid-item menu-data-` + k + `" oncontextmenu="itemClick(` + k + `)" data-name="`+ v['name'] + `">
+							`<div class="invontory-grid-item menu-data-` + k + `" oncontextmenu="itemClick(` + k + `)" data-name="` + v['name'] + `">
 							<div class="invontory-grid-body">
 								<div class="inventory-grid-item-img">
 									<img src="img/`+ v['name'] + `.png" alt="">
@@ -44,21 +46,21 @@ $(function () {
 							</div>
 						</div>`)
 
-					// 	// )$("#inventory-body").append(
-					// 	// 	`<div class="invontory-grid-item">
-					// 	// 	<div class="invontory-grid-body">
-					// 	// 		<div class="inventory-grid-item-img">
-					// 	// 			<img src="img/`+ v['name'] + `.png" alt="">
-					// 	// 		</div>
-					// 	// 		<div class="inventory-gird-item-name">
-					// 	// 		`+ v['name'] + `
-					// 	// 		</div>
-					// 	// 		<div class="inventory-gird-item-weight">
-					// 	// 		`+ v['count'] + `
-					// 	// 		</div>
-					// 	// 	</div>
-					// 	// </div>`
-					// 	// )
+						// 	// )$("#inventory-body").append(
+						// 	// 	`<div class="invontory-grid-item">
+						// 	// 	<div class="invontory-grid-body">
+						// 	// 		<div class="inventory-grid-item-img">
+						// 	// 			<img src="img/`+ v['name'] + `.png" alt="">
+						// 	// 		</div>
+						// 	// 		<div class="inventory-gird-item-name">
+						// 	// 		`+ v['name'] + `
+						// 	// 		</div>
+						// 	// 		<div class="inventory-gird-item-weight">
+						// 	// 		`+ v['count'] + `
+						// 	// 		</div>
+						// 	// 	</div>
+						// 	// </div>`
+						// 	// )
 						counter++
 					});
 					dragDrop();
@@ -97,28 +99,33 @@ function itemUse(index) {
 	unActiveDropDown();
 }
 function itemGive(index) {
+	keyIndex = index
 	toggleGive();
-	if (itemData[index] == undefined || itemData[index]["canRemove"] == undefined) {
+	unActiveDropDown();
+}
+
+
+function toggleGive() {
+	$('.inventory-give').toggleClass('active');
+}
+
+function submitGive() {
+	toggleGive();
+	value = $('#giveInput').val();
+	if (itemData[keyIndex] == undefined || itemData[keyIndex]["canRemove"] == undefined) {
 		return;
 	}
 
-	if (itemData[index]["canRemove"]) {
-		// $.post("https://" + resourceName + "/GiveItem", JSON.stringify({
-		// 	player: player,
-        //     item: itemData[index],
-        //     number: parseInt($("#count").val())
-		// }));
+	if (itemData[keyIndex]["canRemove"]) {
+		console.log('itemGive', keyIndex)
+		$.post("https://" + resourceName + "/GetNearPlayers", JSON.stringify({
+			count: value,
+			item: itemData[keyIndex]
+		}));
 	}
-	unActiveDropDown();
+	console.log('val', value);
 }
-function toggleGive(){
-	$('.inventory-give').toggleClass('active');
-}
-function submitGive(){
-	toggleGive();
-	let value = $('#giveInput').val();
-	console.log('val',value);
-}
+
 function itemDrop(index) {
 	console.log('itemDrop', index)
 	if (itemData[index] == undefined || itemData[index]["canRemove"] == undefined) {
@@ -133,15 +140,15 @@ function itemDrop(index) {
 	}
 	unActiveDropDown();
 }
-function dragDrop(){
-	var $inventory = $( "#inventory-body" ),
-	$slot1 = $( ".inventory-slot-item-1" );
-	$slot2 = $( ".inventory-slot-item-2" );
-	$slot3 = $( ".inventory-slot-item-3" );
-	$slot4 = $( ".inventory-slot-item-4" );
-	$slot5 = $( ".inventory-slot-item-5" );
+function dragDrop() {
+	var $inventory = $("#inventory-body"),
+		$slot1 = $(".inventory-slot-item-1");
+	$slot2 = $(".inventory-slot-item-2");
+	$slot3 = $(".inventory-slot-item-3");
+	$slot4 = $(".inventory-slot-item-4");
+	$slot5 = $(".inventory-slot-item-5");
 
-	$( ".invontory-grid-item", $inventory ).draggable({
+	$(".invontory-grid-item", $inventory).draggable({
 		cancel: "a.ui-icon", // clicking an icon won't initiate dragging
 		revert: "invalid", // when not dropped, the item will revert back to its initial position
 		containment: "document",
@@ -151,61 +158,61 @@ function dragDrop(){
 	$slot1.droppable({
 		accept: "#inventory-body > .invontory-grid-item",
 		classes: {
-		  "ui-droppable-active": "ui-state-highlight"
+			"ui-droppable-active": "ui-state-highlight"
 		},
-		drop: function( event, ui ) {
-		  	dropInSlot( ui.draggable,1 );
+		drop: function (event, ui) {
+			dropInSlot(ui.draggable, 1);
 		}
 	});
 	$slot2.droppable({
 		accept: "#inventory-body > .invontory-grid-item",
 		classes: {
-		  "ui-droppable-active": "ui-state-highlight"
+			"ui-droppable-active": "ui-state-highlight"
 		},
-		drop: function( event, ui ) {
-		  	dropInSlot( ui.draggable,2 );
+		drop: function (event, ui) {
+			dropInSlot(ui.draggable, 2);
 		}
 	});
 	$slot3.droppable({
 		accept: "#inventory-body > .invontory-grid-item",
 		classes: {
-		  "ui-droppable-active": "ui-state-highlight"
+			"ui-droppable-active": "ui-state-highlight"
 		},
-		drop: function( event, ui ) {
-		  	dropInSlot( ui.draggable,3 );
+		drop: function (event, ui) {
+			dropInSlot(ui.draggable, 3);
 		}
 	});
 	$slot4.droppable({
 		accept: "#inventory-body > .invontory-grid-item",
 		classes: {
-		  "ui-droppable-active": "ui-state-highlight"
+			"ui-droppable-active": "ui-state-highlight"
 		},
-		drop: function( event, ui ) {
-		  	dropInSlot( ui.draggable,4 );
+		drop: function (event, ui) {
+			dropInSlot(ui.draggable, 4);
 		}
 	});
 	$slot5.droppable({
 		accept: "#inventory-body > .invontory-grid-item",
 		classes: {
-		  "ui-droppable-active": "ui-state-highlight"
+			"ui-droppable-active": "ui-state-highlight"
 		},
-		drop: function( event, ui ) {
-		  	dropInSlot( ui.draggable,5 );
+		drop: function (event, ui) {
+			dropInSlot(ui.draggable, 5);
 		}
 	});
 }
 
-function dropInSlot( $item,k ) {
+function dropInSlot($item, k) {
 	var item_name = $item.data("name");
-	setItem(item_name,k)
+	setItem(item_name, k)
 }
 
-function setItem(name,key){
-	var t = $('#slot-'+key);
+function setItem(name, key) {
+	var t = $('#slot-' + key);
 	t.addClass('active');
 	var img = t.children('img');
-	var name_pic = 'img/'+name+'.png';
-	img.attr('src',name_pic);
+	var name_pic = 'img/' + name + '.png';
+	img.attr('src', name_pic);
 	$.post("https://" + resourceName + "/setItemSlot", JSON.stringify({
 		item: name,
 		key: key
