@@ -50,7 +50,7 @@
 			$('#hud').append(html);
 		}
 	};
-
+    /*
 	ESX.inventoryNotification = function (add, item, count) {
 		let notif = '';
 
@@ -70,7 +70,7 @@
 			elem.remove();
 		});
 	};
-
+    */
 	window.onData = (data) => {
 		switch (data.action) {
 			case 'setHUDDisplay': {

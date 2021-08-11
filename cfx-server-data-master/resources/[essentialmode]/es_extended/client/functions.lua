@@ -20,9 +20,6 @@ ESX.Scaleform.Utils           = {}
 
 ESX.Streaming                 = {}
 
-RegisterFontFile('ThaiFont')
-fontId = RegisterFontId('ThaiFont')
-
 ESX.SetTimeout = function(msec, cb)
 	table.insert(ESX.TimeoutCallbacks, {
 		time = GetGameTimer() + msec,
@@ -48,14 +45,12 @@ ESX.SetPlayerData = function(key, val)
 end
 
 ESX.ShowNotification = function(msg)
-	SetTextFont(fontId)
 	SetNotificationTextEntry('STRING')
 	AddTextComponentSubstringPlayerName(msg)
 	DrawNotification(false, true)
 end
 
 ESX.ShowAdvancedNotification = function(title, subject, msg, icon, iconType)
-	SetTextFont(fontId)
 	SetNotificationTextEntry('STRING')
 	AddTextComponentSubstringPlayerName(msg)
 	SetNotificationMessage(icon, icon, false, iconType, title, subject)
@@ -459,13 +454,15 @@ ESX.Game.GetClosestObject = function(filter, coords)
 end
 
 ESX.Game.GetPlayers = function()
-	local players = {}
+	local maxPlayers = Config.MaxPlayers
+	local players    = {}
 
-	for _,player in ipairs(GetActivePlayers()) do
-		local ped = GetPlayerPed(player)
+	for i=0, maxPlayers, 1 do
+
+		local ped = GetPlayerPed(i)
 
 		if DoesEntityExist(ped) then
-			table.insert(players, player)
+			table.insert(players, i)
 		end
 	end
 
@@ -642,17 +639,43 @@ ESX.Game.GetVehicleProperties = function(vehicle)
 		end
 	end
 
+	Citizen.Wait(80)
+	local windows = {}
+	for i=0, 7 do
+		windows[i] = IsVehicleWindowIntact(vehicle,i)
+	end
+	
+	Citizen.Wait(80)
+	local doors = {}
+	for i=0, 5 do
+		doors[i] = not IsVehicleDoorDamaged(vehicle,i)
+	end
+	
+	Citizen.Wait(80)
+	local tyres = {}
+	for i=1, 7 do
+		local tyres_state = 2
+		if IsVehicleTyreBurst(vehicle, i, true) then
+			tyres_state = 0
+		elseif IsVehicleTyreBurst(vehicle, i, false) then
+			tyres_state = 1
+		end
+		tyres[i] = tyres_state
+	end
+
 	return {
+
 		model             = GetEntityModel(vehicle),
 
 		plate             = ESX.Math.Trim(GetVehicleNumberPlateText(vehicle)),
 		plateIndex        = GetVehicleNumberPlateTextIndex(vehicle),
 
-		bodyHealth        = ESX.Math.Round(GetVehicleBodyHealth(vehicle), 1),
-		engineHealth      = ESX.Math.Round(GetVehicleEngineHealth(vehicle), 1),
+		--[[ bodyHealth        = ESX.Math.Round(GetVehicleBodyHealth(vehicle), 1),
+		engineHealth      = ESX.Math.Round(GetVehicleEngineHealth(vehicle), 1), ]]
 
-		fuelLevel         = ESX.Math.Round(GetVehicleFuelLevel(vehicle), 1),
-		dirtLevel         = ESX.Math.Round(GetVehicleDirtLevel(vehicle), 1),
+		health            = ESX.Math.Round(GetVehicleEngineHealth(vehicle), 1),
+		dirtLevel         = GetVehicleDirtLevel(vehicle),
+
 		color1            = color1,
 		color2            = color2,
 
@@ -722,7 +745,10 @@ ESX.Game.GetVehicleProperties = function(vehicle)
 		modTrimB          = GetVehicleMod(vehicle, 44),
 		modTank           = GetVehicleMod(vehicle, 45),
 		modWindows        = GetVehicleMod(vehicle, 46),
-		modLivery         = GetVehicleLivery(vehicle)
+		modLivery         = GetVehicleLivery(vehicle),
+		windows 		  = windows,
+		doors			  = doors,
+		tyres        	  = tyres
 	}
 end
 
@@ -737,20 +763,12 @@ ESX.Game.SetVehicleProperties = function(vehicle, props)
 		SetVehicleNumberPlateTextIndex(vehicle, props.plateIndex)
 	end
 
-	if props.bodyHealth ~= nil then
-		SetVehicleBodyHealth(vehicle, props.bodyHealth + 0.0)
-	end
-
-	if props.engineHealth ~= nil then
-		SetVehicleEngineHealth(vehicle, props.engineHealth + 0.0)
-	end
-
-	if props.fuelLevel ~= nil then
-		SetVehicleFuelLevel(vehicle, props.fuelLevel + 0.0)
+	if props.health ~= nil then
+		SetEntityHealth(vehicle, props.health)
 	end
 
 	if props.dirtLevel ~= nil then
-		SetVehicleDirtLevel(vehicle, props.dirtLevel + 0.0)
+		SetVehicleDirtLevel(vehicle, props.dirtLevel)
 	end
 
 	if props.color1 ~= nil then
@@ -986,6 +1004,47 @@ ESX.Game.SetVehicleProperties = function(vehicle, props)
 		SetVehicleMod(vehicle, 48, props.modLivery, false)
 		SetVehicleLivery(vehicle, props.modLivery)
 	end
+
+--[[ 	if props.bodyHealth ~= nil then
+		SetVehicleBodyHealth(vehicle, props.bodyHealth+0.00)
+	end ]]
+
+	if props.health ~= nil then
+		SetVehicleEngineHealth(vehicle, props.health + 0.00)
+	end
+
+	if props.windows then
+		for i, window_state in pairs(props.windows) do
+			if not window_state then
+				SmashVehicleWindow(vehicle, tonumber(i))
+			end
+			Citizen.Wait(10)
+		end
+	end
+	
+	Citizen.Wait(80)
+
+	if props.doors then
+		for i, door_state in pairs(props.doors) do
+			if not door_state then
+				SetVehicleDoorBroken(vehicle, tonumber(i), true)
+			end
+			Citizen.Wait(10)
+		end
+	end
+
+	Citizen.Wait(80)
+
+	if props.tyres then
+		for i, tyre_state in pairs(props.tyres) do
+			if tyre_state < 2 then
+				SetVehicleTyreBurst(vehicle, i, (tyre_state == 1), 1000.01)
+			end
+			Citizen.Wait(10)
+		end
+	end
+	Citizen.Wait(80)
+
 end
 
 ESX.Game.Utils.DrawText3D = function(coords, text, size)

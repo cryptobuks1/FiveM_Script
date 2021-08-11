@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+		integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	<link href="ui.css" type="text/css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Athiti&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<div class="container mt-5">
+		<div id="shopmenu" class="mt-5" style="border:0;display:none;background-color: rgba(30,30,30,0.5); border-radius: 10px;">
+			<nav class="navbar navbar-dark" style="background-color: rgba(255, 255, 255, 0.1); border-radius: 10px;" >
+				<div class="row justify-content-center align-items-center" style="width: 100%;">
+					<div class="col-3">
+						<span class="h1 navbar-brand">Premium Deluxe Motorsport</span>
+					</div>
+					<div class="col text-center">
+						<i id="page-prv" class="fas fa-angle-left " style="font-size: 30px;color: seashell;"></i>
+						<span class="align-top" id="n-pag" style="font-size: 20px;color: seashell;">1/2</span>
+						<i id="page-nxt" class="fas fa-angle-right " style="font-size: 30px;color: seashell;"></i>
+					</div>
+
+					<div class="col-3 justify-content-center align-text-center" style="color: rgba(238, 30, 30, 0.815);">
+						<i id="close" class="float-right fa-2x fas fa-sign-out-alt"></i>
+					</div>
+				</div>
+			</nav>
+			<div id="body" style="overflow: auto; width: auto; height: 820px; overflow-x: hidden;">
+				<div class="row mt-3 ml-1">
+					<div class="col-4">
+						<div class="input-group">
+							<select class="custom-select" style="background-color: rgba(255, 255, 255, 0.5);" id="brand" name="brand"></select>
+							  
+							</select>
+						</div>
+					</div>
+					<div class="col offset-2">
+						<div class="input-group" >
+							<div class="input-group-prepend">
+							  <span class="input-group-text">Min</span>
+							</div>
+							<input type="number" class="form-control" min="0" name="price_min" id="price_min" value="0">
+						</div>
+					</div>
+					<div class="col ">
+						<div class="input-group">
+							<div class="input-group-prepend">
+							  <span class="input-group-text">Max</span>
+							</div>
+							<input type="number" class="form-control" min="0" name="price_max" id="price_max">
+						</div>
+					</div>
+					<div class="col ">
+						<button type="button" class="btn btn-primary" id="search">ค้นหา</button>
+					</div>
+				</div>
+				<br>
+				<div id="wrapper" class="mt-1 ml-3 mr-3" style="font-size: 16px;color: rgb(43, 42, 41);">
+
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+	<script src="ui.js" type="text/javascript"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

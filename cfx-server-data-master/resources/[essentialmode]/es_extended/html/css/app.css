@@ -23,7 +23,7 @@ html {
 	top: 80;
 	right: 40;
 }
-
+/*
 #inventory_notifications {
 	font-family: bankgothic;
 	position: absolute;
@@ -34,7 +34,7 @@ html {
 	color: #FFF;
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-
+*/
 .menu {
 	font-family: 'Open Sans', sans-serif;
 	min-width: 400px;
