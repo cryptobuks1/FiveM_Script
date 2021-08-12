@@ -7,7 +7,7 @@
 Config              = {}
 Config.Locale       = 'en'
 Config.Phones       = {
-  "blue_phone",
+  "yellow_phone",
   "green_phone",
   "white_phone"
 }

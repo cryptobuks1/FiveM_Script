@@ -202,6 +202,7 @@ ESX.RegisterServerCallback('crew-phone:phone-check', function(source, cb)
     if not xPlayer then return; end
     for k, v in pairs(Config.Phones) do
         local items = xPlayer.getInventoryItem(v)
+        print(items)
         if items.count > 0 then
             cb(v)
             return

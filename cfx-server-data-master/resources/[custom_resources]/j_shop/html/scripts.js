@@ -41,6 +41,7 @@ window.addEventListener('message', function (event) {
 
 	if (item.message == "add"){
 		itemData = item.items;
+		console.log('itemData',JSON.stringify(item.items));
 		$.each(item.items, function (k, v) {
 			$( ".shop-group-items" ).append(
 				`<div class="shop-g-product">

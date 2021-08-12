@@ -20,7 +20,10 @@ files {
 	'html/img/croquettes.png',
 	'html/img/water.png',
 	'html/img/plus.png',
-	'html/img/minus.png'
+	'html/img/minus.png',
+	'html/img/green_phone.png',
+	'html/img/white_phone.png',
+	'html/img/yellow_phone.png'
 }
 
 ui_page 'html/ui.html'
