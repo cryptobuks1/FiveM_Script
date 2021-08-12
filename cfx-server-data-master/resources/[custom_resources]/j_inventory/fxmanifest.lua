@@ -31,6 +31,9 @@ files {
     'html/img/bread.png',
     'html/img/money.png',
     'html/img/water.png',
+    'html/img/yellow_phone.png',
+    'html/img/white_phone.png',
+    'html/img/green_phone.png',
 }
 
 fx_version 'cerulean'
