@@ -1,98 +1,65 @@
 Config                            = {}
-Config.Locale                     = 'en'
+Config.Locale                     = 'th'
 
 Config.DrawDistance               = 100.0
 Config.MaxInService               = -1
 Config.EnablePlayerManagement     = true
 Config.EnableSocietyOwnedVehicles = false
+
 Config.NPCSpawnDistance           = 500.0
 Config.NPCNextToDistance          = 25.0
 Config.NPCJobEarnings             = { min = 15, max = 40 }
-Config.CheckItem				  = true   --- ต้องการให้ตรวจสอบ Item หรือไม่
-Config.UseItem					  = 'fixkit1'  --- ไอเทมที่ให้หักเมื่อใช้งาน
 
 Config.Vehicles = {
 	'adder',
 	'asea',
 	'asterope',
 	'banshee',
-	'cosworth',
-	'buffalo',
-	'wave125i'
-}
-
-
-Config.Uniforms = {
-    
-  work_wear = {
-    male = {
-        ['tshirt_1'] = 59,  ['tshirt_2'] = 1,
-        ['torso_1'] = 55,   ['torso_2'] = 0,
-        ['decals_1'] = 0,   ['decals_2'] = 0,
-        ['arms'] = 41,
-        ['pants_1'] = 25,   ['pants_2'] = 0,
-        ['shoes_1'] = 25,   ['shoes_2'] = 0,
-        ['helmet_1'] = 46,  ['helmet_2'] = 0,
-        ['chain_1'] = 0,    ['chain_2'] = 0,
-        ['ears_1'] = 2,     ['ears_2'] = 0
-    },
-    female = {
-        ['tshirt_1'] = 6,  ['tshirt_2'] = 0,
-        ['torso_1'] = 59,   ['torso_2'] = 0,
-        ['decals_1'] = 0,   ['decals_2'] = 0,
-        ['arms'] = 14,
-        ['pants_1'] = 39,   ['pants_2'] = 0,
-        ['shoes_1'] = 27,   ['shoes_2'] = 0,
-        ['helmet_1'] = 45,  ['helmet_2'] = 0,
-        ['chain_1'] = 0,    ['chain_2'] = 0,
-        ['ears_1'] = 2,     ['ears_2'] = 0
-     }
-  }
-
+	'buffalo'
 }
 
 Config.Zones = {
 
 	MechanicActions = {
-		Pos   = { x = -346.73, y = -133.56, z = 38.01 },
+		Pos   = { x = -346.9, y = -133.44, z = 39.01 },
 		Size  = { x = 1.5, y = 1.5, z = 1.0 },
-		Color = { r = 204, g = 204, b = 0 },
+		Color = { r = 204, g = 0, b = 204 },
 		Type  = 1
 	},
-
+--[[
 	Garage = {
-		Pos   = { x = -324.55, y = -130.87, z = 37.96 }, 
+		Pos   = { x = -715.3, y = -1483.03, z = 4.30 },
 		Size  = { x = 1.5, y = 1.5, z = 1.0 },
 		Color = { r = 204, g = 204, b = 0 },
-		Type  = 1
-	},
+		Type  = 1,
+	}, ]]
 
-	Craft = {
-		Pos   = { x = 0.0, y = 0.0, z = 0.0 },
+	--[[Craft = {
+		Pos   = { x = -323.140, y = -129.882, z = 37.999 },
 		Size  = { x = 1.5, y = 1.5, z = 1.0 },
 		Color = { r = 204, g = 204, b = 0 },
 		Type  = 1
-	},
+	},]]
 
 	VehicleSpawnPoint = {
-		Pos   = { x = -354.07, y = -97.66, z = 45.66 },
+		Pos   = { x = -356.39, y = -111.27, z = 38.95, h = 156.42 },										
 		Size  = { x = 1.5, y = 1.5, z = 1.0 },
 		Type  = -1
 	},
 
 	VehicleDeleter = {
-		Pos   = { x = -386.899, y = -105.675, z = 37.683 },
-		Size  = { x = 3.0, y = 3.0, z = 1.0 },
-		Color = { r = 204, g = 204, b = 0 },
-		Type  = 1
+		Pos   = { x = -356.39, y = -111.27, z = 38.95 },
+		Size  = { x = 1.5, y = 1.5, z = 1.0 },
+		Color = { r = 255, g = 0, b = 0 },
+		Type  = 2
 	},
-
+--[[
 	VehicleDelivery = {
-		Pos   = { x = -382.925, y = -133.748, z = 37.685 },
+		Pos   = { x = -691.35, y = -1414.97, z = 4.10 },
 		Size  = { x = 20.0, y = 20.0, z = 3.0 },
 		Color = { r = 204, g = 204, b = 0 },
-		Type  = -1
-	}
+		Type  = -1,
+	}]]
 }
 
 Config.Towables = {
@@ -136,6 +103,218 @@ Config.Towables = {
 	vector3(-521.9, -266.8, 34.9),
 	vector3(-451.1, -333.5, 34.0),
 	vector3(322.4, -1900.5, 25.8)
+}
+
+Config.Uniforms = {
+	recrue = {
+		male = {
+			tshirt_1=90, 	tshirt_2 = 0,
+			torso_1=66, 	torso_2 = 0,
+			decals_1=0, 	decals_2 = 0,
+			arms=4,
+			pants_1 = 24, 	pants_2=0,
+			shoes = 9,
+			hair_color_1 = 0, hair_color_2 = 0,
+			glasses_1 = 5, 	glasses_2 = 5,
+			hair_1 =18, 		hair_2=0,
+			helmet_1=56, 	helmet_2=0,
+			face=19,
+			skin=34,
+			
+		},
+		female = {
+			torso_1=73,		
+			tshirt_2=3,
+			decals_2=0,
+			glasses=0,
+			hair_1=2,
+			shoes=1,
+			hair_color_2=0,
+			glasses_1=19,
+			skin=13,
+			face=6,
+			pants_2=5,
+			tshirt_1=75,
+			pants_1=37,
+			helmet_1=57,
+			torso_2=0,
+			arms=14,
+			sex=1,
+			glasses_2=0,
+			decals_1=0,
+			hair_2=0,
+			helmet_2=0,
+			hair_color_1=0
+		}
+	},
+
+	novice = {
+		male = {
+			tshirt_1=90, 	tshirt_2 = 0,
+			torso_1=66, 	torso_2 = 0,
+			decals_1=0, 	decals_2 = 0,
+			arms=4,
+			pants_1 = 24, 	pants_2=0,
+			shoes = 9,
+			hair_color_1 = 0, hair_color_2 = 0,
+			glasses_1 = 5, 	glasses_2 = 5,
+			hair_1 =18, 		hair_2=0,
+			helmet_1=56, 	helmet_2=0,
+			face=19,
+			skin=34,
+			
+		},
+		female = {
+			torso_1=73,		
+			tshirt_2=3,
+			decals_2=0,
+			glasses=0,
+			hair_1=2,
+			shoes=1,
+			hair_color_2=0,
+			glasses_1=19,
+			skin=13,
+			face=6,
+			pants_2=5,
+			tshirt_1=75,
+			pants_1=37,
+			helmet_1=57,
+			torso_2=0,
+			arms=14,
+			sex=1,
+			glasses_2=0,
+			decals_1=0,
+			hair_2=0,
+			helmet_2=0,
+			hair_color_1=0
+		}
+	},
+
+	experimente = {
+		male = {
+			tshirt_1=90, 	tshirt_2 = 0,
+			torso_1=66, 	torso_2 = 0,
+			decals_1=0, 	decals_2 = 0,
+			arms=4,
+			pants_1 = 24, 	pants_2=0,
+			shoes = 9,
+			hair_color_1 = 0, hair_color_2 = 0,
+			glasses_1 = 5, 	glasses_2 = 5,
+			hair_1 =18, 		hair_2=0,
+			helmet_1=56, 	helmet_2=0,
+			face=19,
+			skin=34,
+			
+		},
+		female = {
+			torso_1=73,		
+			tshirt_2=3,
+			decals_2=0,
+			glasses=0,
+			hair_1=2,
+			shoes=1,
+			hair_color_2=0,
+			glasses_1=19,
+			skin=13,
+			face=6,
+			pants_2=5,
+			tshirt_1=75,
+			pants_1=37,
+			helmet_1=57,
+			torso_2=0,
+			arms=14,
+			sex=1,
+			glasses_2=0,
+			decals_1=0,
+			hair_2=0,
+			helmet_2=0,
+			hair_color_1=0
+		}
+	},
+
+	chief = {
+		male = {
+			tshirt_1=90, 	tshirt_2 = 0,
+			torso_1=66, 	torso_2 = 0,
+			decals_1=0, 	decals_2 = 0,
+			arms=4,
+			pants_1 = 24, 	pants_2=0,
+			shoes = 9,
+			hair_color_1 = 0, hair_color_2 = 0,
+			glasses_1 = 5, 	glasses_2 = 5,
+			hair_1 =18, 		hair_2=0,
+			helmet_1=56, 	helmet_2=0,
+			face=19,
+			skin=34,
+			
+		},
+		female = {
+			torso_1=73,		
+			tshirt_2=3,
+			decals_2=0,
+			glasses=0,
+			hair_1=2,
+			shoes=1,
+			hair_color_2=0,
+			glasses_1=19,
+			skin=13,
+			face=6,
+			pants_2=5,
+			tshirt_1=75,
+			pants_1=37,
+			helmet_1=57,
+			torso_2=0,
+			arms=14,
+			sex=1,
+			glasses_2=0,
+			decals_1=0,
+			hair_2=0,
+			helmet_2=0,
+			hair_color_1=0
+		}
+	},
+
+	boss = {
+		male = {
+			tshirt_1=90, 	tshirt_2 = 0,
+			torso_1=66, 	torso_2 = 0,
+			decals_1=0, 	decals_2 = 0,
+			arms=4,
+			pants_1 = 24, 	pants_2=0,
+			shoes = 9,
+			hair_color_1 = 0, hair_color_2 = 0,
+			glasses_1 = 5, 	glasses_2 = 5,
+			hair_1 =18, 		hair_2=0,
+			helmet_1=56, 	helmet_2=0,
+			face=19,
+			skin=34,
+			
+		},
+		female = {
+			torso_1=73,		
+			tshirt_2=3,
+			decals_2=0,
+			glasses=0,
+			hair_1=2,
+			shoes=1,
+			hair_color_2=0,
+			glasses_1=19,
+			skin=13,
+			face=6,
+			pants_2=5,
+			tshirt_1=75,
+			pants_1=37,
+			helmet_1=57,
+			torso_2=0,
+			arms=14,
+			sex=1,
+			glasses_2=0,
+			decals_1=0,
+			hair_2=0,
+			helmet_2=0,
+			hair_color_1=0
+		}
+	},
 }
 
 for k,v in ipairs(Config.Towables) do

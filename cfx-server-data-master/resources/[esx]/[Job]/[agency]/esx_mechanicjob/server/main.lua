@@ -6,12 +6,6 @@ PlayersCrafting    = {}
 PlayersCrafting2   = {}
 PlayersCrafting3   = {}
 
-
-local Xenon = GetCurrentResourceName()
-Check = {
-	[1] = ':CheckItem'
-}
-
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 if Config.MaxInService ~= -1 then
@@ -33,24 +27,14 @@ local function Harvest(source)
 			else
 				xPlayer.addInventoryItem('gazbottle', 1)
 				Harvest(source)
+
+				local sendToDiscord = ''	.. xPlayer.name .. ' เบิก ' .. ESX.GetItemLabel('gazbottle') .. ' จำนวน 1'
+				TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicHarvestItem', sendToDiscord, xPlayer.source, '^2')
 			end
 		end
 
 	end)
 end
-
---- Check Item by Xenon
-ESX.RegisterServerCallback(Xenon..Check[1], function(source, cb,item)
-	local xPlayer = ESX.GetPlayerFromId(source)
-	local xItem = xPlayer.getInventoryItem(item)
-
-	if xItem.count >= 1 then
-		
-		cb(true)
-	else
-		cb(false)
-	end
-end)
 
 RegisterServerEvent('esx_mechanicjob:startHarvest')
 AddEventHandler('esx_mechanicjob:startHarvest', function()
@@ -71,14 +55,16 @@ local function Harvest2(source)
 
 		if PlayersHarvesting2[source] == true then
 			local xPlayer = ESX.GetPlayerFromId(source)
-			local FixToolQuantity = xPlayer.getInventoryItem('fixkit1').count
+			local FixToolQuantity = xPlayer.getInventoryItem('fixtool').count
 
 			if FixToolQuantity >= 5 then
 				TriggerClientEvent('esx:showNotification', source, _U('you_do_not_room'))
 			else
-				xPlayer.addInventoryItem('fixkit1', 10)
-				xPlayer.removeMoney(200)
+				xPlayer.addInventoryItem('fixtool', 1)
 				Harvest2(source)
+
+				local sendToDiscord = ''	.. xPlayer.name .. ' เบิก ' .. ESX.GetItemLabel('fixtool') .. ' จำนวน 1'
+				TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicHarvestItem', sendToDiscord, xPlayer.source, '^2')
 			end
 		end
 
@@ -99,9 +85,39 @@ AddEventHandler('esx_mechanicjob:stopHarvest2', function()
 	PlayersHarvesting2[_source] = false
 end)
 
+local function Harvest3(source)
+	SetTimeout(4000, function()
 
+		if PlayersHarvesting3[source] == true then
+			local xPlayer = ESX.GetPlayerFromId(source)
+			local CaroToolQuantity = xPlayer.getInventoryItem('carotool').count
+			if CaroToolQuantity >= 5 then
+				TriggerClientEvent('esx:showNotification', source, _U('you_do_not_room'))
+			else
+				xPlayer.addInventoryItem('carotool', 1)
+				Harvest3(source)
 
+				local sendToDiscord = ''	.. xPlayer.name .. ' เบิก ' .. ESX.GetItemLabel('carotool') .. ' จำนวน 1'
+				TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicHarvestItem', sendToDiscord, xPlayer.source, '^2')
+			end
+		end
 
+	end)
+end
+
+RegisterServerEvent('esx_mechanicjob:startHarvest3')
+AddEventHandler('esx_mechanicjob:startHarvest3', function()
+	local _source = source
+	PlayersHarvesting3[_source] = true
+	TriggerClientEvent('esx:showNotification', _source, _U('recovery_body_tools'))
+	Harvest3(_source)
+end)
+
+RegisterServerEvent('esx_mechanicjob:stopHarvest3')
+AddEventHandler('esx_mechanicjob:stopHarvest3', function()
+	local _source = source
+	PlayersHarvesting3[_source] = false
+end)
 
 local function Craft(source)
 	SetTimeout(4000, function()
@@ -116,6 +132,14 @@ local function Craft(source)
 				xPlayer.removeInventoryItem('gazbottle', 1)
 				xPlayer.addInventoryItem('blowpipe', 1)
 				Craft(source)
+
+				local sendToDiscord = '' .. xPlayer.name .. ' นำ ' .. ESX.GetItemLabel('gazbottle') .. ' จำนวน 1 ใช้ในการคราฟ'
+				TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicCraftItem', sendToDiscord, xPlayer.source, '^1')
+
+				Citizen.Wait(100)
+
+				local sendToDiscord2 = '' .. xPlayer.name .. ' ได้รับ ' .. ESX.GetItemLabel('blowpipe') .. ' จำนวน 1 จากการคราฟ'
+				TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicCraftItem', sendToDiscord2, xPlayer.source, '^2')
 			end
 		end
 
@@ -141,14 +165,22 @@ local function Craft2(source)
 
 		if PlayersCrafting2[source] == true then
 			local xPlayer = ESX.GetPlayerFromId(source)
-			local FixToolQuantity = xPlayer.getInventoryItem('fixkit1').count
+			local FixToolQuantity = xPlayer.getInventoryItem('fixtool').count
 
 			if FixToolQuantity <= 0 then
 				TriggerClientEvent('esx:showNotification', source, _U('not_enough_repair_tools'))
 			else
-				xPlayer.removeInventoryItem('fixkit1', 1)
-				xPlayer.addInventoryItem('fixkit1', 1)
+				xPlayer.removeInventoryItem('fixtool', 1)
+				xPlayer.addInventoryItem('fixkit', 1)
 				Craft2(source)
+
+				local sendToDiscord = '' .. xPlayer.name .. ' นำ ' .. ESX.GetItemLabel('fixtool') .. ' จำนวน 1 ใช้ในการคราฟ'
+				TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicCraftItem', sendToDiscord, xPlayer.source, '^1')
+
+				Citizen.Wait(100)
+
+				local sendToDiscord2 = '' .. xPlayer.name .. ' ได้รับ ' .. ESX.GetItemLabel('fixkit') .. ' จำนวน 1 จากการคราฟ'
+				TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicCraftItem', sendToDiscord2, xPlayer.source, '^2')
 			end
 		end
 
@@ -182,6 +214,14 @@ local function Craft3(source)
 				xPlayer.removeInventoryItem('carotool', 1)
 				xPlayer.addInventoryItem('carokit', 1)
 				Craft3(source)
+
+				local sendToDiscord = '' .. xPlayer.name .. ' นำ ' .. ESX.GetItemLabel('carotool') .. ' จำนวน 1 ใช้ในการคราฟ'
+				TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicCraftItem', sendToDiscord, xPlayer.source, '^1')
+
+				Citizen.Wait(100)
+
+				local sendToDiscord2 = '' .. xPlayer.name .. ' ได้รับ ' .. ESX.GetItemLabel('carokit') .. ' จำนวน 1 จากการคราฟ'
+				TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicCraftItem', sendToDiscord2, xPlayer.source, '^2')
 			end
 		end
 
@@ -227,6 +267,58 @@ ESX.RegisterUsableItem('blowpipe', function(source)
 
 	TriggerClientEvent('esx_mechanicjob:onHijack', _source)
 	TriggerClientEvent('esx:showNotification', _source, _U('you_used_blowtorch'))
+
+	local sendToDiscord = ''	.. xPlayer.name .. ' ใช้ ' .. ESX.GetItemLabel('blowpipe') .. ' จำนวน 1'
+	TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicUseItem', sendToDiscord, xPlayer.source, '^2')
+end)
+
+ESX.RegisterUsableItem('rag', function(source)
+	local _source = source
+	local xPlayer  = ESX.GetPlayerFromId(source)
+	local xItemCount = math.random(0, 100)
+	local xItem = xPlayer.getInventoryItem('wash')
+	if xItem.count >= 1 then
+		--xPlayer.removeInventoryItem('rag', 1)
+		xPlayer.removeInventoryItem('wash', 1)
+
+		TriggerClientEvent("pNotify:SendNotification", source, {
+			text = '<center><strong class="red-text">คุณใช้น้ำยาล้างรถไปแล้ว 1 ขวด</strong><center>',
+			type = "error",
+			timeout = 3000,
+			layout = "bottomCenter",
+			queue = "global"
+		}) 
+
+		if xItemCount >= 75 then
+			xPlayer.removeInventoryItem('rag', 1)
+			TriggerClientEvent("pNotify:SendNotification", source, {
+				text = '<center><strong class="red-text">ผ้าเช็ครถของคุณได้ขาดไปแล้ว</strong><center>',
+				type = "error",
+				timeout = 3000,
+				layout = "bottomCenter",
+				queue = "global"
+			}) 
+		end	
+
+		local sendToDiscord = ''	.. xPlayer.name .. ' ใช้ ' .. ESX.GetItemLabel('rag') .. ' จำนวน 1'
+		TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicUseItem', sendToDiscord, xPlayer.source, '^2')
+		TriggerClientEvent('esx_mechanicjob:clean',_source)
+		
+
+		
+		
+		else 
+			TriggerClientEvent("pNotify:SendNotification", source, {
+				text = '<center><strong class="red-text">คุณไม่มีน้ำยาล้างรถ</strong><center>',
+				type = "error",
+				timeout = 3000,
+				layout = "bottomCenter",
+				queue = "global"
+			}) 
+			print("NO ITEM WASH")
+	end
+	
+
 end)
 
 ESX.RegisterUsableItem('fixkit', function(source)
@@ -237,6 +329,9 @@ ESX.RegisterUsableItem('fixkit', function(source)
 
 	TriggerClientEvent('esx_mechanicjob:onFixkit', _source)
 	TriggerClientEvent('esx:showNotification', _source, _U('you_used_repair_kit'))
+
+	local sendToDiscord = ''	.. xPlayer.name .. ' ใช้ ' .. ESX.GetItemLabel('fixkit') .. ' จำนวน 1'
+	TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicUseItem', sendToDiscord, xPlayer.source, '^2')
 end)
 
 ESX.RegisterUsableItem('carokit', function(source)
@@ -247,6 +342,9 @@ ESX.RegisterUsableItem('carokit', function(source)
 
 	TriggerClientEvent('esx_mechanicjob:onCarokit', _source)
 	TriggerClientEvent('esx:showNotification', _source, _U('you_used_body_kit'))
+
+	local sendToDiscord = ''	.. xPlayer.name .. ' ใช้ ' .. ESX.GetItemLabel('carokit') .. ' จำนวน 1'
+	TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicUseItem', sendToDiscord, xPlayer.source, '^2')
 end)
 
 RegisterServerEvent('esx_mechanicjob:getStockItem')
@@ -264,6 +362,9 @@ AddEventHandler('esx_mechanicjob:getStockItem', function(itemName, count)
 				inventory.removeItem(itemName, count)
 				xPlayer.addInventoryItem(itemName, count)
 				xPlayer.showNotification(_U('have_withdrawn', count, item.label))
+
+				local sendToDiscord = '' .. xPlayer.name .. ' นำ ' .. item.label .. ' จำนวน ' .. ESX.Math.GroupDigits(count) .. ' ออกจากคลัง'
+				TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicGetItem', sendToDiscord, xPlayer.source, '^3')
 			else
 				xPlayer.showNotification(_U('player_cannot_hold'))
 			end
@@ -290,6 +391,9 @@ AddEventHandler('esx_mechanicjob:putStockItems', function(itemName, count)
 		if item.count >= 0 and count <= playerItemCount then
 			xPlayer.removeInventoryItem(itemName, count)
 			inventory.addItem(itemName, count)
+
+			local sendToDiscord = '' .. xPlayer.name .. ' เก็บ ' .. item.label .. ' จำนวน ' .. ESX.Math.GroupDigits(count) .. ' เก็บเข้าคลัง'
+			TriggerEvent('azael_discordlogs:sendToDiscord', 'MechanicPutItem', sendToDiscord, xPlayer.source, '^2')
 		else
 			xPlayer.showNotification(_U('invalid_quantity'))
 		end
@@ -303,12 +407,4 @@ ESX.RegisterServerCallback('esx_mechanicjob:getPlayerInventory', function(source
 	local items      = xPlayer.inventory
 
 	cb({items = items})
-end)
-
-RegisterServerEvent('esx_mechanicjob:triggerBomb')
-AddEventHandler('esx_mechanicjob:triggerBomb', function(ped, coords, veh)
-	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
-	xPlayer.removeInventoryItem(Config.UseItem, 1)
-	TriggerClientEvent('esx_mechanicjob:placeBomb', _source, ped, coords, veh)
 end)

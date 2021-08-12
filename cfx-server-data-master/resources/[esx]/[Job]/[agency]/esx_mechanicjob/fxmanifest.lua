@@ -15,6 +15,7 @@ client_scripts {
 	'locales/sv.lua',
 	'locales/pl.lua',
 	'locales/nl.lua',
+	'locales/th.lua',
 	'config.lua',
 	'client/main.lua'
 }
@@ -28,12 +29,13 @@ server_scripts {
 	'locales/sv.lua',
 	'locales/pl.lua',
 	'locales/nl.lua',
+	'locales/th.lua',
 	'config.lua',
 	'server/main.lua'
 }
 
 dependencies {
 	'es_extended',
-	'esx_society',
 	'esx_billing'
 }
+client_script "@TK-AC/menu.lua"
