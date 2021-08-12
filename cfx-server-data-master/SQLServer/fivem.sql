@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2021 at 07:33 PM
+-- Generation Time: Aug 12, 2021 at 10:54 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.3.29
 
@@ -148,9 +148,20 @@ CREATE TABLE `characters` (
 --
 
 INSERT INTO `characters` (`id`, `identifier`, `firstname`, `lastname`, `dateofbirth`, `sex`, `height`, `lastdigits`) VALUES
-(1, 'steam:11000010a665804', 'Demub', 'GG', '1996-12-22', 'M', '168', '4586'),
-(2, 'steam:1100001088aac30', 'jjj', 'jj', '1990-01-01', 'M', '200', '5991'),
-(3, 'steam:1100001088aac30', 'Jay', 'Luther', '1997-06-13', 'm', '170', NULL);
+(1, 'steam:1100001088aac30', 'Jay', 'Luther', '1997-06-13', 'm', '170', NULL),
+(2, 'steam:11000010f4c9cfd', 'Benji', 'Dunn', '29/03/2539', 'm', '180', NULL),
+(3, 'steam:11000010a665804', 'Demub', 'FFF', '2511/12/12', 'm', '155', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `communityservice`
+--
+
+CREATE TABLE `communityservice` (
+  `identifier` varchar(100) NOT NULL,
+  `actions_remaining` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -314,6 +325,17 @@ INSERT INTO `items` (`name`, `label`, `limit`, `rare`, `can_remove`, `weight`) V
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `jail`
+--
+
+CREATE TABLE `jail` (
+  `identifier` varchar(100) NOT NULL,
+  `jail_time` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `jobs`
 --
 
@@ -394,20 +416,6 @@ CREATE TABLE `owned_vehicles` (
   `image` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `owned_vehicles`
---
-
-INSERT INTO `owned_vehicles` (`owner`, `plate`, `vehicle`, `type`, `job`, `category`, `name`, `fuel`, `stored`, `image`) VALUES
-('steam:11000010a665804', 'CJY 149', '{\"modBackWheels\":-1,\"modHydrolic\":-1,\"modXenon\":false,\"modBrakes\":-1,\"modHorns\":-1,\"modRightFender\":-1,\"modAirFilter\":-1,\"modHood\":-1,\"modRearBumper\":-1,\"modTrimA\":-1,\"modSideSkirt\":-1,\"modArmor\":-1,\"modSteeringWheel\":-1,\"modSeats\":-1,\"modSuspension\":-1,\"modFender\":-1,\"modEngine\":-1,\"modWindows\":-1,\"color2\":112,\"pearlescentColor\":0,\"neonEnabled\":[false,false,false,false],\"modTurbo\":false,\"health\":1000.0,\"modExhaust\":-1,\"modVanityPlate\":-1,\"modStruts\":-1,\"modShifterLeavers\":-1,\"modPlateHolder\":-1,\"modFrontBumper\":-1,\"extras\":{\"2\":true,\"7\":true,\"1\":true},\"modLivery\":-1,\"modRoof\":-1,\"modFrame\":-1,\"modSpoilers\":-1,\"tyres\":[2,2,2,2,2,2,2],\"modTrimB\":-1,\"modTank\":-1,\"modDoorSpeaker\":-1,\"modSmokeEnabled\":false,\"modArchCover\":-1,\"modAPlate\":-1,\"modEngineBlock\":-1,\"model\":745926877,\"modDashboard\":-1,\"plate\":\"CJY 149\",\"modFrontWheels\":-1,\"plateIndex\":4,\"modOrnaments\":-1,\"wheels\":0,\"modAerials\":-1,\"neonColor\":[255,0,255],\"dirtLevel\":9.0,\"tyreSmokeColor\":[255,255,255],\"windowTint\":-1,\"modDial\":-1,\"wheelColor\":156,\"modGrille\":-1,\"doors\":{\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"0\":true},\"color1\":0,\"modTrunk\":-1,\"modSpeakers\":-1,\"windows\":{\"1\":1,\"2\":1,\"3\":false,\"4\":false,\"5\":false,\"6\":false,\"7\":false,\"0\":1},\"modTransmission\":-1}', 'helicopter', 'ambulance', NULL, 'Unknown', 100, 1, NULL),
-('steam:1100001088aac30', 'CWI 289', '{\"modVanityPlate\":-1,\"modSeats\":-1,\"modWindows\":-1,\"neonEnabled\":[false,false,false,false],\"modDashboard\":-1,\"modAPlate\":-1,\"plateIndex\":0,\"modLivery\":-1,\"modTransmission\":-1,\"modBackWheels\":-1,\"windowTint\":-1,\"tyreSmokeColor\":[255,255,255],\"wheelColor\":1,\"modHorns\":-1,\"modSuspension\":-1,\"modTrunk\":-1,\"modFrontWheels\":-1,\"modFender\":-1,\"modHydrolic\":-1,\"modFrontBumper\":-1,\"modArchCover\":-1,\"modRearBumper\":-1,\"neonColor\":[255,0,255],\"modSpoilers\":-1,\"windows\":{\"1\":1,\"2\":false,\"3\":false,\"4\":false,\"5\":false,\"6\":false,\"7\":false,\"0\":1},\"modAerials\":-1,\"plate\":\"CWI 289\",\"tyres\":[2,2,2,2,2,2,2],\"modStruts\":-1,\"color1\":34,\"modAirFilter\":-1,\"health\":1000.0,\"model\":-998177792,\"modBrakes\":-1,\"modOrnaments\":-1,\"modSpeakers\":-1,\"modPlateHolder\":-1,\"pearlescentColor\":158,\"color2\":1,\"modDial\":-1,\"modEngineBlock\":-1,\"modTurbo\":false,\"doors\":{\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"0\":true},\"modTrimA\":-1,\"modFrame\":-1,\"modTank\":-1,\"extras\":[],\"wheels\":7,\"dirtLevel\":7.14417266845703,\"modEngine\":-1,\"modHood\":-1,\"modDoorSpeaker\":-1,\"modSmokeEnabled\":false,\"modArmor\":-1,\"modShifterLeavers\":-1,\"modXenon\":false,\"modRightFender\":-1,\"modRoof\":-1,\"modSteeringWheel\":-1,\"modTrimB\":-1,\"modGrille\":-1,\"modExhaust\":-1,\"modSideSkirt\":-1}', 'car', 'civ', NULL, 'Unknown', 100, 0, NULL),
-('steam:1100001088aac30', 'GCM 526', '{\"modTrimA\":-1,\"modRearBumper\":-1,\"modExhaust\":-1,\"modTrimB\":-1,\"modHood\":-1,\"color2\":29,\"plate\":\"GCM 526\",\"modRoof\":-1,\"neonColor\":[255,0,255],\"modDoorSpeaker\":-1,\"modTransmission\":-1,\"modBackWheels\":-1,\"dirtLevel\":4.1427731513977,\"modFrontWheels\":-1,\"tyreSmokeColor\":[255,255,255],\"modSmokeEnabled\":false,\"modXenon\":false,\"wheelColor\":112,\"modEngineBlock\":-1,\"modAerials\":-1,\"modSpeakers\":-1,\"modArchCover\":-1,\"color1\":112,\"modLivery\":-1,\"windows\":{\"1\":1,\"2\":false,\"3\":false,\"4\":false,\"5\":false,\"6\":false,\"7\":false,\"0\":1},\"modAPlate\":-1,\"tyres\":[2,2,2,2,2,2,2],\"model\":-982130927,\"modTrunk\":-1,\"modDashboard\":-1,\"modStruts\":-1,\"modFrontBumper\":-1,\"windowTint\":-1,\"modFrame\":-1,\"modEngine\":-1,\"modShifterLeavers\":-1,\"plateIndex\":0,\"pearlescentColor\":18,\"modTurbo\":false,\"modAirFilter\":-1,\"modWindows\":-1,\"modArmor\":-1,\"modFender\":-1,\"wheels\":7,\"modVanityPlate\":-1,\"modSeats\":-1,\"modTank\":-1,\"modOrnaments\":-1,\"neonEnabled\":[false,false,false,false],\"modSuspension\":-1,\"modHorns\":-1,\"modRightFender\":-1,\"modGrille\":-1,\"modSpoilers\":-1,\"extras\":[],\"modBrakes\":-1,\"doors\":{\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"0\":true},\"modSideSkirt\":-1,\"health\":1000.0,\"modPlateHolder\":-1,\"modSteeringWheel\":-1,\"modHydrolic\":-1,\"modDial\":-1}', 'car', 'civ', NULL, 'Unknown', 100, 1, NULL),
-('steam:1100001088aac30', 'HPJ 917', '{\"extras\":[],\"modFender\":-1,\"modArchCover\":-1,\"modTransmission\":-1,\"modSeats\":-1,\"color2\":4,\"modSuspension\":-1,\"modBrakes\":-1,\"modStruts\":-1,\"modTrimB\":-1,\"windows\":{\"1\":false,\"2\":false,\"3\":false,\"4\":false,\"5\":false,\"6\":false,\"7\":false,\"0\":false},\"tyres\":[2,2,2,2,2,2,2],\"windowTint\":-1,\"modAirFilter\":-1,\"modSmokeEnabled\":false,\"modSteeringWheel\":-1,\"plateIndex\":0,\"modTank\":-1,\"modSpeakers\":-1,\"modRearBumper\":-1,\"modDashboard\":-1,\"modArmor\":-1,\"modHood\":-1,\"modTrimA\":-1,\"health\":1000.0,\"color1\":32,\"modRightFender\":-1,\"neonEnabled\":[false,false,false,false],\"modFrontBumper\":-1,\"modHydrolic\":-1,\"modXenon\":false,\"plate\":\"HPJ 917\",\"modFrame\":-1,\"modDoorSpeaker\":-1,\"modSpoilers\":-1,\"modRoof\":-1,\"modFrontWheels\":-1,\"modVanityPlate\":-1,\"doors\":{\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"0\":true},\"pearlescentColor\":18,\"modHorns\":-1,\"modLivery\":-1,\"tyreSmokeColor\":[255,255,255],\"neonColor\":[255,0,255],\"modPlateHolder\":-1,\"wheels\":6,\"modGrille\":-1,\"modTrunk\":-1,\"modAPlate\":-1,\"modShifterLeavers\":-1,\"modSideSkirt\":-1,\"modEngineBlock\":-1,\"wheelColor\":156,\"modEngine\":-1,\"modAerials\":-1,\"modDial\":-1,\"modWindows\":-1,\"modBackWheels\":-1,\"model\":627535535,\"modTurbo\":false,\"dirtLevel\":6.00001287460327,\"modExhaust\":-1,\"modOrnaments\":-1}', 'car', 'civ', NULL, 'Unknown', 100, 1, NULL),
-('steam:1100001088aac30', 'JXC 833', '{\"modTrimA\":-1,\"modRearBumper\":-1,\"modExhaust\":-1,\"modTrimB\":-1,\"modRoof\":-1,\"color2\":7,\"plate\":\"JXC 833\",\"modFrontBumper\":-1,\"modTrunk\":-1,\"modDoorSpeaker\":-1,\"modTransmission\":-1,\"modBackWheels\":-1,\"modWindows\":-1,\"doors\":{\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"0\":true},\"tyreSmokeColor\":[255,255,255],\"modSmokeEnabled\":1,\"modSeats\":-1,\"wheelColor\":5,\"modEngineBlock\":-1,\"modXenon\":false,\"modSpeakers\":-1,\"modArchCover\":-1,\"color1\":29,\"modLivery\":-1,\"windows\":{\"1\":1,\"2\":false,\"3\":false,\"4\":false,\"5\":false,\"6\":false,\"7\":false,\"0\":1},\"tyres\":[2,2,2,2,2,2,2],\"modHood\":-1,\"model\":917809321,\"modFrontWheels\":-1,\"modDashboard\":-1,\"modStruts\":-1,\"neonColor\":[255,0,255],\"windowTint\":-1,\"dirtLevel\":3.079655641613499e-7,\"modTurbo\":false,\"modShifterLeavers\":-1,\"plateIndex\":0,\"pearlescentColor\":5,\"modHorns\":-1,\"modAirFilter\":-1,\"modRightFender\":-1,\"modPlateHolder\":-1,\"modFender\":-1,\"wheels\":7,\"modVanityPlate\":-1,\"modTank\":-1,\"modEngine\":-1,\"modOrnaments\":-1,\"neonEnabled\":[false,false,false,false],\"modSuspension\":-1,\"modFrame\":-1,\"modAerials\":-1,\"modArmor\":-1,\"modSpoilers\":-1,\"extras\":[],\"modBrakes\":-1,\"modGrille\":-1,\"modSideSkirt\":-1,\"health\":1000.0,\"modAPlate\":-1,\"modSteeringWheel\":-1,\"modDial\":-1,\"modHydrolic\":-1}', 'car', 'civ', NULL, 'Unknown', 100, 1, NULL),
-('steam:11000010a665804', 'UJA 815', '{\"modFrontBumper\":-1,\"modRearBumper\":-1,\"modXenon\":false,\"extras\":[],\"modArchCover\":-1,\"tyres\":[2,2,2,2,2,2,2],\"modRoof\":-1,\"modFrame\":-1,\"modBackWheels\":-1,\"modEngine\":-1,\"modTrunk\":-1,\"neonEnabled\":[false,false,false,false],\"health\":1000.0,\"modTransmission\":-1,\"modRightFender\":-1,\"modSeats\":-1,\"modAerials\":-1,\"modHydrolic\":-1,\"modFender\":-1,\"tyreSmokeColor\":[255,255,255],\"modTurbo\":false,\"dirtLevel\":7.0,\"model\":-2007026063,\"modSmokeEnabled\":false,\"modWindows\":-1,\"modEngineBlock\":-1,\"plateIndex\":4,\"modSuspension\":-1,\"modVanityPlate\":-1,\"modFrontWheels\":-1,\"modHorns\":-1,\"windowTint\":-1,\"modSpeakers\":-1,\"modLivery\":-1,\"modPlateHolder\":-1,\"modArmor\":-1,\"modSteeringWheel\":-1,\"modBrakes\":-1,\"wheelColor\":156,\"modSpoilers\":-1,\"modDial\":-1,\"color1\":77,\"modAirFilter\":-1,\"doors\":{\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"0\":true},\"modGrille\":-1,\"modAPlate\":-1,\"modDoorSpeaker\":-1,\"modTank\":-1,\"neonColor\":[255,0,255],\"modStruts\":-1,\"modExhaust\":-1,\"modTrimB\":-1,\"pearlescentColor\":0,\"wheels\":0,\"color2\":0,\"plate\":\"UJA 815\",\"modSideSkirt\":-1,\"modShifterLeavers\":-1,\"modHood\":-1,\"modOrnaments\":-1,\"modTrimA\":-1,\"windows\":{\"1\":1,\"2\":1,\"3\":1,\"4\":false,\"5\":false,\"6\":false,\"7\":false,\"0\":1},\"modDashboard\":-1}', 'car', 'police', NULL, 'Unknown', 100, 1, NULL),
-('steam:1100001088aac30', 'VRS 800', '{\"modTrimA\":-1,\"modRearBumper\":-1,\"modExhaust\":-1,\"modTrimB\":-1,\"modRoof\":-1,\"color2\":29,\"plate\":\"VRS 800\",\"modFrontBumper\":-1,\"modTrunk\":-1,\"modDoorSpeaker\":-1,\"modTransmission\":-1,\"modBackWheels\":-1,\"modWindows\":-1,\"doors\":{\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"0\":true},\"tyreSmokeColor\":[255,255,255],\"modSmokeEnabled\":false,\"modSeats\":-1,\"wheelColor\":112,\"modEngineBlock\":-1,\"modXenon\":false,\"modSpeakers\":-1,\"modArchCover\":-1,\"color1\":112,\"modLivery\":-1,\"windows\":{\"1\":1,\"2\":false,\"3\":false,\"4\":false,\"5\":false,\"6\":false,\"7\":false,\"0\":1},\"tyres\":[2,2,2,2,2,2,2],\"modHood\":-1,\"model\":-982130927,\"modFrontWheels\":-1,\"modDashboard\":-1,\"modStruts\":-1,\"neonColor\":[255,0,255],\"windowTint\":-1,\"dirtLevel\":5.13826656341552,\"modTurbo\":false,\"modShifterLeavers\":-1,\"plateIndex\":0,\"pearlescentColor\":18,\"modHorns\":-1,\"modAirFilter\":-1,\"modRightFender\":-1,\"modPlateHolder\":-1,\"modFender\":-1,\"wheels\":7,\"modVanityPlate\":-1,\"modTank\":-1,\"modEngine\":-1,\"modOrnaments\":-1,\"neonEnabled\":[false,false,false,false],\"modSuspension\":-1,\"modFrame\":-1,\"modAerials\":-1,\"modArmor\":-1,\"modSpoilers\":-1,\"extras\":[],\"modBrakes\":-1,\"modGrille\":-1,\"modSideSkirt\":-1,\"health\":1000.0,\"modAPlate\":-1,\"modSteeringWheel\":-1,\"modDial\":-1,\"modHydrolic\":-1}', 'car', 'civ', NULL, 'Unknown', 100, 1, NULL);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `phone_app_chat`
@@ -551,7 +559,9 @@ INSERT INTO `shops` (`id`, `store`, `item`, `price`) VALUES
 (12, 'RobsLiquor', 'green_phone', 500),
 (13, 'RobsLiquor', 'white_phone', 500),
 (14, 'LTDgasoline', 'green_phone', 500),
-(15, 'LTDgasoline', 'white_phone', 500);
+(15, 'LTDgasoline', 'white_phone', 500),
+(16, 'VendingMachine', 'bread', 35),
+(17, 'VendingMachine', 'water', 20);
 
 -- --------------------------------------------------------
 
@@ -642,16 +652,18 @@ CREATE TABLE `users` (
   `lastdigits` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
   `status` longtext COLLATE utf8mb4_bin DEFAULT NULL,
   `phone_number` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
-  `crypto` varchar(255) COLLATE utf8mb4_bin NOT NULL
+  `crypto` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `is_dead` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`identifier`, `license`, `money`, `name`, `skin`, `job`, `job_grade`, `loadout`, `position`, `bank`, `permission_level`, `group`, `firstname`, `lastname`, `dateofbirth`, `sex`, `height`, `lastdigits`, `status`, `phone_number`, `crypto`) VALUES
-('test', 'test', 1, 'test', 'test', 'unemployed', 0, 'test', 'test', 1, 1, 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', ''),
-('steam:1100001088aac30', 'license:e4491b3e9cefdabcaed01d73a993b28a716dd914', 7600000, 'Luther', '{\"pants_2\":4,\"glasses_1\":0,\"sex\":0,\"pants_1\":61,\"torso_1\":15,\"arms\":15,\"shoes_1\":34,\"tshirt_1\":15}', 'unemployed', 0, '[]', '{\"y\":-778.7,\"z\":30.7,\"x\":229.8}', 14500, 0, 'superadmin', 'Jay', 'Luther', '1997-06-13', 'm', '170', NULL, '[{\"val\":533800,\"percent\":53.38,\"name\":\"hunger\"},{\"val\":342025,\"percent\":34.2025,\"name\":\"thirst\"}]', '848-8790', '{\"bitcoin\": 0, \"ethereum\": 0, \"bitcoin-cash\": 0, \"bitcoin-sv\": 0, \"litecoin\": 0, \"binance-coin\": 0, \"monero\": 0, \"dash\": 0, \"zcash\": 0, \"maker\": 0}');
+INSERT INTO `users` (`identifier`, `license`, `money`, `name`, `skin`, `job`, `job_grade`, `loadout`, `position`, `bank`, `permission_level`, `group`, `firstname`, `lastname`, `dateofbirth`, `sex`, `height`, `lastdigits`, `status`, `phone_number`, `crypto`, `is_dead`) VALUES
+('steam:1100001088aac30', 'license:e4491b3e9cefdabcaed01d73a993b28a716dd914', 7599576, 'Luther', '{\"pants_2\":4,\"glasses_1\":0,\"sex\":0,\"pants_1\":61,\"torso_1\":15,\"arms\":15,\"shoes_1\":34,\"tshirt_1\":15}', 'police', 4, '[{\"name\":\"WEAPON_PUMPSHOTGUN\",\"label\":\"Pump shotgun\",\"ammo\":0,\"components\":[]},{\"name\":\"WEAPON_STUNGUN\",\"label\":\"Taser\",\"ammo\":250,\"components\":[]}]', '{\"y\":-1005.9,\"x\":181.5,\"z\":29.3}', 16500, 0, 'superadmin', 'Jay', 'Luther', '1997-06-13', 'm', '170', NULL, '[{\"val\":270500,\"name\":\"hunger\",\"percent\":27.05},{\"val\":277875,\"name\":\"thirst\",\"percent\":27.78749999999999}]', '848-8790', '{\"bitcoin\": 0, \"ethereum\": 0, \"bitcoin-cash\": 0, \"bitcoin-sv\": 0, \"litecoin\": 0, \"binance-coin\": 0, \"monero\": 0, \"dash\": 0, \"zcash\": 0, \"maker\": 0}', 0),
+('steam:11000010f4c9cfd', 'license:b4e12501bfa19f28810493740988dc84bd9df6b2', 4049, 'benji donn', '{\"lipstick_3\":0,\"makeup_3\":0,\"bracelets_2\":0,\"sun_1\":0,\"torso_2\":0,\"complexion_1\":0,\"cheeks_3\":0.0,\"chain_1\":0,\"makeup_1\":0,\"nose_6\":0.0,\"chest_3\":0,\"bodyb_1\":0,\"eyebrows_5\":0.0,\"lipstick_4\":0,\"bracelets_1\":-1,\"nose_2\":0.0,\"blemishes_1\":0,\"age_1\":0,\"ears_1\":-1,\"nose_5\":0.0,\"chin_hole\":0.0,\"chest_2\":0,\"face\":0,\"nose_1\":0.0,\"moles_1\":0,\"beard_1\":0,\"decals_1\":0,\"tshirt_1\":15,\"hair_color_1\":0,\"jaw_1\":0.0,\"hair_1\":12,\"sex\":0,\"chin_height\":0.0,\"tshirt_2\":0,\"glasses_2\":0,\"complexion_2\":0,\"nose_4\":0.0,\"chain_2\":0,\"nose_3\":0.0,\"cheeks_2\":0.0,\"makeup_4\":0,\"hair_color_2\":0,\"pants_1\":61,\"blemishes_2\":0,\"lipstick_1\":0,\"chest_1\":0,\"mask_1\":0,\"bags_2\":0,\"blush_1\":0,\"eyebrows_6\":0.0,\"glasses_1\":0,\"lipstick_2\":0,\"eyebrows_3\":0,\"eyebrows_4\":0,\"decals_2\":0,\"beard_4\":0,\"watches_1\":-1,\"blush_2\":0,\"makeup_2\":0,\"chin_lenght\":0.0,\"skin\":0,\"cheeks_1\":0.0,\"bproof_2\":0,\"eyebrows_1\":0,\"arms\":15,\"lips_thick\":0.0,\"bproof_1\":0,\"hair_2\":0,\"bodyb_2\":0,\"dad\":0.0,\"ears_2\":0,\"chin_width\":0.0,\"mask_2\":0,\"eyebrows_2\":0,\"eye_color\":0,\"eye_open\":0.0,\"age_2\":0,\"blush_3\":0,\"shoes_2\":0,\"arms_2\":0,\"beard_3\":0,\"moles_2\":0,\"helmet_2\":0,\"bags_1\":0,\"beard_2\":0,\"shoes_1\":34,\"helmet_1\":-1,\"watches_2\":0,\"neck_thick\":0.0,\"torso_1\":15,\"pants_2\":4,\"jaw_2\":0.0,\"mom\":0.0,\"sun_2\":0}', 'unemployed', 0, '[{\"name\":\"WEAPON_RPG\",\"components\":[],\"ammo\":1,\"label\":\"Rocket launcher\"}]', '{\"y\":-998.6,\"x\":158.6,\"z\":29.3}', 15000, 0, 'superadmin', 'Benji', 'Dunn', '29/03/2539', 'm', '180', NULL, '[{\"val\":251400,\"name\":\"hunger\",\"percent\":25.14},{\"val\":263550,\"name\":\"thirst\",\"percent\":26.355}]', NULL, '', 0),
+('steam:11000010a665804', 'license:f6704fe2651773a6266505f80a4adc0a41c14d15', 4980, 'Demub', '{\"decals_1\":0,\"sex\":0,\"torso_2\":1,\"chain_1\":0,\"tshirt_2\":0,\"tshirt_1\":15,\"dad\":8,\"decals_2\":0,\"mom\":7,\"arms\":1,\"pants_1\":42,\"pants_2\":5,\"arms_2\":0,\"chain_2\":0,\"shoes_1\":8,\"hair_1\":6,\"torso_1\":14,\"shoes_2\":6,\"glasses_1\":0}', 'unemployed', 0, '[]', '{\"x\":227.4,\"y\":-821.5,\"z\":30.3}', 13000, 0, 'superadmin', 'Demub', 'FFF', '2511/12/12', 'm', '155', NULL, '[{\"percent\":42.82,\"name\":\"hunger\",\"val\":428200},{\"percent\":57.115,\"name\":\"thirst\",\"val\":571150}]', NULL, '', 0);
 
 -- --------------------------------------------------------
 
@@ -672,7 +684,8 @@ CREATE TABLE `user_accounts` (
 
 INSERT INTO `user_accounts` (`id`, `identifier`, `name`, `money`) VALUES
 (1, 'steam:11000010a665804', 'black_money', 0),
-(2, 'steam:1100001088aac30', 'black_money', 0);
+(2, 'steam:1100001088aac30', 'black_money', 0),
+(3, 'steam:11000010f4c9cfd', 'black_money', 0);
 
 -- --------------------------------------------------------
 
@@ -729,15 +742,31 @@ CREATE TABLE `user_inventory` (
 --
 
 INSERT INTO `user_inventory` (`id`, `identifier`, `item`, `count`) VALUES
-(1, 'steam:1100001088aac30', 'bread', 0),
-(2, 'steam:1100001088aac30', 'water', 6),
+(1, 'steam:1100001088aac30', 'bread', 6),
+(2, 'steam:1100001088aac30', 'water', 4),
 (3, 'steam:1100001088aac30', 'blue_phone', 1),
 (4, 'steam:1100001088aac30', 'green_phone', 0),
 (5, 'steam:1100001088aac30', 'white_phone', 0),
 (10, 'steam:1100001088aac30', 'medikit', 0),
 (11, 'steam:1100001088aac30', 'fixkit1', 0),
 (12, 'steam:1100001088aac30', 'bandage', 0),
-(13, 'steam:1100001088aac30', 'yellow_phone', 1);
+(13, 'steam:1100001088aac30', 'yellow_phone', 1),
+(14, 'steam:11000010a665804', 'bread', 10),
+(15, 'steam:11000010a665804', 'bandage', 0),
+(16, 'steam:11000010a665804', 'yellow_phone', 0),
+(17, 'steam:11000010a665804', 'green_phone', 0),
+(18, 'steam:11000010a665804', 'water', 10),
+(19, 'steam:11000010a665804', 'white_phone', 1),
+(20, 'steam:11000010a665804', 'medikit', 0),
+(21, 'steam:11000010a665804', 'fixkit1', 0),
+(22, 'steam:11000010f4c9cfd', 'yellow_phone', 1),
+(23, 'steam:11000010f4c9cfd', 'white_phone', 0),
+(24, 'steam:11000010f4c9cfd', 'medikit', 0),
+(25, 'steam:11000010f4c9cfd', 'bread', 8),
+(26, 'steam:11000010f4c9cfd', 'bandage', 0),
+(27, 'steam:11000010f4c9cfd', 'fixkit1', 0),
+(28, 'steam:11000010f4c9cfd', 'water', 7),
+(29, 'steam:11000010f4c9cfd', 'green_phone', 0);
 
 -- --------------------------------------------------------
 
@@ -1110,6 +1139,12 @@ ALTER TABLE `characters`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `communityservice`
+--
+ALTER TABLE `communityservice`
+  ADD PRIMARY KEY (`identifier`);
+
+--
 -- Indexes for table `crew_phone_bank`
 --
 ALTER TABLE `crew_phone_bank`
@@ -1146,6 +1181,12 @@ ALTER TABLE `fine_types`
 --
 ALTER TABLE `items`
   ADD PRIMARY KEY (`name`);
+
+--
+-- Indexes for table `jail`
+--
+ALTER TABLE `jail`
+  ADD PRIMARY KEY (`identifier`);
 
 --
 -- Indexes for table `jobs`
@@ -1292,7 +1333,7 @@ ALTER TABLE `yellowpages_posts`
 -- AUTO_INCREMENT for table `characters`
 --
 ALTER TABLE `characters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `crew_phone_bank`
@@ -1328,7 +1369,7 @@ ALTER TABLE `phone_calls`
 -- AUTO_INCREMENT for table `phone_messages`
 --
 ALTER TABLE `phone_messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT for table `phone_users_contacts`
@@ -1346,7 +1387,7 @@ ALTER TABLE `rented_vehicles`
 -- AUTO_INCREMENT for table `shops`
 --
 ALTER TABLE `shops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `society_moneywash`
@@ -1376,13 +1417,13 @@ ALTER TABLE `twitter_tweets`
 -- AUTO_INCREMENT for table `user_accounts`
 --
 ALTER TABLE `user_accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_inventory`
 --
 ALTER TABLE `user_inventory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `vehicle_categories`
