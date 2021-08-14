@@ -19,5 +19,7 @@ Config.Peds = {
 	{362.06, 298.77, 103.88, 250.85, 0xC99F21C4,"s_m_m_security_01", "security guard", "mini@strip_club@idles@bouncer@go_away"},
 	{2678.36, 3279.15, 55.24, 330.85, 0xC99F21C4,"mp_m_shopkeep_01", "grocery store", "mini@strip_club@idles@bouncer@go_away"},
 	{1960.3, 3739.54, 32.34, 300.85, 0xC99F21C4,"mp_m_shopkeep_01", "grocery store", "mini@strip_club@idles@bouncer@go_away"},
-	{1727.61, 6414.85, 35.04, 600.85, 0xC99F21C4,"mp_m_shopkeep_01", "grocery store", "mini@strip_club@idles@bouncer@go_away"}
+	{1727.61, 6414.85, 35.04, 600.85, 0xC99F21C4,"mp_m_shopkeep_01", "grocery store", "mini@strip_club@idles@bouncer@go_away"},
+	{-1336.69, -1277.82, 4.87, 480.85, 0xC99F21C4,"a_m_y_roadcyc_01", "mask", "mini@strip_club@idles@bouncer@go_away"},
+	{-332.27, -126.37, 39.01, 500.85, 0xC99F21C4,"s_m_y_pestcont_01", "mechanic", "mini@strip_club@idles@bouncer@go_away"}
 }
