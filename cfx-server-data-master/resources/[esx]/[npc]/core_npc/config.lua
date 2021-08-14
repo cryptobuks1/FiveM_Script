@@ -6,7 +6,7 @@ Config.displayColor = "~g~"
 
 Config.Peds = {
     -- { x, y, z, ped heading, model hash, ped model, heading text, animation info }
-    {461.68, -975.02, 25.7, 500.77, 0xC99F21C4,"s_m_m_security_01", "Garage", "mini@strip_club@idles@bouncer@base"},
+    {461.68, -975.02, 25.7, 500.77, 0xC99F21C4,"s_m_y_cop_01", "Garage", "mini@strip_club@idles@bouncer@base"},  -- สถานีตำรวจ
 	{308.38, -595.41, 43.28, 430.85, 0xC99F21C4,"s_m_m_scientist_01", "doctor", "mini@strip_club@idles@bouncer@go_away"},
 	{311.63, -594.13, 43.28, 700.85, 0xC99F21C4,"s_f_y_scrubs_01", "nurse", "mini@strip_club@idles@bouncer@go_away"},
 	{24.45, -1346.93, 29.5, 250.85, 0xC99F21C4,"mp_m_shopkeep_01", "grocery store", "mini@strip_club@idles@bouncer@go_away"},

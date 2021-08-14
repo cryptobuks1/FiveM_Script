@@ -38,7 +38,7 @@ body, html {
 }
 
 .tab.selected {
-	background: rgb(75, 50, 50);
+	background: rgb(50, 75, 50);
 }
 
 #list {
@@ -58,7 +58,7 @@ body, html {
 .quick {
 	margin-left: 9px;
 	width: 31%;
-	background: rgb(151, 66, 66);
+	background: rgb(66, 151, 66);
 	border: none;
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -82,7 +82,7 @@ body, html {
 	margin-top: 4px;
 	padding-top: 5px;
 	padding-bottom: 5px;
-	background: rgb(151, 66, 66);
+	background: rgb(66, 151, 66);
 	color: white;
 	font-weight: bold;
 }
@@ -120,7 +120,7 @@ body, html {
 }
 
 .player.selected {
-	background: -webkit-linear-gradient(right, transparent 0%, rgb(95, 65, 65) 100%);
+	background: -webkit-linear-gradient(right, transparent 0%, rgb(65, 95, 65) 100%);
 }
 
 .topbar {
@@ -146,5 +146,5 @@ body, html {
 	float: right;
 	padding: 5px;
 	padding-right: 10px;
-	color: rgb(255, 0, 0);
+	color: rgb(0, 255, 0);
 }

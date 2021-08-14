@@ -14,3 +14,5 @@ client_scripts {
 }
 
 export 'addNPC'
+
+dependency 'es_extended'

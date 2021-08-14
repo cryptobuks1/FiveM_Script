@@ -3,41 +3,28 @@ TriggerEvent("es:addGroup", "mod", "user", function(group) end)
 -- Modify if you want, btw the _admin_ needs to be able to target the group and it will work
 local groupsRequired = {
 	slay = "mod",
-	noclip = "mod",
+	noclip = "admin",
 	crash = "superadmin",
 	freeze = "mod",
-	bring = "admin",
-	["goto"] = "admin",
-	gopos = "mod",
+	bring = "mod",
+	["goto"] = "mod",
 	slap = "mod",
 	slay = "mod",
 	kick = "mod",
-	ban = "mod"
+	ban = "admin"
 }
 
 local banned = ""
 local bannedTable = {}
 
-
 function loadBans()
-	banned = LoadResourceFile("es_admin2", "data/bans.txt") or ""
-	if banned then
-		local b = stringsplit(banned, "\n")
-		for k,v in ipairs(b) do
-			bannedTable[v] = true
-		end
-	end
-
-	if GetConvar("es_admin2_globalbans", "0") == "1" then
-		PerformHttpRequest("http://essentialmode.com/bans.txt", function(err, rText, headers)
-			local b = stringsplit(rText, "\n")
-			for k,v in pairs(b)do
-				bannedTable[v] = true
-			end
-		end)
+	banned = LoadResourceFile(GetCurrentResourceName(), "bans.json") or ""
+	if banned ~= "" then
+		bannedTable = json.decode(banned)
+	else
+		bannedTable = {}
 	end
 end
-
 
 RegisterCommand("refresh_bans", function()
 	loadBans()
@@ -47,7 +34,6 @@ function loadExistingPlayers()
 	TriggerEvent("es:getPlayers", function(curPlayers)
 		for k,v in pairs(curPlayers)do
 			TriggerClientEvent("es_admin:setGroup", v.get('source'), v.get('group'))
-			TriggerClientEvent("esx_rpscript:setGroup", v.get('source'), v.get('group'))
 		end
 	end)
 end
@@ -59,7 +45,18 @@ function removeBan(id)
 	SaveResourceFile(GetCurrentResourceName(), "bans.json", json.encode(bannedTable), -1)
 end
 
-
+function isBanned(id)
+	if bannedTable[id] ~= nil then
+		if bannedTable[id].expire < os.time() then
+			removeBan(id)
+			return false
+		else
+			return bannedTable[id]
+		end
+	else
+		return false
+	end
+end
 
 function permBanUser(bannedBy, id)
 	bannedTable[id] = {
@@ -71,22 +68,21 @@ function permBanUser(bannedBy, id)
 	SaveResourceFile(GetCurrentResourceName(), "bans.json", json.encode(bannedTable), -1)
 end
 
-function isBanned(id)
-	return bannedTable[id]
-end
+function banUser(expireSeconds, bannedBy, id, re)
+	bannedTable[id] = {
+		banner = bannedBy,
+		reason = re,
+		expire = (os.time() + expireSeconds)
+	}
 
-
-
-function banUser(id)
-	banned = banned .. id .. "\n"
-	SaveResourceFile("es_admin2", "data/bans.txt", banned, -1)
-	bannedTable[id] = true
+	SaveResourceFile(GetCurrentResourceName(), "bans.json", json.encode(bannedTable), -1)
 end
 
 AddEventHandler('playerConnecting', function(user, set)
 	for k,v in ipairs(GetPlayerIdentifiers(source))do
-		if isBanned(v) then
-			set(GetConvar("es_admin_banreason", "You're banned from this server"))
+		local banData = isBanned(v)
+		if banData ~= false then
+			set("Banned for: " .. banData.reason .. "\nExpires: " .. (os.date("%c", banData.expire)))
 			CancelEvent()
 			break
 		end
@@ -108,7 +104,7 @@ AddEventHandler('es_admin:all', function(type)
 	local Source = source
 	TriggerEvent('es:getPlayerFromId', source, function(user)
 		TriggerEvent('es:canGroupTarget', user.getGroup(), "admin", function(available)
-			if available or user.getGroup() == "admin" then
+			if available or user.getGroup() == "superadmin" then
 				if type == "slay_all" then TriggerClientEvent('es_admin:quick', -1, 'slay') end
 				if type == "bring_all" then TriggerClientEvent('es_admin:quick', -1, 'bring', Source) end
 				if type == "slap_all" then TriggerClientEvent('es_admin:quick', -1, 'slap') end
@@ -140,16 +136,27 @@ AddEventHandler('es_admin:quick', function(id, type)
 						if type == "kick" then DropPlayer(id, 'Kicked by es_admin GUI') end
 
 						if type == "ban" then
-							for k,v in ipairs(GetPlayerIdentifiers(id))do
-								banUser(v)
+							local id
+							local ip
+							for k,v in ipairs(GetPlayerIdentifiers(source))do
+								if string.sub(v, 1, string.len("steam:")) == "steam:" then
+									permBanUser(user.identifier, v)
+								elseif string.sub(v, 1, string.len("ip:")) == "ip:" then
+									permBanUser(user.identifier, v)
+								end
 							end
+
 							DropPlayer(id, GetConvar("es_admin_banreason", "You were banned from this server"))
 						end
 					else
 						if not available then
-							TriggerClientEvent('chatMessage', Source, 'SYSTEM', {255, 0, 0}, "Your group can not use this command.")
+							TriggerClientEvent('chat:addMessage', Source, {
+								args = {"^1SYSTEM", "You do not have permission to do this"}
+							})
 						else
-							TriggerClientEvent('chatMessage', Source, 'SYSTEM', {255, 0, 0}, "Permission denied.")
+							TriggerClientEvent('chat:addMessage', Source, {
+								args = {"^1SYSTEM", "You do not have permission to do this"}
+							})
 						end
 					end
 				end)
@@ -160,14 +167,13 @@ end)
 
 AddEventHandler('es:playerLoaded', function(Source, user)
 	TriggerClientEvent('es_admin:setGroup', Source, user.getGroup())
-	TriggerClientEvent('esx_rpscript:setGroup', Source, user.getGroup())
 end)
 
 RegisterServerEvent('es_admin:set')
 AddEventHandler('es_admin:set', function(t, USER, GROUP)
 	local Source = source
 	TriggerEvent('es:getPlayerFromId', source, function(user)
-		TriggerEvent('es:canGroupTarget', user.getGroup(), "superadmin", function(available)
+		TriggerEvent('es:canGroupTarget', user.getGroup(), "admin", function(available)
 			if available then
 			if t == "group" then
 				if(GetPlayerName(USER) == nil)then
@@ -179,7 +185,6 @@ AddEventHandler('es_admin:set', function(t, USER, GROUP)
 						if(groups[GROUP])then
 							TriggerEvent("es:setPlayerData", USER, "group", GROUP, function(response, success)
 								TriggerClientEvent('es_admin:setGroup', USER, GROUP)
-								TriggerClientEvent('esx_rpscript:setGroup', USER, GROUP)
 								TriggerClientEvent('chat:addMessage', -1, {
 									args = {"^1CONSOLE", "Group of ^2^*" .. GetPlayerName(tonumber(USER)) .. "^r^0 has been set to ^2^*" .. GROUP}
 								})
@@ -260,6 +265,136 @@ AddEventHandler('es_admin:set', function(t, USER, GROUP)
 	end)
 end)
 
+RegisterCommand('setadmin', function(source, args, raw)
+	local player = tonumber(args[1])
+	local level = tonumber(args[2])
+	if args[1] then
+		if (player and GetPlayerName(player)) then
+			if level then
+				TriggerEvent("es:setPlayerData", tonumber(args[1]), "permission_level", tonumber(args[2]), function(response, success)
+					RconPrint(response)
+
+					TriggerClientEvent('es:setPlayerDecorator', tonumber(args[1]), 'rank', tonumber(args[2]), true)
+					TriggerClientEvent('chat:addMessage', -1, {
+						args = {"^1CONSOLE", "Permission level of ^2" .. GetPlayerName(tonumber(args[1])) .. "^0 has been set to ^2 " .. args[2]}
+					})
+				end)
+			else
+				RconPrint("Invalid integer\n")
+			end
+		else
+			RconPrint("Player not ingame\n")
+		end
+	else
+		RconPrint("Usage: setadmin [user-id] [permission-level]\n")
+	end
+end, true)
+
+RegisterCommand('setgroup', function(source, args, raw)
+	local player = tonumber(args[1])
+	local group = args[2]
+	if args[1] then
+		if (player and GetPlayerName(player)) then
+			TriggerEvent("es:getAllGroups", function(groups)
+
+				if(groups[args[2]])then
+					TriggerEvent("es:getPlayerFromId", player, function(user)
+						ExecuteCommand('remove_principal identifier.' .. user.getIdentifier() .. " group." .. user.getGroup())
+
+						TriggerEvent("es:setPlayerData", player, "group", args[2], function(response, success)
+							TriggerClientEvent('es:setPlayerDecorator', player, 'group', tonumber(group), true)
+							TriggerClientEvent('chat:addMessage', -1, {
+								args = {"^1CONSOLE", "Group of ^2^*" .. GetPlayerName(player) .. "^r^0 has been set to ^2^*" .. group}
+							})
+
+							ExecuteCommand('add_principal identifier.' .. user.getIdentifier() .. " group." .. user.getGroup())
+						end)
+					end)
+				else
+					RconPrint("This group does not exist.\n")
+				end
+			end)
+		else
+			RconPrint("Player not ingame\n")
+		end
+	else
+		RconPrint("Usage: setgroup [user-id] [group]\n")
+	end
+end, true)
+
+RegisterCommand('giverole', function(source, args, raw)
+	local player = tonumber(args[1])
+	local role = table.concat(args, " ", 2)
+	if args[1] then
+		if (player and GetPlayerName(player)) then
+			if args[2] then
+				TriggerEvent("es:getPlayerFromId", player, function(user)
+					user.giveRole(role)
+					TriggerClientEvent('chat:addMessage', user.get('source'), {
+						args = {"^1SYSTEM", "You've been given a role: ^2" .. role}
+					})
+				end)
+			else
+				RconPrint("Usage: giverole [user-id] [role]\n")
+			end
+		else
+			RconPrint("Player not ingame\n")
+		end
+	else
+		RconPrint("Usage: giverole [user-id] [role]\n")
+	end
+end, true)
+
+RegisterCommand('removerole', function(source, args, raw)
+	local player = tonumber(args[1])
+	local role = table.concat(args, " ", 2)
+	if args[1] then
+		if (player and GetPlayerName(player)) then
+			if args[2] then
+				TriggerEvent("es:getPlayerFromId", tonumber(args[1]), function(user)
+					user.removeRole(role)
+					TriggerClientEvent('chat:addMessage', user.get('source'), {
+						args = {"^1SYSTEM", "You've been removed a role: ^2" .. role}
+					})
+				end)
+			else
+				RconPrint("Usage: removerole [user-id] [role]\n")
+			end
+		else
+			RconPrint("Player not ingame\n")
+		end
+	else
+		RconPrint("Usage: removerole [user-id] [role]\n")
+	end
+end, true)
+
+RegisterCommand('setmoney', function(source, args, raw)
+	local player = tonumber(args[1])
+	local money = tonumber(args[2])
+	if args[1] then
+		if (player and GetPlayerName(player)) then
+			if money then
+				TriggerEvent("es:getPlayerFromId", player, function(user)
+					if(user)then
+						user.setMoney(money)
+
+						RconPrint("Money set")
+						TriggerClientEvent('chat:addMessage', player, {
+							args = {"^1SYSTEM", "Your money has been set to: ^2^*$" .. money}
+						})
+					end
+				end)
+			else
+				RconPrint("Invalid integer\n")
+			end
+		else
+			RconPrint("Player not ingame\n")
+		end
+	else
+		RconPrint("Usage: setmoney [user-id] [money]\n")
+	end
+end, true)
+
 -- Default commands
 TriggerEvent('es:addCommand', 'admin', function(source, args, user)
 	TriggerClientEvent('chat:addMessage', source, {
@@ -306,7 +441,7 @@ TriggerEvent("es:addGroupCommand", 'ban', "admin", function(source, args, user)
 						TriggerClientEvent('chat:addMessage', -1, {
 							args = {"^1SYSTEM", "Player ^2" .. GetPlayerName(player) .. "^0 has been kicked(^2" .. reason .. "^0)"}
 						})
-					--	banUser(time, user.getIdentifier(), target.getIdentifier(), reason)
+						banUser(time, user.getIdentifier(), target.getIdentifier(), reason)
 						DropPlayer(player, "Banned for: " .. reason .. "\nExpires: " .. (os.date("%c", os.time() + time)))
 					else
 						TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "You can not target this person"}})
@@ -347,29 +482,7 @@ end, function(source, args, user)
 	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
 end, {help = "Enable or disable noclip"})
 
--- Noclip
-TriggerEvent('es:addGroupCommand', 'invi', "admin", function(source, args, user)
-	TriggerClientEvent("es_admin:invi", source)
-end, function(source, args, user)
-	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
-end, {help = "Enable or disable invisible"})
-
--- Godmode
-TriggerEvent('es:addGroupCommand', 'godmode', "admin", function(source, args, user)
-	TriggerClientEvent("es_admin:godmode", source)
-end, function(source, args, user)
-	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
-end, {help = "Enable or disable godmode"})
-
--- Godmode
-TriggerEvent('es:addGroupCommand', 'ccardel', "admin", function(source, args, user)
-	TriggerClientEvent("es_admin:ccardel", source)
-end, function(source, args, user)
-	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
-end, {help = "Enable or disable godmode"})
-
 -- Kicking
---TriggerEvent('es:addGroupCommand', 'kick', "mod", function(source, args, user)
 TriggerEvent('es:addGroupCommand', 'kick', "mod", function(source, args, user)
 	if args[1] then
 		if(tonumber(args[1]) and GetPlayerName(tonumber(args[1])))then
@@ -403,18 +516,16 @@ end, {help = "Kick a user with the specified reason or no reason", params = {{na
 
 -- Announcing
 TriggerEvent('es:addGroupCommand', 'announce', "admin", function(source, args, user)
-	TriggerClientEvent('chat:addMessage', -1, { template = '<div style="padding: 0.5vw; margin: 0.5vw; background-color: rgba(228, 7, 7, 0.6); border-radius: 3px;"><i class="fas fa-balance-scale"></i> @{0}:<br> {1}</div>',
-					args = { 'ประกาศจาก Admin',table.concat(args, " ") }
+	TriggerClientEvent('chat:addMessage', -1, {
+		args = {"^1ANNOUNCEMENT", table.concat(args, " ")}
 	})
 end, function(source, args, user)
 	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
 end, {help = "Announce a message to the entire server", params = {{name = "announcement", help = "The message to announce"}}})
 
-
 -- Freezing
 local frozen = {}
---TriggerEvent('es:addGroupCommand', 'freeze', "mod", function(source, args, user)
-TriggerEvent('es:addGroupCommand', 'freeze', "admin", function(source, args, user)
+TriggerEvent('es:addGroupCommand', 'freeze', "mod", function(source, args, user)
 	if args[1] then
 		if(tonumber(args[1]) and GetPlayerName(tonumber(args[1])))then
 			local player = tonumber(args[1])
@@ -497,8 +608,7 @@ end, function(source, args, user)
 end, {help = "Slap a user", params = {{name = "userid", help = "The ID of the player"}}})
 
 -- Goto
---TriggerEvent('es:addGroupCommand', 'goto', "mod", function(source, args, user)
-TriggerEvent('es:addGroupCommand', 'goto', "admin", function(source, args, user)
+TriggerEvent('es:addGroupCommand', 'goto', "mod", function(source, args, user)
 	if args[1] then
 		if(tonumber(args[1]) and GetPlayerName(tonumber(args[1])))then
 			local player = tonumber(args[1])
@@ -523,22 +633,11 @@ end, function(source, args, user)
 	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
 end, {help = "Teleport to a user", params = {{name = "userid", help = "The ID of the player"}}})
 
--- Go Position
-TriggerEvent('es:addGroupCommand', 'gopos', "admin", function(source, args, user)
-	TriggerClientEvent('es_admin:teleportUser', source, tonumber(args[1]), tonumber(args[2]), tonumber(args[3]))
-	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Teleported to position ^2" .. tonumber(args[1]) .. ', ' .. tonumber(args[2]) .. ', ' .. tonumber(args[3])} })
-end, function(source, args, user)
-	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
-end, {help = "gopos"})
-
-
--- gogps
-TriggerEvent('es:addGroupCommand', 'gogps', "admin", function(source, args, user)
-	TriggerClientEvent('es_admin:teleportGPS', source)
-	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Teleport to GPS"} })
-end, function(source, args, user)
-	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
-end, {help = "gogps"})
+-- Kill yourself
+TriggerEvent('es:addCommand', 'die', function(source, args, user)
+	TriggerClientEvent('es_admin:kill', source)
+	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "You killed yourself"} })
+end, {help = "Suicide"})
 
 -- Slay a player
 TriggerEvent('es:addGroupCommand', 'slay', "admin", function(source, args, user)
@@ -586,56 +685,6 @@ TriggerEvent('es:addGroupCommand', 'crash', "superadmin", function(source, args,
 end, function(source, args, user)
 	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
 end, {help = "Crash a user, no idea why this still exists", params = {{name = "userid", help = "The ID of the player"}}})
-
--- Force Change Skin
-TriggerEvent('es:addGroupCommand', 'forceskin', "admin", function(source, args, user)
-	if args[1] then
-		if(tonumber(args[1]) and GetPlayerName(tonumber(args[1])))then
-			local player = tonumber(args[1])
-
-			-- User permission check
-			TriggerEvent("es:getPlayerFromId", player, function(target)
-				if(target)then
-					TriggerClientEvent('esx_skin:openSaveableMenu', target.get('source'))
-
-					TriggerClientEvent('chat:addMessage', player, { args = {"^1SYSTEM", "You have been teleported to by ^2" .. GetPlayerName(source)} })
-					TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Teleported to player ^2" .. GetPlayerName(player) .. ""} })
-				end
-			end)
-		else
-			TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Incorrect player ID"}})
-		end
-	else
-		TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Incorrect player ID"}})
-	end
-end, function(source, args, user)
-	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
-end, {help = "Teleport to a user", params = {{name = "userid", help = "The ID of the player"}}})
-
--- Force Change Skin
-TriggerEvent('es:addGroupCommand', 'forceskinsave', "admin", function(source, args, user)
-	if args[1] then
-		if(tonumber(args[1]) and GetPlayerName(tonumber(args[1])))then
-			local player = tonumber(args[1])
-
-			-- User permission check
-			TriggerEvent("es:getPlayerFromId", player, function(target)
-				if(target)then
-					TriggerClientEvent('esx_skin:requestSaveSkin', target.get('source'))
-
-					TriggerClientEvent('chat:addMessage', player, { args = {"^1SYSTEM", "You have been teleported to by ^2" .. GetPlayerName(source)} })
-					TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Teleported to player ^2" .. GetPlayerName(player) .. ""} })
-				end
-			end)
-		else
-			TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Incorrect player ID"}})
-		end
-	else
-		TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Incorrect player ID"}})
-	end
-end, function(source, args, user)
-	TriggerClientEvent('chat:addMessage', source, { args = {"^1SYSTEM", "Insufficienct permissions!"} })
-end, {help = "Teleport to a user", params = {{name = "userid", help = "The ID of the player"}}})
 
 function stringsplit(inputstr, sep)
 	if sep == nil then

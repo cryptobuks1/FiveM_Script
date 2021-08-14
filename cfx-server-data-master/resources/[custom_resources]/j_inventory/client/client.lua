@@ -111,12 +111,20 @@ AddEventHandler('j_inventory:close', function()
     })
 end)
 
+local isUseItem = true
 RegisterNUICallback("UseItem", function(data, cb)
-    TriggerServerEvent("esx:useItem", data.item.name)
-    Citizen.Wait(50)
-    createPedScreen()
-    TriggerEvent('j_inventory:open', true)
-
+    if isUseItem then
+        isUseItem = false
+        exports['progressBars']:startUI(3000, "กำลังกิน...")
+        TriggerServerEvent("esx:useItem", data.item.name)
+        toggleCard = not toggleCard
+        TriggerEvent("j_inventory:close", true)
+        createPedScreen()
+        Citizen.Wait(3000)
+        isUseItem = true
+        toggleCard = not toggleCard
+        TriggerEvent('j_inventory:open', true)
+    end
     cb("ok")
 end)
 
@@ -130,12 +138,18 @@ RegisterNUICallback("DropItem", function(data, cb)
         exports['mythic_notify']:DoCustomHudText('inform', "ไม่สามารถทิ้งได้", 4000)
     elseif type(data.number) == "number" and math.floor(data.number) == data.number then
         Wait(250)
-        ESX.Streaming.RequestAnimDict('pickup_object', function()
-            -- loop => 8.0, -8, -1, 49, 0, 0, 0, 0
-            TaskPlayAnim(ped, 'pickup_object', 'pickup_low', 8.0, -8, 1750, 49, 0, 0, 0, 0)
-            Citizen.Wait(1000)
-            TriggerServerEvent("esx:removeInventoryItem", data.item.type, data.item.name, data.number)
-        end)
+        if isUseItem then
+            isUseItem = false
+            ESX.Streaming.RequestAnimDict('pickup_object', function()
+                -- loop => 8.0, -8, -1, 49, 0, 0, 0, 0
+                exports['progressBars']:startUI(1750, "กำลังทิ้ง...")
+                TaskPlayAnim(ped, 'pickup_object', 'pickup_low', 8.0, -8, 1750, 49, 0, 0, 0, 0)
+                Citizen.Wait(1000)
+                TriggerServerEvent("esx:removeInventoryItem", data.item.type, data.item.name, data.number)
+                Citizen.Wait(700)
+                isUseItem = true
+            end)
+        end
         -- RequestAnimDict("pickup_object")
         -- Wait(250)
         -- TaskPlayAnim(ped, "pickup_object", "pickup_low",  8.0, -8, 2250, 49, 0, 0, 0, 0)
@@ -334,7 +348,14 @@ RegisterNUICallback("setItemSlot", function(data, cb)
 end)
 
 function useSlotItem(key)
-    TriggerServerEvent("esx:useItem", slot[key])
+    if isUseItem then
+        isUseItem = false
+        -- loop => 8.0, -8, -1, 49, 0, 0, 0, 0
+        exports['progressBars']:startUI(1750, "กำลังกิน...")
+        TriggerServerEvent("esx:useItem", slot[key])
+        Citizen.Wait(1700)
+        isUseItem = true
+    end
     Citizen.Wait(50)
     if not toggleCard then
         TriggerEvent('j_inventory:open', true)
