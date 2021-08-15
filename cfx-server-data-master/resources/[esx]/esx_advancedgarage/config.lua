@@ -178,22 +178,26 @@ Config.CarGarages = {
 	},]]
 	
 	Garage_Sandy = {
-		GaragePoint = { x = 1737.59, y = 3710.2, z = 34.14 },
-		SpawnPoint = { x = 1737.84, y = 3719.28, z = 33.04, h = 21.22 },
-		DeletePoint = { x = 1722.66, y = 3713.74, z = 34.21 }
+		GaragePoint = { x = 2492.84, y = 4123.57, z = 38.24 },
+		SpawnPoint = { x = 2485.15, y = 4124.75, z = 38.06, h = 335.34 },
+		DeletePoint = { x = 2487.46, y = 4112.1, z = 38.06 }
 	},
 	
 	Garage_Paleto = {
-		GaragePoint = { x = 105.359, y = 6613.586, z = 32.3973 },
-		SpawnPoint = { x = 128.7822, y = 6622.9965, z = 30.7828, h = 315.01 },
-		DeletePoint = { x = 126.3572, y = 6608.4150, z = 31.8565 }
+		GaragePoint = { x = -141.15, y = 6342.43, z = 31.49 },
+		SpawnPoint = { x = -154.91, y = 6356.6, z = 30.99, h = 44.65 },
+		SpawnPoint = { x = -152.23, y = 6359.4, z = 31.0, h = 43.93 },
+		--SpawnPoint = { x = -149.34, y = 6361.47, z = 30.99, h = 45.58 },
+		--SpawnPoint = { x = -133.81, y = 6348.99, z = 31.06, h = 224.46 },
+		--SpawnPoint = { x = -135.97, y = 6346.9, z = 31.06, h = 224.13 },
+		DeletePoint = { x = -138.48, y = 6344.74, z = 31.49 }
 	},
 	
-	Garage_fisherman = {
+	--[[Garage_fisherman = {
 		GaragePoint = { x = 3798.23, y = 4447.4, z = 5.42 },
 		SpawnPoint = { x = 3790.68, y = 4442.96, z = 4.4, h = 356.7 },
 		DeletePoint = { x = 3804.47, y = 4442.75, z = 3.53 }
-	},
+	},]]
 
 	Garage_CarWoolHavert = {
 		GaragePoint = { x = -579.84, y = -5355504.15, z = 7550.26 },
