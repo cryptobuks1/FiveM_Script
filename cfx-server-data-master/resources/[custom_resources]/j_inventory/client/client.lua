@@ -341,18 +341,25 @@ end, false)
 RegisterKeyMapping('+slot5', 'Slot5', 'keyboard', '5')
 
 RegisterNUICallback("setItemSlot", function(data, cb)
-    slot[data.key] = data.item
-    print(json.encode(data))
-    -- TriggerServerEvent("esx:useItem", data.item)
+    slot[data.key] = data.data
     cb("ok")
 end)
 
 function useSlotItem(key)
-    if isUseItem then
+    if isUseItem and next(slot[key]) then
         isUseItem = false
         -- loop => 8.0, -8, -1, 49, 0, 0, 0, 0
         exports['progressBars']:startUI(1750, "กำลังกิน...")
-        TriggerServerEvent("esx:useItem", slot[key])
+        TriggerServerEvent("esx:useItem", slot[key]['name'])
+        slot[key]['count'] = slot[key]['count'] - 1
+        if slot[key]['count'] == 0 then
+            SendNUIMessage({
+                option = "remove_slot",
+                key = key
+            })
+            slot[key] = {}
+            -- table.remove(slot, key)
+        end
         Citizen.Wait(1700)
         isUseItem = true
     end

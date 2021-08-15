@@ -3,6 +3,14 @@ var itemData = [];
 var slot_item = [];
 let value = 0;
 var keyIndex = 0;
+var images = { 
+	bread:'bread',
+	green_phone:'green_phone',
+	money:'money',
+	water:'water',
+	white_phone:'white_phone',
+	yellow_phone:'yellow_phone',
+}
 
 $(function () {
 	window.onload = (e) => {
@@ -20,48 +28,35 @@ $(function () {
 						if (v['weight'] !== undefined) {
 							sumWeight += (v['weight'] * v['count']);
 						}
-						$("#inventory-body").append(
-							`<div class="invontory-grid-item menu-data-` + k + `" oncontextmenu="itemClick(` + k + `)" data-name="` + v['name'] + `">
-							<div class="invontory-grid-body">
-								<div class="inventory-grid-item-img">
-									<img src="img/`+ v['name'] + `.png" alt="">
-								</div>
-								<div class="inventory-gird-item-name">
-								`+ v['name'] + `
-								</div>
-								<div class="inventory-gird-item-weight">
-								`+ v['count'] + `
-								</div>
-								<div class="inventory-grid-menu-dropdown">
-									<div class="inventory-gm-dropdown-items" onclick="itemUse(`+ k + `)">
-										ใช้
+						let image = images[v['name']]?images[v['name']]:undefined;
+						if(image){
+							$("#inventory-body").append(
+								`<div class="invontory-grid-item menu-data-` + k + `" oncontextmenu="itemClick(` + k + `)" data-name="` + v['name'] + `" data-count="` + v['count'] + `">
+								<div class="invontory-grid-body">
+									<div class="inventory-grid-item-img">
+										<img src="img/`+ image + `.png" alt="">
 									</div>
-									<div class="inventory-gm-dropdown-items" onclick="itemGive(`+ k + `)">
-										มอบให้
+									<div class="inventory-gird-item-name">
+									`+ v['name'] + `
 									</div>
-									<div class="inventory-gm-dropdown-items" onclick="itemDrop(`+ k + `)">
-										ทิ้ง
+									<div class="inventory-gird-item-weight">
+									`+ v['count'] + `
+									</div>
+									<div class="inventory-grid-menu-dropdown">
+										<div class="inventory-gm-dropdown-items" onclick="itemUse(`+ k + `)">
+											ใช้
+										</div>
+										<div class="inventory-gm-dropdown-items" onclick="itemGive(`+ k + `)">
+											มอบให้
+										</div>
+										<div class="inventory-gm-dropdown-items" onclick="itemDrop(`+ k + `)">
+											ทิ้ง
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>`)
-
-						// 	// )$("#inventory-body").append(
-						// 	// 	`<div class="invontory-grid-item">
-						// 	// 	<div class="invontory-grid-body">
-						// 	// 		<div class="inventory-grid-item-img">
-						// 	// 			<img src="img/`+ v['name'] + `.png" alt="">
-						// 	// 		</div>
-						// 	// 		<div class="inventory-gird-item-name">
-						// 	// 		`+ v['name'] + `
-						// 	// 		</div>
-						// 	// 		<div class="inventory-gird-item-weight">
-						// 	// 		`+ v['count'] + `
-						// 	// 		</div>
-						// 	// 	</div>
-						// 	// </div>`
-						// 	// )
-						counter++
+							</div>`)
+							counter++
+						}
 					});
 					dragDrop();
 					$("#slot-inventory").html(counter + '/' + '47')
@@ -70,6 +65,9 @@ $(function () {
 				} else {
 					$("#container").hide();
 				}
+			}else if(item !== undefined && item.option === "remove_slot"){
+				console.log('item remove',JSON.stringify(item));
+				removeItem(item.key);
 			}
 		});
 	};
@@ -204,17 +202,25 @@ function dragDrop() {
 
 function dropInSlot($item, k) {
 	var item_name = $item.data("name");
-	setItem(item_name, k)
+	var item_count = $item.data("count");
+	setItem(item_name, k, item_count)
 }
 
-function setItem(name, key) {
+function setItem(name, key, count) {
 	var t = $('#slot-' + key);
 	t.addClass('active');
 	var img = t.children('img');
 	var name_pic = 'img/' + name + '.png';
 	img.attr('src', name_pic);
 	$.post("https://" + resourceName + "/setItemSlot", JSON.stringify({
-		item: name,
-		key: key
+		data:{ name,count },
+		key
 	}));
+}
+function removeItem(key) {
+	var t = $('#slot-' + key);
+	t.removeClass('active');
+	// var img = t.children('img');
+	// var name_pic = 'img/' + name + '.png';
+	// img.attr('src', name_pic);
 }
