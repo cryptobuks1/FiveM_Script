@@ -1,6 +1,6 @@
 -- Configuration
 
-local button = Config.Key["K"] -- 167 (F6 by default)
+local button = Config.Key["M"] -- 244 (F6 by default)
 
 -- You're all set now!
 
