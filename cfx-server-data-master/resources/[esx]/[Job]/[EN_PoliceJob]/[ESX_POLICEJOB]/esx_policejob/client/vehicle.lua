@@ -15,6 +15,7 @@ function OpenVehicleSpawnerMenu(type, station, part, partNum)
 		if data.current.action == 'buy_vehicle' then
 			local shopElements = {}
 			local shopCoords = Config.PoliceStations[station][part][partNum].InsideShop
+			local cameraCoords = Config.PoliceStations[station][part][partNum].CameraShop
 			local authorizedVehicles = Config.AuthorizedVehicles[type][ESX.PlayerData.job.grade_name]
 
 			if authorizedVehicles then
@@ -35,7 +36,7 @@ function OpenVehicleSpawnerMenu(type, station, part, partNum)
 					end
 
 					if #shopElements > 0 then
-						OpenShopMenu(shopElements, playerCoords, shopCoords)
+						OpenShopMenu(shopElements, playerCoords, shopCoords, cameraCoords)
 					else
 						ESX.ShowNotification(_U('garage_notauthorized'))
 					end
@@ -203,7 +204,7 @@ function GetAvailableVehicleSpawnPoint(station, part, partNum)
 	end
 end
 
-function OpenShopMenu(elements, restoreCoords, shopCoords)
+function OpenShopMenu(elements, restoreCoords, shopCoords, cameraCoords)
 	local playerPed = PlayerPedId()
 	isInShopMenu = true
 
@@ -235,7 +236,9 @@ function OpenShopMenu(elements, restoreCoords, shopCoords)
 						FreezeEntityPosition(playerPed, false)
 						SetEntityVisible(playerPed, true)
 
-						ESX.Game.Teleport(playerPed, restoreCoords)
+						-- ESX.Game.Teleport(playerPed, restoreCoords)
+						SetCamActive(cam2, false)
+						RenderScriptCams(false, false, 0, true, true)
 					else
 						ESX.ShowNotification(_U('vehicleshop_money'))
 						menu2.close()
@@ -255,31 +258,42 @@ function OpenShopMenu(elements, restoreCoords, shopCoords)
 		FreezeEntityPosition(playerPed, false)
 		SetEntityVisible(playerPed, true)
 
-		ESX.Game.Teleport(playerPed, restoreCoords)
+		-- ESX.Game.Teleport(playerPed, restoreCoords)
+		SetCamActive(cam2, false)
+    	RenderScriptCams(false, false, 0, true, true)
 	end, function(data, menu)
 		DeleteSpawnedVehicles()
 		WaitForVehicleToLoad(data.current.model)
 
-		ESX.Game.SpawnLocalVehicle(data.current.model, shopCoords, 0.0, function(vehicle)
+		ESX.Game.SpawnLocalVehicle(data.current.model, shopCoords.coords, shopCoords.heading, function(vehicle)
 			table.insert(spawnedVehicles, vehicle)
-			TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
+			-- TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
 			FreezeEntityPosition(vehicle, true)
 			SetModelAsNoLongerNeeded(data.current.model)
-
+			
 			if data.current.props then
+				print('data.current.props')
 				ESX.Game.SetVehicleProperties(vehicle, data.current.props)
 			end
 		end)
 	end)
 
 	WaitForVehicleToLoad(elements[1].model)
-	ESX.Game.SpawnLocalVehicle(elements[1].model, shopCoords, 0.0, function(vehicle)
+	ESX.Game.SpawnLocalVehicle(elements[1].model, shopCoords.coords, shopCoords.heading, function(vehicle)
 		table.insert(spawnedVehicles, vehicle)
-		TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
+		-- DoScreenFadeOut(1000)
+		-- Citizen.Wait(1000)
+		-- DestroyAllCams(true)
+		-- cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", cameraCoords.coords.x, cameraCoords.coords.y, cameraCoords.coords.z, cameraCoords.rotX , 0.00, cameraCoords.heading, cameraCoords.fov, false, 0)
+    	-- SetCamActive(cam2, true)
+		-- RenderScriptCams(true, false, 1000, true, true)
+		-- Citizen.Wait(500)
+		-- DoScreenFadeIn(1000)
+		-- TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
 		FreezeEntityPosition(vehicle, true)
 		SetModelAsNoLongerNeeded(elements[1].model)
-
 		if elements[1].props then
+			print('TaskWarpPedIntoVehicle')
 			ESX.Game.SetVehicleProperties(vehicle, elements[1].props)
 		end
 	end)

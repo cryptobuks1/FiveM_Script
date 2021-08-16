@@ -14,6 +14,7 @@ ESX    = nil
 
 local PlayerData = {}
 local JobBlips = {}
+local currentStation = ''
 local HasAlreadyEnteredMarker = false
 local LastZone                = nil
 local CurrentAction           = nil
@@ -141,6 +142,7 @@ end
 -- List Owned Cars Menu
 function ListOwnedCarsMenu()
 	local elements = {}
+	local allVehicleProps = {}
 	
 	if Config.ShowSpacer1 == true then
 		table.insert(elements, {label = _U('spacer1')})
@@ -790,17 +792,36 @@ end
 
 -- Spawn Cars
 function SpawnVehicle(vehicle, plate)
-	ESX.Game.SpawnVehicle(vehicle.model, {
-		x = this_Garage.SpawnPoint.x,
-		y = this_Garage.SpawnPoint.y,
-		z = this_Garage.SpawnPoint.z + 1
-	}, this_Garage.SpawnPoint.h, function(callback_vehicle)
-		ESX.Game.SetVehicleProperties(callback_vehicle, vehicle)
-		SetVehRadioStation(callback_vehicle, "OFF")
-		TaskWarpPedIntoVehicle(GetPlayerPed(-1), callback_vehicle, -1)
-	end)
-	
-	TriggerServerEvent('esx_advancedgarage:setVehicleState', plate, false)
+	local foundSpawn, spawnPoint = GetAvailableVehicleSpawnPoint(currentStation)
+	if foundSpawn then
+		ESX.Game.SpawnVehicle(vehicle.model, spawnPoint.coords, spawnPoint.heading, function(callback_vehicle)
+			-- local vehicleProps = allVehicleProps[plate]
+			ESX.Game.SetVehicleProperties(callback_vehicle, vehicle)
+			SetVehRadioStation(callback_vehicle, "OFF")
+			-- TaskWarpPedIntoVehicle(GetPlayerPed(-1), callback_vehicle, -1)
+			TriggerServerEvent('esx_advancedgarage:setVehicleState', plate, false)
+		end)
+	end
+end
+
+-- Position Spawn Cars
+function GetAvailableVehicleSpawnPoint(station)
+	local spawnPoints = Config.CarGarages[station].SpawnPoints
+	local found, foundSpawnPoint = false, nil
+
+	for i=1, #spawnPoints, 1 do
+		if ESX.Game.IsSpawnPointClear(spawnPoints[i].coords, spawnPoints[i].radius) then
+			found, foundSpawnPoint = true, spawnPoints[i]
+			break
+		end
+	end
+
+	if found then
+		return true, foundSpawnPoint
+	else
+		ESX.ShowNotification(_U('vehicle_blocked'))
+		return false
+	end
 end
 
 -- Spawn Pound Cars
@@ -992,6 +1013,8 @@ Citizen.CreateThread(function()
 			-- Car Garages
 			for k,v in pairs(Config.CarGarages) do
 				if (GetDistanceBetweenCoords(coords, v.GaragePoint.x, v.GaragePoint.y, v.GaragePoint.z, true) < Config.PointMarker.x) then
+					print('v',v)
+					currentStation = k
 					isInMarker  = true
 					this_Garage = v
 					currentZone = 'car_garage_point'

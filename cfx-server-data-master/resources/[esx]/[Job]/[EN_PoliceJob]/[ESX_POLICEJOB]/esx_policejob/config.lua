@@ -44,7 +44,9 @@ Config.PoliceStations = {
 		Vehicles = {
 			{
 				Spawner = vector3(461.68, -975.02, 25.7),
-				InsideShop = vector3(228.5, -993.5, -99.5),
+				InsideShop = {coords = vector3(448.94, -975.87, 25.7), heading = 90.0},
+				-- vector3 => x,y,z ,heading => หัน, rotX => ก้มเงย, fov => ซูม
+				-- CameraShop = {coords = vector3(430.13, -978.28, 26.0),heading = 298.7, rotX = -5, fov = 50.00},
 				SpawnPoints = {
 					{coords = vector3(446.01, -996.83, 25.7), heading = 90.0, radius = 6.0},
 					{coords = vector3(446.01, -988.85, 25.7), heading = 90.0, radius = 6.0},
