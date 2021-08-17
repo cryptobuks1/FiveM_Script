@@ -1,0 +1,70 @@
+html { overflow-x: hidden !important; overflow-y: hidden !important; background-color: transparent !important;}
+
+body {background-color: transparent !important;}
+
+.al-item {
+     font-family:'Sarabun', sans-serif;
+     position: absolute;
+     bottom: 130px;
+     right: 30px;
+     width: 21%;
+     margin-right: auto;
+     margin-left: auto;
+     float: right;
+}
+
+.card {
+     background-color:rgba(0, 0, 0, 0.32);
+}
+
+.card-element{
+     width: 120px;
+     margin-left: 10px;
+}
+.card-body{
+     padding: 5px;
+     color: white;
+}
+
+.al-item .al-item-header {
+     background: rgba(0,0,0,.05);
+     border:none;
+     display: flex;
+     height: 132px;
+}
+.al-item .al-item-header .al-item-action {
+     background:#fff;
+     border-left:1px solid #636d69;
+     border-bottom:1px solid #636d69;
+     border-radius:4px 0 12px 0;
+     color:#000;
+     min-width: 50px;
+     font-size:14px;
+     padding:5px 10px;
+     position:absolute;
+     left:0;
+     top:0;
+}
+.al-item .al-item-header .add {
+     background:#15f900;
+     color:#fff;
+}
+.al-item .al-item-header .remove {
+     background:#ff0000;
+     color:#fff;
+}
+.al-item .al-item-header .use {
+     background:#1296f9;
+     color:#fff;
+}
+.al-item .al-item-img{
+     flex-grow: 1;
+}
+.al-item .al-item-header img {
+     width:100px;
+}
+.al-item .al-price-box .al-item-features {
+     background: rgba(92, 250, 237, 0.55);
+     color: #ffffffbf;
+     font-size: 15px;
+}
