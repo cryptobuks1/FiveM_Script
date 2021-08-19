@@ -56,3 +56,4 @@ RegisterNetEvent("es:disableClientPosition")
 AddEventHandler("es:disableClientPosition", function()
 	enablePositionSending = false
 end)
+
