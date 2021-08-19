@@ -346,6 +346,15 @@ RegisterNUICallback("setItemSlot", function(data, cb)
 end)
 
 function useSlotItem(key)
+    DisableControlAction(0, 24, true) -- attack
+    DisableControlAction(0, 25, true) -- aim
+    DisableControlAction(0, 37, true) -- weapon wheel
+    DisableControlAction(0, 44, true) -- cover
+    DisableControlAction(0, 45, true) -- reload
+    DisableControlAction(0, 140, true) -- light attack
+    DisableControlAction(0, 141, true) -- heavy attack
+    DisableControlAction(0, 142, true) -- alternative attack
+    DisablePlayerFiring(GetPlayerPed(-1), true) -- Disable weapon firing
     if isUseItem and next(slot[key]) then
         isUseItem = false
         -- loop => 8.0, -8, -1, 49, 0, 0, 0, 0

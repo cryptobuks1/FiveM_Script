@@ -35,6 +35,7 @@ files {
     'html/img/white_phone.png',
     'html/img/green_phone.png',
     'html/img/noimg.png',
+    'html/img/skin_4_0.png',
 }
 
 fx_version 'cerulean'

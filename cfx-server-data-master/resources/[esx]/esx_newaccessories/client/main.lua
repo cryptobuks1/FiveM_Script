@@ -247,7 +247,7 @@ function OpenShopMenu(accessory)
 	--print(_accessory)
 	accesorio = accessory
 
-	TriggerEvent("esx_np_skinshop:toggleMenu", _accessory)
+	TriggerEvent("j_skinshop:toggleMenu", _accessory)
 	
 end
 
@@ -308,7 +308,7 @@ end
 --[[
 RegisterNUICallback("endDialogAccessories", function()
 	print('funciona')
-	TriggerEvent("esx_np_skinshop:toggleMenu")
+	TriggerEvent("j_skinshop:toggleMenu")
 	openEndDialog()
 end)--]]
 RegisterNetEvent('esx_newaccessories:endDialog')

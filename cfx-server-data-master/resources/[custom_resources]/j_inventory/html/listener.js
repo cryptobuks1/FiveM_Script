@@ -10,6 +10,7 @@ var images = {
 	water:'water',
 	white_phone:'white_phone',
 	yellow_phone:'yellow_phone',
+	skin_4_0:'skin_4_0',
 }
 
 $(function () {
@@ -24,11 +25,11 @@ $(function () {
 					$('#inventory-body').empty();
 					itemData = item.items;
 					$.each(item.items, function (k, v) {
-						// console.log(v['weight']);
 						if (v['weight'] !== undefined) {
 							sumWeight += (v['weight'] * v['count']);
 						}
 						let image = images[v['name']]?images[v['name']]:undefined;
+						console.log(image);
 						if(image){
 							$("#inventory-body").append(
 								`<div class="invontory-grid-item menu-data-` + k + `" oncontextmenu="itemClick(` + k + `)" data-name="` + v['name'] + `" data-count="` + v['count'] + `">

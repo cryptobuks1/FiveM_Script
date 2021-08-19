@@ -25,5 +25,7 @@ Config.Peds = {
 	{-55.93, -1098.31, 26.42, 350.85, 0xC99F21C4,"csb_burgerdrug", "carshop", "mini@strip_club@idles@bouncer@go_away"},
 	{-171.97, 294.8, 93.76, 620.00, 0xC99F21C4,"s_m_y_waiter_01", "Cashier Sushi", "mini@strip_club@idles@bouncer@go_away"},
 	{-656.73, -858.79, 24.5, 330.00, 0xC99F21C4,"a_m_y_soucent_01", "MobileShop", "mini@strip_club@idles@bouncer@go_away"},
-	{-332.27, -126.37, 39.01, 500.85, 0xC99F21C4,"s_m_y_pestcont_01", "mechanic", "mini@strip_club@idles@bouncer@go_away"}
+	{-332.27, -126.37, 39.01, 500.85, 0xC99F21C4,"s_m_y_pestcont_01", "mechanic", "mini@strip_club@idles@bouncer@go_away"},
+	-- NPC ร้านเสื้อผ้า
+	{-1102.42, 2711.69, 19.11, 219.68, 0xC99F21C4,"s_m_y_pestcont_01", "mechanic", "mini@strip_club@idles@bouncer@go_away"}
 }
