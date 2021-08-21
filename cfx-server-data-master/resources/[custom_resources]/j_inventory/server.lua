@@ -14,7 +14,6 @@ end)
 ESX.RegisterServerCallback("j_inventory:getPlayerInventory", function(source, cb, target)
     local xPlayer = ESX.GetPlayerFromId(target)
     _inventory = xPlayer.inventory;
-
     if xPlayer ~= nil then
         cb({
             inventory = xPlayer.inventory, 

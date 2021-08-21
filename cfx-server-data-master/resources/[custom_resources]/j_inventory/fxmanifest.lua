@@ -8,12 +8,14 @@ description 'Supermarket in the city'
 client_scripts {
     '@es_extended/locale.lua',
     'client/client.lua',
+    'config.lua'
 }
 
 server_scripts{
     '@es_extended/locale.lua',
     '@mysql-async/lib/MySQL.lua',
     'server.lua',
+    'config.lua'
 }
 
 ui_page 'html/index.html'

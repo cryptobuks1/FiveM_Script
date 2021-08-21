@@ -28,11 +28,11 @@ $(function () {
 						if (v['weight'] !== undefined) {
 							sumWeight += (v['weight'] * v['count']);
 						}
+						let item_type = v['item_type']?v['item_type']:'none';
 						let image = images[v['name']]?images[v['name']]:undefined;
-						console.log(image);
 						if(image){
 							$("#inventory-body").append(
-								`<div class="invontory-grid-item menu-data-` + k + `" oncontextmenu="itemClick(` + k + `)" data-name="` + v['name'] + `" data-count="` + v['count'] + `">
+								`<div class="invontory-grid-item menu-data-` + k + ` item-type-` + item_type + `" oncontextmenu="itemClick(` + k + `)" data-name="` + v['name'] + `" data-count="` + v['count'] + `" >
 								<div class="invontory-grid-body">
 									<div class="inventory-grid-item-img">
 										<img src="img/`+ image + `.png" alt="">
@@ -141,11 +141,12 @@ function itemDrop(index) {
 }
 function dragDrop() {
 	var $inventory = $("#inventory-body"),
-		$slot1 = $(".inventory-slot-item-1");
+	$slot1 = $(".inventory-slot-item-1");
 	$slot2 = $(".inventory-slot-item-2");
 	$slot3 = $(".inventory-slot-item-3");
 	$slot4 = $(".inventory-slot-item-4");
 	$slot5 = $(".inventory-slot-item-5");
+	$slot_trousers = $("#trousers");
 
 	$(".invontory-grid-item", $inventory).draggable({
 		cancel: "a.ui-icon", // clicking an icon won't initiate dragging
@@ -155,7 +156,7 @@ function dragDrop() {
 		cursor: "move"
 	});
 	$slot1.droppable({
-		accept: "#inventory-body > .invontory-grid-item",
+		accept: "#inventory-body > .item-type-none",
 		classes: {
 			"ui-droppable-active": "ui-state-highlight"
 		},
@@ -164,7 +165,7 @@ function dragDrop() {
 		}
 	});
 	$slot2.droppable({
-		accept: "#inventory-body > .invontory-grid-item",
+		accept: "#inventory-body > .item-type-none",
 		classes: {
 			"ui-droppable-active": "ui-state-highlight"
 		},
@@ -173,7 +174,7 @@ function dragDrop() {
 		}
 	});
 	$slot3.droppable({
-		accept: "#inventory-body > .invontory-grid-item",
+		accept: "#inventory-body > .item-type-none",
 		classes: {
 			"ui-droppable-active": "ui-state-highlight"
 		},
@@ -182,7 +183,7 @@ function dragDrop() {
 		}
 	});
 	$slot4.droppable({
-		accept: "#inventory-body > .invontory-grid-item",
+		accept: "#inventory-body > .item-type-none",
 		classes: {
 			"ui-droppable-active": "ui-state-highlight"
 		},
@@ -191,12 +192,21 @@ function dragDrop() {
 		}
 	});
 	$slot5.droppable({
-		accept: "#inventory-body > .invontory-grid-item",
+		accept: "#inventory-body > .item-type-none",
 		classes: {
 			"ui-droppable-active": "ui-state-highlight"
 		},
 		drop: function (event, ui) {
 			dropInSlot(ui.draggable, 5);
+		}
+	});
+	$slot_trousers.droppable({
+		accept: "#inventory-body > .item-type-trousers",
+		classes: {
+			"ui-droppable-active": "ui-state-highlight"
+		},
+		drop: function (event, ui) {
+			// dropInSlot(ui.draggable, 5);
 		}
 	});
 }

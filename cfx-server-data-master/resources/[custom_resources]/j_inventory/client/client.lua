@@ -56,6 +56,7 @@ AddEventHandler('j_inventory:open', function()
     items = {}
     ESX.TriggerServerCallback('j_inventory:getPlayerInventory', function(data)
         if data.money ~= nil then
+            
             table.insert(items, {
                 label = 'Pare',
                 name = 'money',
@@ -64,7 +65,8 @@ AddEventHandler('j_inventory:open', function()
                 usable = false,
                 rare = false,
                 canRemove = true,
-                desc = 'Sluzi za kupovinu'
+                desc = 'Money',
+                item_type = 'money'
             })
         end
         if data.inventory ~= nil then
@@ -73,6 +75,7 @@ AddEventHandler('j_inventory:open', function()
                     data.inventory[k] = nil
                 else
                     data.inventory[k].type = 'item_standard'
+                    data.inventory[k].item_type = Config.getType[data.inventory[k]['name']]
                     table.insert(items, data.inventory[k])
                 end
             end
@@ -91,7 +94,8 @@ AddEventHandler('j_inventory:open', function()
                             name = data.weapons[k].name,
                             usable = false,
                             rare = false,
-                            canRemove = true
+                            canRemove = true,
+                            item_type = 'weapon'
                         })
                     end
                 end
