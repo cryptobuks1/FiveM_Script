@@ -140,14 +140,15 @@ function itemDrop(index) {
 	unActiveDropDown();
 }
 function dragDrop() {
-	var $inventory = $("#inventory-body"),
+
+	// drag to slot
+	var $inventory = $("#inventory-body");
 	$slot1 = $(".inventory-slot-item-1");
 	$slot2 = $(".inventory-slot-item-2");
 	$slot3 = $(".inventory-slot-item-3");
 	$slot4 = $(".inventory-slot-item-4");
 	$slot5 = $(".inventory-slot-item-5");
 	$slot_trousers = $("#trousers");
-
 	$(".invontory-grid-item", $inventory).draggable({
 		cancel: "a.ui-icon", // clicking an icon won't initiate dragging
 		revert: "invalid", // when not dropped, the item will revert back to its initial position
@@ -209,6 +210,29 @@ function dragDrop() {
 			dropInSlotClothes(ui.draggable, "trousers");
 		}
 	});
+
+	// drag to bag
+	$bag = $(".inventory-height");
+	let slot;
+	$(".slot-items").draggable({
+		cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+		revert: "invalid", // when not dropped, the item will revert back to its initial position
+		containment: "document",
+		helper: "clone",
+		cursor: "move",
+		drag: function( event, ui ) {
+			slot = ($(this).data('slot'));
+		}
+	});
+	$bag.droppable({
+		accept: ".slot-items",
+		classes: {
+			"ui-droppable-active": "ui-state-highlight"
+		},
+		drop: function (event, ui) {
+			removeItem(slot);
+		}
+	});
 }
 
 function dropInSlot($item, k) {
@@ -251,7 +275,7 @@ function setItemClothes(name, key, count) {
 function removeItem(key) {
 	var t = $('#slot-' + key);
 	t.removeClass('active');
-	// var img = t.children('img');
-	// var name_pic = 'img/' + 	name + '.png';
-	// img.attr('src', name_pic);
+	$.post("https://" + resourceName + "/removeItemSlot", JSON.stringify({
+		key
+	}));
 }

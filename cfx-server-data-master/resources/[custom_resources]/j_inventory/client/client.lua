@@ -368,24 +368,17 @@ RegisterNUICallback("setItemSlot", function(data, cb)
         TriggerEvent('skinchanger:getSkin', function(skin)
             TriggerServerEvent('esx_skin:save', skin)
         end)
-
-
-        -- 
-        -- TriggerEvent('skinchanger:getSkin', function(skin)
-
-        --     ESX.TriggerServerCallback('esx_property:getPlayerOutfit', function(clothes)
-
-        --         TriggerEvent('skinchanger:loadClothes', skin, clothes)
-        --         TriggerEvent('esx_skin:setLastSkin', skin)
-
-        --         TriggerEvent('skinchanger:getSkin', function(skin)
-        --             TriggerServerEvent('esx_skin:save', skin)
-        --         end)
-
-        --     end, true)
-
-        -- end)
     end
+    cb("ok")
+end)
+
+RegisterNUICallback("removeItemSlot", function(data, cb)
+    slot[data.key] = {}
+    -- if Config.getType[data.name] ~= 'none' then
+    --     TriggerEvent('skinchanger:getSkin', function(skin)
+    --         TriggerServerEvent('esx_skin:save', skin)
+    --     end)
+    -- end
     cb("ok")
 end)
 
