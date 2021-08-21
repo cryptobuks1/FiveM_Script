@@ -43,6 +43,15 @@ end)
 RegisterKeyMapping('toggle_inventory', 'Inventory', 'keyboard', 'TAB')
 
 RegisterCommand("toggle_inventory", function()
+    DisableControlAction(0, 24, true) -- attack
+    DisableControlAction(0, 25, true) -- aim
+    DisableControlAction(0, 37, true) -- weapon wheel
+    DisableControlAction(0, 44, true) -- cover
+    DisableControlAction(0, 45, true) -- reload
+    DisableControlAction(0, 140, true) -- light attack
+    DisableControlAction(0, 141, true) -- heavy attack
+    DisableControlAction(0, 142, true) -- alternative attack
+    DisablePlayerFiring(GetPlayerPed(-1), true) -- Disable weapon firing
     if toggleCard then
         TriggerEvent('j_inventory:open', true)
     else
@@ -355,6 +364,28 @@ RegisterKeyMapping('+slot5', 'Slot5', 'keyboard', '5')
 
 RegisterNUICallback("setItemSlot", function(data, cb)
     slot[data.key] = data.data
+    if Config.getType[data.name] ~= 'none' then
+        TriggerEvent('skinchanger:getSkin', function(skin)
+            TriggerServerEvent('esx_skin:save', skin)
+        end)
+
+
+        -- 
+        -- TriggerEvent('skinchanger:getSkin', function(skin)
+
+        --     ESX.TriggerServerCallback('esx_property:getPlayerOutfit', function(clothes)
+
+        --         TriggerEvent('skinchanger:loadClothes', skin, clothes)
+        --         TriggerEvent('esx_skin:setLastSkin', skin)
+
+        --         TriggerEvent('skinchanger:getSkin', function(skin)
+        --             TriggerServerEvent('esx_skin:save', skin)
+        --         end)
+
+        --     end, true)
+
+        -- end)
+    end
     cb("ok")
 end)
 

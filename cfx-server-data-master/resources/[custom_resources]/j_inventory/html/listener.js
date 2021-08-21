@@ -32,7 +32,7 @@ $(function () {
 						let image = images[v['name']]?images[v['name']]:undefined;
 						if(image){
 							$("#inventory-body").append(
-								`<div class="invontory-grid-item menu-data-` + k + ` item-type-` + item_type + `" oncontextmenu="itemClick(` + k + `)" data-name="` + v['name'] + `" data-count="` + v['count'] + `" >
+								`<div class="invontory-grid-item menu-data-` + k + ` item-type-` + item_type + `" oncontextmenu="itemClick(` + k + `)" data-name="` + v['name'] + `" data-count="` + v['count'] + `">
 								<div class="invontory-grid-body">
 									<div class="inventory-grid-item-img">
 										<img src="img/`+ image + `.png" alt="">
@@ -206,7 +206,7 @@ function dragDrop() {
 			"ui-droppable-active": "ui-state-highlight"
 		},
 		drop: function (event, ui) {
-			// dropInSlot(ui.draggable, 5);
+			dropInSlotClothes(ui.draggable, "trousers");
 		}
 	});
 }
@@ -215,6 +215,11 @@ function dropInSlot($item, k) {
 	var item_name = $item.data("name");
 	var item_count = $item.data("count");
 	setItem(item_name, k, item_count)
+}
+function dropInSlotClothes($item, k) {
+	var item_name = $item.data("name");
+	var item_count = $item.data("count");
+	setItemClothes(item_name, k, item_count)
 }
 
 function setItem(name, key, count) {
@@ -228,10 +233,25 @@ function setItem(name, key, count) {
 		key
 	}));
 }
+function setItemClothes(name, key, count) {
+	var t = $('#slot-' + key);
+	t.addClass('active');
+	var img = t.children('img');
+	var name_pic = 'img/' + name + '.png';
+	img.attr('src', name_pic);
+	let dados = 4;
+	let tipo = 0;
+	$.post("https://" + resourceName + "/setItemSlot", JSON.stringify({
+		data:{ name,count },
+		key,
+		name
+	}));
+	$.post("https://j_skinshop/update", JSON.stringify([dados, tipo]));
+}
 function removeItem(key) {
 	var t = $('#slot-' + key);
 	t.removeClass('active');
 	// var img = t.children('img');
-	// var name_pic = 'img/' + name + '.png';
+	// var name_pic = 'img/' + 	name + '.png';
 	// img.attr('src', name_pic);
 }

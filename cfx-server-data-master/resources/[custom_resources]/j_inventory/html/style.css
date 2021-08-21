@@ -118,6 +118,15 @@ img{
     margin: 0 0 30px;
     max-width: 100px;
     color : #fff;
+    position: relative;
+}
+.inventory-cg-c-text {
+    position: absolute;
+    z-index: 1;
+}
+.inventory-cg-slot-images{
+    position: relative;
+    z-index: 2;
 }
 .inventory-character-grid-bottom {
     display: flex;
@@ -239,7 +248,7 @@ img{
 .inventory-slot-item .invontory-grid-item{
     width: 100%;
 }
-
+#slot-trousers,
 #slot-1,
 #slot-2,
 #slot-3,
@@ -247,6 +256,7 @@ img{
 #slot-5{
     display: none;
 }
+#slot-trousers.active,
 #slot-1.active,
 #slot-2.active,
 #slot-3.active,
